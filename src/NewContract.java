@@ -1,0 +1,89 @@
+import java.util.Hashtable;
+
+public class NewContract implements IContract{
+    @Override
+    public String getContractName() {
+        return "newContract";
+    }
+
+    @Override
+    public Struct createObject() {
+        return null;
+    }
+
+    @Override
+    public Step[] createConstructor() {
+        return new Step[0];
+    }
+
+    @Override
+    public boolean payableConstructor() {
+        return false;
+    }
+
+    @Override
+    public Hashtable<String,String> getStateVariables() {
+        Hashtable<String,String > h = new Hashtable<>();
+        h.put("string","name");
+        h.put("boolean","gender");
+        return h;
+    }
+
+    @Override
+    public Hashtable<String, String> initStateVariables() {
+        Hashtable<String,String > h = new Hashtable<>();
+        h.put("name","Mazen");
+        return h;
+    }
+
+    @Override
+    public String[] getMethodNames() {
+        return new String[] {"func1","func2"};
+    }
+
+    @Override
+    public String getMethodAccessModifier(String strMethodName) {
+        return null;
+    }
+
+    @Override
+    public Hashtable<String,String> getMethodParameters(String strMethodName) {
+        Hashtable<String,String > h = new Hashtable<>();
+        if(strMethodName.equals("func1")) {
+            h.put("String", "place");
+            h.put("int", "age");
+        }
+        if(strMethodName.equals("func2")){
+            h.put("Hashtable<address,String>","balance");
+            h.put("uint[]","array");
+        }
+        return h;
+    }
+
+    @Override
+    public boolean payable(String strMethodName) {
+        return false;
+    }
+
+    @Override
+    public String getMethodReturnType(String strMethodName) {
+        if(strMethodName.equals("func1"))
+            return "String";
+        else
+            return "boolean";
+    }
+
+    @Override
+    public Step[] getMethodSteps(String strMethodName) {
+        if(strMethodName.equals("func1"))
+            return new Step[] {new Step("place.equals(\"Nasr City\")","place = \"Seif\""), new Step("age == 5","age = 10")};
+        if(strMethodName.equals("func2"))
+            return new Step[] {new Step("array[0] == 10", "gender = true")};
+        else return null;
+    }
+
+    public static void main(String[] args) throws Exception {
+        NewContract n = new NewContract();
+        System.out.println(ContractInit.createContract(n));
+    }
+}
