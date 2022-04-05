@@ -8,7 +8,11 @@ public class NewContract implements IContract{
 
     @Override
     public Struct createObject() {
-        return null;
+        Hashtable<String,String > h = new Hashtable<>();
+        h.put("string","name");
+        h.put("int","amount");
+        Struct S = new Struct("Request" , h);
+        return S;
     }
 
     @Override
@@ -66,11 +70,17 @@ public class NewContract implements IContract{
     }
 
     @Override
-    public String getMethodReturnType(String strMethodName) {
+    public Hashtable <String,String> getMethodReturnType(String strMethodName) {
+       Hashtable H1= new Hashtable<String,String>();
+       H1.put("String","name");
+       H1.put("int","number");
+        Hashtable H2= new Hashtable<String,String>();
+        H2.put("String[]","names");
+        H2.put("int[]","numbers");
         if(strMethodName.equals("func1"))
-            return "String";
+            return  H1;
         else
-            return "boolean";
+            return H2;
     }
 
     @Override

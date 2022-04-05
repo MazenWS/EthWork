@@ -11,6 +11,6 @@ public interface IContract {
     public String getMethodAccessModifier(String strMethodName);
     public Hashtable<String,String> getMethodParameters(String strMethodName );
     public boolean payable(String strMethodName);
-    public String getMethodReturnType(String strMethodName );
+    public Hashtable<String,String> getMethodReturnType(String strMethodName );
     public Step[] getMethodSteps(String strMethodName );
 }

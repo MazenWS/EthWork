@@ -6,21 +6,27 @@ public class ContractInit{
         String res = "";
         res += "pragma solidity ^0.8.2; \n\n";
         res += "contract "+ c.getContractName() +" {\n\n\n";
+        if (c.createObject()!=null){
+            Struct myStruct =c.createObject();
+            res+= "struct "+myStruct.name+" {\n";
+            Hashtable<String,String> vars = myStruct.vars;
+            Set<String> datatype = vars.keySet();
+            for(String dtype : datatype){
+
+                res+= writestatevariables(vars,dtype);
+                res += ";\n";}
+            res+="}\n";
+
+        }
         Hashtable<String,String> state = c.getStateVariables();
-        Hashtable<String ,String > init = c.initStateVariables();
-        Set<String> s = state.keySet();
-        for(String si : s){
-            switch(si.toLowerCase()) {
-                case "string" : res += "string "+state.get(si);break;
-                case "int" : res += "int " +state.get(si);break;
-                case "address" : res += "address " + state.get(si);break;
-                case "boolean" : res += "bool " + state.get(si);break;
-                //arrays
-                //hashtables => mappings
-                //default: throw error unsupported Type ;
-            }
-            if(init.containsKey(state.get(si)))
-                res += " = "+init.get(state.get(si));
+        //write the initial values of the state variables...
+       Hashtable<String ,String > init = c.initStateVariables();
+        Set<String> datatype = state.keySet();
+        for(String dtype : datatype){
+
+           res+= writestatevariables(state,dtype);
+            if(init.containsKey(state.get(dtype)))
+                res += " = "+init.get(state.get(dtype));
             res += ";\n";
         }
         res += "\n\n";
@@ -65,10 +71,10 @@ public class ContractInit{
         }
         String res = "";
         res += "function "+methodName+"(";
-        Hashtable h = c.getMethodParameters(methodName);
-        Set<String> s = h.keySet();
-        for(String si : s) {
-            res += writeParameter(h,si);
+        Hashtable params = c.getMethodParameters(methodName);
+        Set<String> type = params.keySet();
+        for(String dtype : type) {
+            res += writeParameter(params,dtype);
             res += ",";
         }
         res = res.substring(0,res.length()-1);
@@ -78,9 +84,23 @@ public class ContractInit{
         else if(pure) res += " pure";
         else if(view ) res += " view";
         String ret = "";
-        if(! c.getMethodReturnType(methodName).equals("void"))
-            ret += " returns("+c.getMethodReturnType(methodName)+") {\n";
-        if(ret.contains("String")) ret = ret.replace("String","string memory");
+
+
+            // checking if the function is returning anything
+        if(!(c.getMethodReturnType(methodName)==null))
+            //if two returns have the same datatype they have to have names
+            //looping over the return types the user stated and adding them in the function declaration
+            ret += " returns(";
+        Hashtable<String,String> returns= c.getMethodReturnType(methodName);
+        Set<String> returntype = returns.keySet();
+
+            for (String  rettype:returntype
+                 ) {
+               ret +=writestatevariables2(returns,rettype)+" ,";
+            }
+            ret= ret.substring(0,ret.length()-1);
+ret+=" )\n";
+
         res += ret;
         res += body + "}";
         res += "\n\n";
@@ -94,36 +114,92 @@ public class ContractInit{
         }
         return false;
     }
-
-    private static String writeParameter(Hashtable h,String si) throws Exception {
-        if(si.contains("[]")){
-            if(si.contains("String"))
-                return "string[] memory "+h.get(si);
-            if(si.toLowerCase().contains("uint"))
-                return "uint[] memory "+h.get(si);
-            if(si.toLowerCase().contains("int"))
-                return "int[] memory "+h.get(si);
-            if(si.toLowerCase().contains("address"))
-                return "address[] memory "+h.get(si);
-            if(si.toLowerCase().contains("boolean"))
-                return "bool[] memory "+h.get(si);
-            throw new Exception("Unsopported Data Type " + si);
+// why not a generic helper function ??
+    private static String writeParameter(Hashtable params,String dtype) throws Exception {
+        if(dtype.contains("[]")){
+            if(dtype.contains("String"))
+                return "string[] memory "+params.get(dtype);
+            if(dtype.toLowerCase().contains("uint"))
+                return "uint[] memory "+params.get(dtype);
+            if(dtype.toLowerCase().contains("int"))
+                return "int[] memory "+params.get(dtype);
+            if(dtype.toLowerCase().contains("address"))
+                return "address[] memory "+params.get(dtype);
+            if(dtype.toLowerCase().contains("boolean"))
+                return "bool[] memory "+params.get(dtype);
+            throw new Exception("Unsopported Data Type " + dtype);
         }
-        if(si.contains("Hashtable")){
-            String si2 = si.substring(10,si.length()-1);
-            String[] maps = si2.split(",");
+        if(dtype.contains("Hashtable")){
+            String dtype2 = dtype.substring(10,dtype.length()-1);
+            String[] maps = dtype2.split(",");
             if(maps.length != 2)
-                throw new Exception("Hashtable Wrong Format "+ si);
+                throw new Exception("Hashtable Wrong Format "+ dtype);
             if(! maps[0].toLowerCase().equals("uint") && ! maps[0].toLowerCase().equals("int") && ! maps[0].toLowerCase().equals("string") && ! maps[0].toLowerCase().equals("address") && ! maps[0].toLowerCase().equals("boolean"))
-                throw new Exception("Unsuopported Data Type "+maps[0]+" in "+si);
+                throw new Exception("Unsuopported Data Type "+maps[0]+" in "+dtype);
             if(! maps[1].toLowerCase().equals("uint") && ! maps[1].toLowerCase().equals("int") && ! maps[1].toLowerCase().equals("string") && ! maps[1].toLowerCase().equals("address") && ! maps[1].toLowerCase().equals("boolean"))
-                throw new Exception("Unsuopported Data Type "+maps[1]+" in "+si);
-            return "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") memory " + h.get(si);
+                throw new Exception("Unsuopported Data Type "+maps[1]+" in "+dtype);
+            return "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") memory " + params.get(dtype);
         }
-        if(si.toLowerCase().equals("string"))
-            return si.toLowerCase() + " memory "+h.get(si);
-        if(si.toLowerCase().equals("uint") || si.toLowerCase().equals("int") || si.toLowerCase().equals("address") || si.toLowerCase().equals("boolean"))
-            return si.toLowerCase()+" " + h.get(si);
-        throw new Exception("Unsupported Data type "+ si);
+        if(dtype.toLowerCase().equals("string"))
+            return dtype.toLowerCase() + " memory "+params.get(dtype);
+        if(dtype.toLowerCase().equals("uint") || dtype.toLowerCase().equals("int") || dtype.toLowerCase().equals("address") || dtype.toLowerCase().equals("boolean"))
+            return dtype.toLowerCase()+" " + params.get(dtype);
+        throw new Exception("Unsupported Data type "+ dtype);
+    }
+
+//helper function to read the state variables hashtable
+    private static String writestatevariables2(Hashtable params,String dtype) throws Exception {
+        if(dtype.contains("[]")){
+            if(dtype.contains("String"))
+                return "string[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("uint"))
+                return "uint[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("int"))
+                return "int[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("address"))
+                return "address[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("boolean"))
+                return "bool[] "+params.get(dtype);
+            throw new Exception("Unsopported Data Type " + dtype);
+        }
+
+        if(dtype.toLowerCase().equals("string"))
+            return dtype.toLowerCase()+" "+params.get(dtype)  ;
+        if(dtype.toLowerCase().equals("uint") || dtype.toLowerCase().equals("int") || dtype.toLowerCase().equals("address") || dtype.toLowerCase().equals("boolean"))
+            return dtype.toLowerCase()+" " + params.get(dtype);
+        throw new Exception("Unsupported Data type "+ dtype);
+    }
+
+
+    private static String writestatevariables(Hashtable params,String dtype) throws Exception {
+        if(dtype.contains("[]")){
+            if(dtype.contains("String"))
+                return "string[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("uint"))
+                return "uint[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("int"))
+                return "int[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("address"))
+                return "address[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("boolean"))
+                return "bool[] "+params.get(dtype);
+            throw new Exception("Unsopported Data Type " + dtype);
+        }
+        if(dtype.contains("Hashtable")){
+            String dtype2 = dtype.substring(10,dtype.length()-1);
+            String[] maps = dtype2.split(",");
+            if(maps.length != 2)
+                throw new Exception("Hashtable Wrong Format "+ dtype);
+            if(! maps[0].toLowerCase().equals("uint") && ! maps[0].toLowerCase().equals("int") && ! maps[0].toLowerCase().equals("string") && ! maps[0].toLowerCase().equals("address") && ! maps[0].toLowerCase().equals("boolean"))
+                throw new Exception("Unsuopported Data Type "+maps[0]+" in "+dtype);
+            if(! maps[1].toLowerCase().equals("uint") && ! maps[1].toLowerCase().equals("int") && ! maps[1].toLowerCase().equals("string") && ! maps[1].toLowerCase().equals("address") && ! maps[1].toLowerCase().equals("boolean"))
+                throw new Exception("Unsuopported Data Type "+maps[1]+" in "+dtype);
+            return "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") " + params.get(dtype)+";";
+        }
+        if(dtype.toLowerCase().equals("string"))
+            return dtype.toLowerCase()+" "+params.get(dtype)  ;
+        if(dtype.toLowerCase().equals("uint") || dtype.toLowerCase().equals("int") || dtype.toLowerCase().equals("address") || dtype.toLowerCase().equals("boolean"))
+            return dtype.toLowerCase()+" " + params.get(dtype);
+        throw new Exception("Unsupported Data type "+ dtype);
     }
 }
