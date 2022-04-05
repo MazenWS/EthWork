@@ -19,17 +19,18 @@ public class ContractInit{
 
         }
         Hashtable<String,String> state = c.getStateVariables();
-        //write the initial values of the state variables...
-       Hashtable<String ,String > init = c.initStateVariables();
-        Set<String> datatype = state.keySet();
-        for(String dtype : datatype){
-
-           res+= writestatevariables(state,dtype);
-            if(init.containsKey(state.get(dtype)))
-                res += " = "+init.get(state.get(dtype));
-            res += ";\n";
+        if(state != null && ! state.isEmpty()) {
+            Hashtable<String, String> init = c.initStateVariables();
+            Set<String> s = state.keySet();
+            for (String si : s) {
+                res = writeParameter(res, state, si);
+                if (init.containsKey(state.get(si)))
+                    res += " = " + init.get(state.get(si));
+                res += ";\n";
+            }
+            res += "\n\n";
         }
-        res += "\n\n";
+        res += createConstructor(c)+"\n\n";
         String[] methods = c.getMethodNames();
         for(String m : methods) {
             res += createFunction(c,m);
@@ -41,48 +42,40 @@ public class ContractInit{
     private static String createFunction(IContract c,String methodName) throws Exception {
         boolean pure = true;
         boolean view = true;
-        boolean payable = false;
         String body = "";
         Step[] steps = c.getMethodSteps(methodName);
-        Object[] states = c.getStateVariables().values().toArray();
-        for(Step step : steps){
-            String line = "";
-            if(! step.event.equals("true")){
-                line += "    if("+step.event+")\n    ";
-                if(line.contains(".equals")){
-                    String[] sides = step.event.split(".equals");
-                    if(sides[1].equals(""))sides[1] = "empty";
-                    line = "    if(keccak256(abi.encodePacked(bytes("+sides[0]+"))) == keccak256(abi.encodePacked(bytes"+sides[1]+")))\n    ";
-                }
-            }
-            line += "    "+step.action+";\n";
-            if(line.contains("String"))line = line.replace("String","string memory");
-            body += line;
-        }
-        for(Step step : steps){
-            for(Object state : states) {
-                if(step.event.contains((String)state)) pure = false;
-                if(step.action.contains((String)state)) pure = false;
-                if(step.action.contains("=")){
-                    String[] sides = step.action.split("=");
-                    if(sides[0].contains((String)state)) view = false;
+        Hashtable<String, String> stateVars = c.getStateVariables();
+        body = writeBody(body,steps);
+        if(stateVars != null && !stateVars.isEmpty()) {
+            Object[] states = stateVars.values().toArray();
+            for (Step step : steps) {
+                for (Object state : states) {
+                    if (step.event.contains((String) state)) pure = false;
+                    if (step.action.contains((String) state)) pure = false;
+                    if (step.action.contains("=")) {
+                        String[] sides = step.action.split("=");
+                        if (sides[0].contains((String) state)) view = false;
+                    }
                 }
             }
         }
         String res = "";
         res += "function "+methodName+"(";
-        Hashtable params = c.getMethodParameters(methodName);
-        Set<String> type = params.keySet();
-        for(String dtype : type) {
-            res += writeParameter(params,dtype);
-            res += ",";
+        Hashtable h = c.getMethodParameters(methodName);
+        if(h != null && ! h.isEmpty()) {
+            Set<String> s = h.keySet();
+            for (String si : s) {
+                res = writeParameter(res, h, si);
+                res += ",";
+            }
+            res = res.substring(0, res.length() - 1);
         }
-        res = res.substring(0,res.length()-1);
-        res += ")";
-        res += " public";
-        if(payable) res += " payable";
-        else if(pure) res += " pure";
-        else if(view ) res += " view";
+        res += ") ";
+        res += c.getMethodAccessModifier(methodName);
+        if(! c.payable(methodName)){
+            if (pure) res += " pure";
+            else if (view) res += " view";
+        }
         String ret = "";
 
 
@@ -102,6 +95,8 @@ public class ContractInit{
 ret+=" )\n";
 
         res += ret;
+        res += c.payable(methodName)? "payable" : "";
+        res += " {\n";
         res += body + "}";
         res += "\n\n";
         return res;
@@ -114,38 +109,7 @@ ret+=" )\n";
         }
         return false;
     }
-// why not a generic helper function ??
-    private static String writeParameter(Hashtable params,String dtype) throws Exception {
-        if(dtype.contains("[]")){
-            if(dtype.contains("String"))
-                return "string[] memory "+params.get(dtype);
-            if(dtype.toLowerCase().contains("uint"))
-                return "uint[] memory "+params.get(dtype);
-            if(dtype.toLowerCase().contains("int"))
-                return "int[] memory "+params.get(dtype);
-            if(dtype.toLowerCase().contains("address"))
-                return "address[] memory "+params.get(dtype);
-            if(dtype.toLowerCase().contains("boolean"))
-                return "bool[] memory "+params.get(dtype);
-            throw new Exception("Unsopported Data Type " + dtype);
-        }
-        if(dtype.contains("Hashtable")){
-            String dtype2 = dtype.substring(10,dtype.length()-1);
-            String[] maps = dtype2.split(",");
-            if(maps.length != 2)
-                throw new Exception("Hashtable Wrong Format "+ dtype);
-            if(! maps[0].toLowerCase().equals("uint") && ! maps[0].toLowerCase().equals("int") && ! maps[0].toLowerCase().equals("string") && ! maps[0].toLowerCase().equals("address") && ! maps[0].toLowerCase().equals("boolean"))
-                throw new Exception("Unsuopported Data Type "+maps[0]+" in "+dtype);
-            if(! maps[1].toLowerCase().equals("uint") && ! maps[1].toLowerCase().equals("int") && ! maps[1].toLowerCase().equals("string") && ! maps[1].toLowerCase().equals("address") && ! maps[1].toLowerCase().equals("boolean"))
-                throw new Exception("Unsuopported Data Type "+maps[1]+" in "+dtype);
-            return "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") memory " + params.get(dtype);
-        }
-        if(dtype.toLowerCase().equals("string"))
-            return dtype.toLowerCase() + " memory "+params.get(dtype);
-        if(dtype.toLowerCase().equals("uint") || dtype.toLowerCase().equals("int") || dtype.toLowerCase().equals("address") || dtype.toLowerCase().equals("boolean"))
-            return dtype.toLowerCase()+" " + params.get(dtype);
-        throw new Exception("Unsupported Data type "+ dtype);
-    }
+
 
 //helper function to read the state variables hashtable
     private static String writestatevariables2(Hashtable params,String dtype) throws Exception {
@@ -184,6 +148,19 @@ ret+=" )\n";
             if(dtype.toLowerCase().contains("boolean"))
                 return "bool[] "+params.get(dtype);
             throw new Exception("Unsopported Data Type " + dtype);
+    private static String writeParameter(String dest,Hashtable h,String si) throws Exception {
+        if(si.contains("[]")){
+            if(si.contains("String"))
+                return dest += "string[] memory "+h.get(si);
+            if(si.toLowerCase().contains("uint"))
+                return dest += "uint[] memory "+h.get(si);
+            if(si.toLowerCase().contains("int"))
+                return dest += "int[] memory "+h.get(si);
+            if(si.toLowerCase().contains("address"))
+                return dest += "address[] memory "+h.get(si);
+            if(si.toLowerCase().contains("boolean"))
+                return dest += "bool[] memory "+h.get(si);
+            throw new Exception("Unsopported Data Type " + si);
         }
         if(dtype.contains("Hashtable")){
             String dtype2 = dtype.substring(10,dtype.length()-1);
@@ -193,13 +170,59 @@ ret+=" )\n";
             if(! maps[0].toLowerCase().equals("uint") && ! maps[0].toLowerCase().equals("int") && ! maps[0].toLowerCase().equals("string") && ! maps[0].toLowerCase().equals("address") && ! maps[0].toLowerCase().equals("boolean"))
                 throw new Exception("Unsuopported Data Type "+maps[0]+" in "+dtype);
             if(! maps[1].toLowerCase().equals("uint") && ! maps[1].toLowerCase().equals("int") && ! maps[1].toLowerCase().equals("string") && ! maps[1].toLowerCase().equals("address") && ! maps[1].toLowerCase().equals("boolean"))
-                throw new Exception("Unsuopported Data Type "+maps[1]+" in "+dtype);
-            return "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") " + params.get(dtype)+";";
+                throw new Exception("Unsuopported Data Type "+maps[1]+" in "+si);
+            return dest += "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") memory " + h.get(si);
         }
-        if(dtype.toLowerCase().equals("string"))
-            return dtype.toLowerCase()+" "+params.get(dtype)  ;
-        if(dtype.toLowerCase().equals("uint") || dtype.toLowerCase().equals("int") || dtype.toLowerCase().equals("address") || dtype.toLowerCase().equals("boolean"))
-            return dtype.toLowerCase()+" " + params.get(dtype);
-        throw new Exception("Unsupported Data type "+ dtype);
+        if(si.toLowerCase().equals("string"))
+             return dest += si.toLowerCase() + " memory "+h.get(si);
+        if(si.toLowerCase().equals("boolean"))
+            return dest += "bool "+ h.get(si);
+        if(si.toLowerCase().equals("uint") || si.toLowerCase().equals("int") || si.toLowerCase().equals("address"))
+            return dest += si.toLowerCase()+" " + h.get(si);
+        throw new Exception("Unsupported Data type "+ si);
+    }
+
+    public static String createConstructor(IContract c) throws Exception {
+        if(c.createConstructor() == null)
+            return "";
+        String res = "constructor(";
+        Hashtable h = c.constructorParameters();
+        if(h != null && ! h.isEmpty()) {
+            Set<String> keys;
+            if (!h.equals(null)) {
+                keys = h.keySet();
+                for (String key : keys) {
+                    res = writeParameter(res, c.constructorParameters(), key);
+                    res += ", ";
+                }
+                res = res.substring(0, res.length() - 2);
+            }
+        }
+        res += ") ";
+        if(c.payableConstructor())
+            res += "payable ";
+        res += "{\n";
+        Step[] steps = c.createConstructor();
+        res = writeBody(res,steps);
+        res += "}";
+        return res;
+    }
+
+    private static String writeBody(String dest,Step[] steps) {
+        for (Step step : steps) {
+            String line = "";
+            if (!step.event.equals("true")) {
+                line += "    if(" + step.event + ")\n    ";
+                if (line.contains(".equals")) {
+                    String[] sides = step.event.split(".equals");
+                    if (sides[1].equals("")) sides[1] = "empty";
+                    line = "    if(keccak256(abi.encodePacked(bytes(" + sides[0] + "))) == keccak256(abi.encodePacked(bytes" + sides[1] + ")))\n    ";
+                }
+            }
+            line += "    " + step.action + ";\n";
+            if (line.contains("String")) line = line.replace("String", "string memory");
+            dest += line;
+        }
+        return dest;
     }
 }

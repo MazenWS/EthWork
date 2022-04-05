@@ -4,6 +4,7 @@ public interface IContract {
     public String getContractName();
     public Struct createObject();
     public Step[] createConstructor();
+    public Hashtable constructorParameters();
     public boolean payableConstructor();
     public Hashtable<String,String> getStateVariables();
     public Hashtable<String,String> initStateVariables();
