@@ -13,12 +13,19 @@ public class NewContract implements IContract{
 
     @Override
     public Step[] createConstructor() {
-        return new Step[0];
+        return new Step[] {new Step("true","gender = true")};
+    }
+
+    @Override
+    public Hashtable constructorParameters() {
+        Hashtable<String,String > h = new Hashtable<>();
+        h.put("address","owner");
+        return h;
     }
 
     @Override
     public boolean payableConstructor() {
-        return false;
+        return true;
     }
 
     @Override
@@ -43,7 +50,9 @@ public class NewContract implements IContract{
 
     @Override
     public String getMethodAccessModifier(String strMethodName) {
-        return null;
+        if(strMethodName.equals("func1"))
+            return "internal";
+        return "private";
     }
 
     @Override
@@ -62,6 +71,8 @@ public class NewContract implements IContract{
 
     @Override
     public boolean payable(String strMethodName) {
+        if(strMethodName.equals("func1"))
+            return true;
         return false;
     }
 
