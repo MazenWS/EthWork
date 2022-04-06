@@ -1,3 +1,5 @@
+import Steps.Step;
+
 import java.util.Hashtable;
 
 public interface IContract {

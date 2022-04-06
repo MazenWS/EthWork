@@ -1,3 +1,5 @@
+import Steps.Step;
+
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -38,12 +40,12 @@ public class ContractInit{
             Object[] states = stateVars.values().toArray();
             for (Step step : steps) {
                 for (Object state : states) {
-                    if (step.event.contains((String) state)) pure = false;
-                    if (step.action.contains((String) state)) pure = false;
-                    if (step.action.contains("=")) {
-                        String[] sides = step.action.split("=");
-                        if (sides[0].contains((String) state)) view = false;
-                    }
+//                    if (step.event.contains((String) state)) pure = false;
+//                    if (step.action.contains((String) state)) pure = false;
+//                    if (step.action.contains("=")) {
+//                        String[] sides = step.action.split("=");
+//                        if (sides[0].contains((String) state)) view = false;
+//                    }
                 }
             }
         }
@@ -140,15 +142,15 @@ public class ContractInit{
     private static String writeBody(String dest,Step[] steps) {
         for (Step step : steps) {
             String line = "";
-            if (!step.event.equals("true")) {
-                line += "    if(" + step.event + ")\n    ";
-                if (line.contains(".equals")) {
-                    String[] sides = step.event.split(".equals");
-                    if (sides[1].equals("")) sides[1] = "empty";
-                    line = "    if(keccak256(abi.encodePacked(bytes(" + sides[0] + "))) == keccak256(abi.encodePacked(bytes" + sides[1] + ")))\n    ";
-                }
-            }
-            line += "    " + step.action + ";\n";
+//            if (!step.event.equals("true")) {
+//                line += "    if(" + step.event + ")\n    ";
+//                if (line.contains(".equals")) {
+//                    String[] sides = step.event.split(".equals");
+//                    if (sides[1].equals("")) sides[1] = "empty";
+//                    line = "    if(keccak256(abi.encodePacked(bytes(" + sides[0] + "))) == keccak256(abi.encodePacked(bytes" + sides[1] + ")))\n    ";
+//                }
+//            }
+//            line += "    " + step.action + ";\n";
             if (line.contains("String")) line = line.replace("String", "string memory");
             dest += line;
         }

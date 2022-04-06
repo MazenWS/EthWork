@@ -1,3 +1,5 @@
+import Steps.Step;
+
 import java.util.Hashtable;
 
 public class NewContract implements IContract{
@@ -13,7 +15,8 @@ public class NewContract implements IContract{
 
     @Override
     public Step[] createConstructor() {
-        return new Step[] {new Step("true","gender = true")};
+        //return new Step[] {new Step("true","gender = true")};
+        return null;
     }
 
     @Override
@@ -86,11 +89,7 @@ public class NewContract implements IContract{
 
     @Override
     public Step[] getMethodSteps(String strMethodName) {
-        if(strMethodName.equals("func1"))
-            return new Step[] {new Step("place.equals(\"Nasr City\")","place = \"Seif\""), new Step("age == 5","age = 10")};
-        if(strMethodName.equals("func2"))
-            return new Step[] {new Step("array[0] == 10", "gender = true")};
-        else return null;
+        return null;
     }
 
     public static void main(String[] args) throws Exception {
