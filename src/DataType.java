@@ -1,0 +1,3 @@
+public enum DataType {
+    BOOLEAN,INTEGER,BYTES,STRING,ENUM,ADDRESS,STRUCT
+}
