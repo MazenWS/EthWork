@@ -3,17 +3,25 @@ import Steps.Step;
 import java.util.Hashtable;
 
 public interface IContract {
+    //write the contract name
     public String getContractName();
-    public Struct createObject();
+    /* why the constructor is not an object that have steps, parameters and boolean payable?? */
+    //write the steps for the constructor
     public Step[] createConstructor();
-    public Hashtable constructorParameters();
+    //the parameters for the constructor
+    public ParameterVar[] constructorParameters();
+    //is the constructor payable or not
     public boolean payableConstructor();
-    public Hashtable<String,String> getStateVariables();
-    public Hashtable<String,String> initStateVariables();
+    //add an address variable in the contract
+
+    //add a struct variable in your contract
+    public Struct createObject();
+    public StateVariable[] getStateVariables() throws Exception;
+
     public String[] getMethodNames();
     public String getMethodAccessModifier(String strMethodName);
-    public Hashtable<String,String> getMethodParameters(String strMethodName );
+    public ParameterVar[] getMethodParameters(String strMethodName );
     public boolean payable(String strMethodName);
-    public String getMethodReturnType(String strMethodName );
+    public  ParameterVar[] getMethodReturnType(String strMethodName );
     public Step[] getMethodSteps(String strMethodName );
 }

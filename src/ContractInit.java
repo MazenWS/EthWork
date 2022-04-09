@@ -8,6 +8,18 @@ public class ContractInit{
         String res = "";
         res += "pragma solidity ^0.8.2; \n\n";
         res += "contract "+ c.getContractName() +" {\n\n\n";
+        if (c.createObject()!=null){
+            Struct myStruct =c.createObject();
+            res+= "struct "+myStruct.name+" {\n";
+            Hashtable<String,String> vars = myStruct.vars;
+            Set<String> datatype = vars.keySet();
+            for(String dtype : datatype){
+
+                res= writeParameter(res,vars,dtype);
+                res += ";\n";}
+            res+="}\n";
+
+        }
         Hashtable<String,String> state = c.getStateVariables();
         if(state != null && ! state.isEmpty()) {
             Hashtable<String, String> init = c.initStateVariables();
@@ -67,10 +79,23 @@ public class ContractInit{
             else if (view) res += " view";
         }
         String ret = "";
-        if(c.getMethodReturnType(methodName) != null && ! c.getMethodReturnType(methodName).equals("void"))
-            ret += " returns("+c.getMethodReturnType(methodName)+") ";
-        if(ret.contains("String")) ret = ret.replace("String","string memory");
-        if(ret.contains("boolean")) ret = ret.replace("boolean","bool");
+
+
+            // checking if the function is returning anything
+        if(!(c.getMethodReturnType(methodName)==null))
+            //if two returns have the same datatype they have to have names
+            //looping over the return types the user stated and adding them in the function declaration
+            ret += " returns(";
+        Hashtable<String,String> returns= c.getMethodReturnType(methodName);
+        Set<String> returntype = returns.keySet();
+
+            for (String  rettype:returntype
+                 ) {
+               ret +=writestatevariables2(returns,rettype)+" ,";
+            }
+            ret= ret.substring(0,ret.length()-1);
+ret+=" )\n";
+
         res += ret;
         res += c.payable(methodName)? "payable" : "";
         res += " {\n";
@@ -78,6 +103,42 @@ public class ContractInit{
         res += "\n\n";
         return res;
     }
+
+    private static boolean member(Object[] states, String side) {
+        for(Object state : states){
+            if(side.contains((String) state))
+                return true;
+        }
+        return false;
+    }
+
+
+//helper function to read the state variables hashtable
+    private static String writestatevariables2(Hashtable params,String dtype) throws Exception {
+        if(dtype.contains("[]")){
+            if(dtype.contains("String"))
+                return "string[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("uint"))
+                return "uint[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("int"))
+                return "int[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("address"))
+                return "address[] "+params.get(dtype);
+            if(dtype.toLowerCase().contains("boolean"))
+                return "bool[] "+params.get(dtype);
+            throw new Exception("Unsopported Data Type " + dtype);
+        }
+
+        if(dtype.toLowerCase().equals("string"))
+            return dtype.toLowerCase()+" "+params.get(dtype)  ;
+        if(dtype.toLowerCase().equals("uint") || dtype.toLowerCase().equals("int") || dtype.toLowerCase().equals("address") || dtype.toLowerCase().equals("boolean"))
+            return dtype.toLowerCase()+" " + params.get(dtype);
+        throw new Exception("Unsupported Data type "+ dtype);
+    }
+
+
+
+
 
     private static String writeParameter(String dest,Hashtable h,String si) throws Exception {
         if(si.contains("[]")){
@@ -105,7 +166,7 @@ public class ContractInit{
             return dest += "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") memory " + h.get(si);
         }
         if(si.toLowerCase().equals("string"))
-             return dest += si.toLowerCase() + " memory "+h.get(si);
+            return dest += si.toLowerCase() + " memory "+h.get(si);
         if(si.toLowerCase().equals("boolean"))
             return dest += "bool "+ h.get(si);
         if(si.toLowerCase().equals("uint") || si.toLowerCase().equals("int") || si.toLowerCase().equals("address"))

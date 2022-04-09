@@ -1,11 +1,13 @@
 import java.util.Hashtable;
 
 public class Struct {
-        String name;
-        Hashtable<String, String> vars;
+    String name;
+    AccessModifier accessModifier;
+    Variable[] vars;
 
-        public Struct(String name, Hashtable<String, String> vars) {
-            this.name = name;
+        public Struct(String name,AccessModifier accessModifier,  Variable[] vars) {
+            this.name=name;
+            this.accessModifier=accessModifier;
             this.vars = vars;
         }
 }
