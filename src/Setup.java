@@ -2,13 +2,16 @@ import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Setup {
     static String wallet;
+    static String walletPK;
     static String dir = "C:\\EthereumDB";
     static boolean running;
+    static String password;
 
     private static boolean checkNpm() throws IOException {
         ProcessBuilder builder = new ProcessBuilder("cmd.exe","/c","npm -v");
@@ -106,17 +109,7 @@ public class Setup {
 
     private static void runNode() throws IOException {
         try {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Enter Wallet public Address :");
-            wallet = sc.nextLine();
-            System.out.println("Enter Account Password :");
-            String pass = sc.nextLine();
-            File myObj = new File("pass.txt");
-            FileWriter myWriter = new FileWriter("pass.txt");
-            myWriter.write(pass+"\n");
-            myWriter.close();
-            String command = "geth --rinkeby --syncmode light -http --allow-insecure-unlock --datadir "+dir+" --unlock "+wallet+ " --password "+myObj;
-            command = command.replace("light", "\"light\"");
+            String command = "geth --rinkeby --syncmode \"light\" -http --allow-insecure-unlock --datadir "+dir;
             ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command);
             builder.redirectErrorStream(true);
             Process p = builder.start();
@@ -127,7 +120,6 @@ public class Setup {
                 if (line == null) break;
                 System.out.println(line);
                 if(line.contains("Block synchronisation started")){
-                    myObj.delete();
                     return;
                 }
             }
@@ -173,7 +165,20 @@ public class Setup {
     }
 
     private static void importAccountToNode() throws IOException {
-        String command = "geth account import --datadir --password passwordFile <privateKeyFile>";
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Wallet private key :");
+        walletPK = sc.nextLine();
+        System.out.println("Enter Account Password :");
+        password = sc.nextLine();
+        File pkFile = new File("pk.txt");
+        FileWriter myWriter = new FileWriter("pk.txt");
+        myWriter.write(password+"\n");
+        myWriter.close();
+        File passFile = new File("pass.txt");
+        FileWriter myWriter2 = new FileWriter("pass.txt");
+        myWriter2.write(password+"\n");
+        myWriter2.close();
+        String command = "geth account import --datadir "+ dir +"--password "+passFile+" "+pkFile;
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -247,11 +252,96 @@ public class Setup {
         }
     }
 
+    private static void compileContract() throws IOException {
+        String command = "solcjs --bin PhotoShop.sol && solcjs --abi PhotoShop.sol";
+        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while (true) {
+            line = r.readLine();
+            if (line == null) break;
+            System.out.println(line);
+        }
+    }
+
+    private static void writeScript(String name) throws IOException {
+        if(password == null) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter Account Password :");
+            password = sc.nextLine();
+        }
+        FileReader reader = new FileReader(name+"_sol_"+name+".bin");
+        int i;
+        String bin = "";
+        while((i=reader.read())!=-1)
+            bin += (char)i;
+        reader.close();
+        FileReader reader2 = new FileReader(name+"_sol_"+name+".abi");
+        String abi = "";
+        while((i=reader2.read())!=-1)
+            abi += (char)i;
+        reader2.close();
+        try{
+            String data = "personal.unlockAccount(eth.accounts[0],\""+password+"\",null)\n" +
+                    "var contractInst = eth.contract("+abi+")\n" +
+                    "var publisher = contractInst.new({\n" +
+                    "data: '0x"+bin+"',\n" +
+                    "arguments: [\n" +
+                    "      ],\n" +
+                    "from: eth.accounts[0], \n" +
+                    "      gas: '4700000'\n" +
+                    "}, function (e, contract){\n" +
+                    "    console.log(e, contract)\n" +
+                    "})";
+            OutputStream fileOut = new FileOutputStream(new File("deploy.js"));
+            fileOut.write(data.getBytes(StandardCharsets.UTF_8));
+            fileOut.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void runScript() throws IOException {
+        String path = "\\\\.\\pipe\\geth.ipc";
+        String command = "geth attach "+path+" --exec loadScript('deploy.js')";
+        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while (true) {
+            line = r.readLine();
+            if (line == null) break;
+            System.out.println(line);
+        }
+    }
+
+    private static boolean checkSolidity() throws IOException {
+        String command = "solcjs --version";
+        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = r.readLine();
+        System.out.println(line.charAt(0));
+        if(line.charAt(0) == '0')
+            return true;
+        else
+            return false;
+    }
+
+    private static void installSolidity() throws IOException {
+        String command = "npm install -g solc";
+        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+    }
+
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
-        //checkIfGethIsRunning();
-        //createProject(getCurrentDirectory());
-        //createContract("C1","D:\\Projects Sem 7\\EthWork\\App");
-        //downloadGeth();
-        System.out.println(checkIfGethIsRunning());
+        System.out.println(checkSolidity());
     }
 }
