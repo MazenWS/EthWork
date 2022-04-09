@@ -11,7 +11,9 @@ public class NewContract implements IContract{
         Hashtable<String,String > h = new Hashtable<>();
         h.put("string","name");
         h.put("int","amount");
-        Struct S = new Struct("Request" , h);
+        Variable var1= new Variable(DataType.BOOLEAN, "isTrue");
+        Variable var2 = new Variable(DataType.BYTES,"Character");
+        Struct S = new Struct("Request" ,AccessModifier.PRIVATE,new Variable[]{var1,var2});
         return S;
     }
 
@@ -21,10 +23,10 @@ public class NewContract implements IContract{
     }
 
     @Override
-    public Hashtable constructorParameters() {
-        Hashtable<String,String > h = new Hashtable<>();
-        h.put("address","owner");
-        return h;
+    public ParameterVar[] constructorParameters() {
+        ParameterVar  var1 = (ParameterVar) new Variable(DataType.ADDRESS,"myAddress");
+
+        return new ParameterVar[]{var1};
     }
 
     @Override
@@ -33,19 +35,12 @@ public class NewContract implements IContract{
     }
 
     @Override
-    public Hashtable<String,String> getStateVariables() {
-        Hashtable<String,String > h = new Hashtable<>();
-        h.put("string","name");
-        h.put("boolean","gender");
-        return h;
+    public  StateVariable[] getStateVariables() throws Exception {
+        StateVariable var1 = new StateVariable(DataType.ADDRESS,"myADDRESS","0x00000000000000000",AccessModifier.PUBLIC);
+        return new StateVariable[]{var1};
     }
 
-    @Override
-    public Hashtable<String, String> initStateVariables() {
-        Hashtable<String,String > h = new Hashtable<>();
-        h.put("name","Mazen");
-        return h;
-    }
+
 
     @Override
     public String[] getMethodNames() {
@@ -60,17 +55,10 @@ public class NewContract implements IContract{
     }
 
     @Override
-    public Hashtable<String,String> getMethodParameters(String strMethodName) {
-        Hashtable<String,String > h = new Hashtable<>();
-        if(strMethodName.equals("func1")) {
-            h.put("String", "place");
-            h.put("int", "age");
-        }
-        if(strMethodName.equals("func2")){
-            h.put("Hashtable<address,String>","balance");
-            h.put("uint[]","array");
-        }
-        return h;
+    public ParameterVar[] getMethodParameters(String strMethodName) {
+        ParameterVar  var1 = (ParameterVar) new Variable(DataType.ADDRESS,"myAddress");
+
+        return new ParameterVar[]{var1};
     }
 
     @Override
@@ -81,17 +69,10 @@ public class NewContract implements IContract{
     }
 
     @Override
-    public Hashtable <String,String> getMethodReturnType(String strMethodName) {
-       Hashtable H1= new Hashtable<String,String>();
-       H1.put("String","name");
-       H1.put("int","number");
-        Hashtable H2= new Hashtable<String,String>();
-        H2.put("String[]","names");
-        H2.put("int[]","numbers");
-        if(strMethodName.equals("func1"))
-            return  H1;
-        else
-            return H2;
+    public ParameterVar[] getMethodReturnType(String strMethodName) {
+        ParameterVar  var1 = (ParameterVar) new Variable(DataType.ADDRESS,"myAddress");
+
+        return new ParameterVar[]{var1};
     }
 
     @Override

@@ -14,12 +14,12 @@ public interface IContract {
 
     //add a struct variable in your contract
     public Struct createObject();
-    public StateVariable[] getStateVariables();
+    public StateVariable[] getStateVariables() throws Exception;
 
     public String[] getMethodNames();
     public String getMethodAccessModifier(String strMethodName);
-    public Variable[] getMethodParameters(String strMethodName );
+    public ParameterVar[] getMethodParameters(String strMethodName );
     public boolean payable(String strMethodName);
-    public  Variable[] getMethodReturnType(String strMethodName );
+    public  ParameterVar[] getMethodReturnType(String strMethodName );
     public Step[] getMethodSteps(String strMethodName );
 }
