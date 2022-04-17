@@ -15,7 +15,7 @@ public class Condition {
     }
 
     //sum(a,b)==c
-    public Condition(FunctionStatement func, String arg2, String argType, RelationalOperator sign){
+    public Condition(Function func, String arg2, String argType, RelationalOperator sign){
         arg1 = func.write();
         this.arg2 = arg2;
         this.argType = argType;
@@ -23,7 +23,7 @@ public class Condition {
     }
 
     //sum(a,b)>mul(c,d)
-    public Condition(FunctionStatement func1, FunctionStatement func2, String argType, RelationalOperator sign){
+    public Condition(Function func1, Function func2, String argType, RelationalOperator sign){
         arg1 = func1.write();
         arg2 = func2.write();
         this.argType = argType;
@@ -33,7 +33,7 @@ public class Condition {
     //EQUAL for true(if func) NOT EQUAL for false(if ! func)
     //method must return boolean
     //isEmpty()
-    public Condition(FunctionStatement func, RelationalOperator equalNotEqual){
+    public Condition(Function func, RelationalOperator equalNotEqual){
         arg1 = func.write();
         sign = equalNotEqual;
     }
@@ -81,9 +81,9 @@ public class Condition {
 
     public static void main(String[] args) throws Exception {
         Condition c = new Condition("a","\"b\"","String", RelationalOperator.NOT_EQUAL);
-        Step s = new FunctionStatement("sum",new String[] {"1","2"});
-        Step t = new FunctionStatement("mul", new String[] {"3","4"});
-        Condition o = new Condition((FunctionStatement)s,(FunctionStatement) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
+        Step s = new Function("sum",new String[] {"1","2"});
+        Step t = new Function("mul", new String[] {"3","4"});
+        Condition o = new Condition((Function)s,(Function) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
         System.out.println(o.write());
     }
 

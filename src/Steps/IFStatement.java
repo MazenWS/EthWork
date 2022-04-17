@@ -11,6 +11,12 @@ public class IFStatement extends Step{
         this.body = body;
     }
 
+    public IFStatement(Condition condition, Step[] body){
+        conditions = new Condition[] {condition};
+        operators = new LogicalOperator[0];
+        this.body = body;
+    }
+
 
     @Override
     public String write() throws Exception {
@@ -30,13 +36,13 @@ public class IFStatement extends Step{
 
     public static void main(String[] args) throws Exception {
         Condition c = new Condition("a","\"b\"","String", RelationalOperator.NOT_EQUAL);
-        Step s = new FunctionStatement("sum",new String[] {"1","2"});
-        Step t = new FunctionStatement("mul", new String[] {"3","4"});
-        Condition o = new Condition((FunctionStatement)s,(FunctionStatement) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
+        Step s = new Function("sum",new String[] {"1","2"});
+        Step t = new Function("mul", new String[] {"3","4"});
+        Condition o = new Condition((Function)s,(Function) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
         Condition[] cond = new Condition[] {c,o};
         LogicalOperator[] log = new LogicalOperator[] {LogicalOperator.AND};
-        Step p = new RequireStatement(o);
-        Step e = new TransferEtherStatement("owner",Environment.MSG_VALUE);
+        Step p = new Require(o);
+        Step e = new TransferEther("owner",Environment.MSG_VALUE);
         Step[] steps = new Step[] {p,s,e,t};
         Step step = new IFStatement(cond,log,steps);
         System.out.println(step.write());

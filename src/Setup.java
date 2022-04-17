@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Setup {
     static String wallet;
@@ -292,9 +293,8 @@ public class Setup {
                     "      ],\n" +
                     "from: eth.accounts[0], \n" +
                     "      gas: '4700000'\n" +
-                    "}, function (e, contract){\n" +
-                    "    console.log(e, contract)\n" +
-                    "})";
+                    "})\n" +
+                    "console.log(publisher.transactionHash)";
             OutputStream fileOut = new FileOutputStream(new File("deploy.js"));
             fileOut.write(data.getBytes(StandardCharsets.UTF_8));
             fileOut.close();
@@ -304,19 +304,17 @@ public class Setup {
         }
     }
 
-    private static void runScript() throws IOException {
+    private static void runScript() throws IOException, InterruptedException {
         String path = "\\\\.\\pipe\\geth.ipc";
         String command = "geth attach "+path+" --exec loadScript('deploy.js')";
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
         builder.redirectErrorStream(true);
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) break;
-            System.out.println(line);
-        }
+        String line = r.readLine();
+        TimeUnit.SECONDS.sleep(10);
+        System.out.println("TxHash : " + line);
+        getContractAddress(line);
     }
 
     private static boolean checkSolidity() throws IOException {
@@ -341,7 +339,31 @@ public class Setup {
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
     }
 
+    private static void getContractAddress(String transactionHash) throws IOException, InterruptedException {
+        String command = "geth attach \\\\.\\pipe\\geth.ipc --exec eth.getTransactionReceipt('"+transactionHash+"')";
+        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+        builder.redirectErrorStream(true);
+        while(true) {
+            Process p = builder.start();
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while((line = r.readLine()) != null){
+                if(line.equals("null")){
+                    System.out.println("Mining...");
+                    TimeUnit.SECONDS.sleep(10);
+                    break;
+                }
+                if(line.toLowerCase().contains("contractaddress")){
+                    System.out.println(line);
+                    return;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
-        System.out.println(checkSolidity());
+        compileContract();
+        writeScript("PhotoShop");
+        runScript();
     }
 }

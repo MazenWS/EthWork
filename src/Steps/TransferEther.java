@@ -1,11 +1,11 @@
 package Steps;
 
-public class TransferEtherStatement extends Step{
+public class TransferEther extends Step{
     String toAddress;
     String value;
 
     //(bool success,) = address.call{value: value}("")
-    public TransferEtherStatement(String toAddress, String value){
+    public TransferEther(String toAddress, String value){
         this.toAddress = toAddress;
         this.value = value;
     }
@@ -15,7 +15,7 @@ public class TransferEtherStatement extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-        Step p = new TransferEtherStatement("owner",Environment.MSG_VALUE);
+        Step p = new TransferEther("owner",Environment.MSG_VALUE);
         System.out.println(p.write());
     }
 }

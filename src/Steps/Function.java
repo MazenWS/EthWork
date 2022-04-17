@@ -1,11 +1,11 @@
 package Steps;
 
-public class FunctionStatement extends Step{
+public class Function extends Step{
     String FunctionName;
     String[] parameters;
 
     //func(params)
-    public FunctionStatement(String FunctionName, String[] parameters){
+    public Function(String FunctionName, String[] parameters){
         this.FunctionName = FunctionName;
         this.parameters = parameters;
     }
@@ -21,7 +21,7 @@ public class FunctionStatement extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-        Step p = new FunctionStatement("sum",new String[] {"one","two"});
+        Step p = new Function("sum",new String[] {"one","two"});
         System.out.println(p.write());
     }
 }

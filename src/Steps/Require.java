@@ -1,18 +1,18 @@
 package Steps;
 
 
-public class RequireStatement extends Step{
+public class Require extends Step{
     Condition condition;
     String messageToThrow  = null;
 
     //require(bool statement,if false throw message)
-    public RequireStatement(Condition condition, String messageToThrow){
+    public Require(Condition condition, String messageToThrow){
         this.condition = condition;
         this.messageToThrow = messageToThrow;
     }
 
     //require(condition) if false throws error
-    public RequireStatement(Condition condition){
+    public Require(Condition condition){
         this.condition = condition;
     }
 
@@ -25,10 +25,10 @@ public class RequireStatement extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-        Step s = new FunctionStatement("sum",new String[] {"1","2"});
-        Step t = new FunctionStatement("mul", new String[] {"3","4"});
-        Condition o = new Condition((FunctionStatement)s,(FunctionStatement) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
-        Step p = new RequireStatement(o);
+        Step s = new Function("sum",new String[] {"1","2"});
+        Step t = new Function("mul", new String[] {"3","4"});
+        Condition o = new Condition((Function)s,(Function) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
+        Step p = new Require(o);
         System.out.println(p.write());
     }
 }
