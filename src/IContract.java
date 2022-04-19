@@ -1,6 +1,6 @@
 import Steps.Step;
-
-import java.util.Hashtable;
+import Variables.StateVariable;
+import Variables.Struct;
 
 public interface IContract {
     //write the contract name

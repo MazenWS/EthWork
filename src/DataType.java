@@ -1,3 +1,0 @@
-public enum DataType {
-    BOOLEAN,INTEGER,BYTES,STRING,ADDRESS,STRUCT
-}

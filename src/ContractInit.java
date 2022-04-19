@@ -1,4 +1,5 @@
 import Steps.Step;
+import Variables.Struct;
 
 import java.util.Hashtable;
 import java.util.Set;
@@ -163,7 +164,7 @@ ret+=" )\n";
                 throw new Exception("Unsuopported Data Type "+maps[0]+" in "+si);
             if(! maps[1].toLowerCase().equals("uint") && ! maps[1].toLowerCase().equals("int") && ! maps[1].toLowerCase().equals("string") && ! maps[1].toLowerCase().equals("address") && ! maps[1].toLowerCase().equals("boolean"))
                 throw new Exception("Unsuopported Data Type "+maps[1]+" in "+si);
-            return dest += "mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") memory " + h.get(si);
+            return dest += "Variables.mapping ("+maps[0].toLowerCase()+" => "+maps[1].toLowerCase()+") memory " + h.get(si);
         }
         if(si.toLowerCase().equals("string"))
             return dest += si.toLowerCase() + " memory "+h.get(si);
