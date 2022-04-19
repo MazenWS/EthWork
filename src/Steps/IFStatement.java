@@ -1,5 +1,7 @@
 package Steps;
 
+import Variables.Variable;
+
 public class IFStatement extends Step{
     Condition[] conditions;
     LogicalOperator[] operators;
@@ -36,8 +38,8 @@ public class IFStatement extends Step{
 
     public static void main(String[] args) throws Exception {
         Condition c = new Condition("a","\"b\"","String", RelationalOperator.NOT_EQUAL);
-        Step s = new Function("sum",new String[] {"1","2"});
-        Step t = new Function("mul", new String[] {"3","4"});
+        Step s = new Function("sum",new Variable[] {});
+        Step t = new Function("mul", new Variable[]{});
         Condition o = new Condition((Function)s,(Function) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
         Condition[] cond = new Condition[] {c,o};
         LogicalOperator[] log = new LogicalOperator[] {LogicalOperator.AND};

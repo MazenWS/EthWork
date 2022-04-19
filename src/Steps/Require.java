@@ -1,6 +1,8 @@
 package Steps;
 
 
+import Variables.Variable;
+
 public class Require extends Step{
     Condition condition;
     String messageToThrow  = null;
@@ -25,8 +27,8 @@ public class Require extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-        Step s = new Function("sum",new String[] {"1","2"});
-        Step t = new Function("mul", new String[] {"3","4"});
+        Step s = new Function("sum",new Variable[] { });
+        Step t = new Function("mul", new Variable[] { });
         Condition o = new Condition((Function)s,(Function) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
         Step p = new Require(o);
         System.out.println(p.write());
