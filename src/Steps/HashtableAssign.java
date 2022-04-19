@@ -1,19 +1,19 @@
 package Steps;
 
-public class HashtableAssignStatement extends Step{
+public class HashtableAssign extends Step{
     String hashtableName;
     String insertTokey;
     String statement;
 
     //hashtable[key] = a+b
-    public HashtableAssignStatement(String hashtableName, String insertTokey, String statement){
+    public HashtableAssign(String hashtableName, String insertTokey, String statement){
         this.hashtableName = hashtableName;
         this.insertTokey = insertTokey;
         this.statement = statement;
     }
 
     //hashtable[key] = sum(a,b)
-    public HashtableAssignStatement(String hashtableName, String insertTokey, FunctionStatement function){
+    public HashtableAssign(String hashtableName, String insertTokey, Function function){
         this.hashtableName = hashtableName;
         this.insertTokey = insertTokey;
         this.statement = function.write();

@@ -1,11 +1,11 @@
 package Steps;
 
-public class FireEventStatement extends Step{
+public class FireEvent extends Step{
     String EventName;
     String[] parameters;
 
     //emit EventName(parameters)
-    public FireEventStatement(String EventName, String[] parameters){
+    public FireEvent(String EventName, String[] parameters){
         this.EventName = EventName;
         this.parameters = parameters;
     }
@@ -21,7 +21,7 @@ public class FireEventStatement extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-        Step p = new FireEventStatement("Buy",new String[] {"caller","amount"});
+        Step p = new FireEvent("Buy",new String[] {"caller","amount"});
         System.out.println(p.write());
     }
 }

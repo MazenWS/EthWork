@@ -1,17 +1,17 @@
 package Steps;
 
-public class AssignStatement extends Step{
+public class Assign extends Step{
     String assignToVar;
     String statement;
 
     //assignToVar = statement
-    public AssignStatement(String assignToVar, String statement){
+    public Assign(String assignToVar, String statement){
         this.assignToVar = assignToVar;
         this.statement = statement;
     }
 
     //assignToVar = sum(a,b)
-    public AssignStatement(String assignToVar, FunctionStatement function){
+    public Assign(String assignToVar, Function function){
         this.assignToVar = assignToVar;
         this.statement = function.write();
     }
@@ -29,7 +29,7 @@ public class AssignStatement extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-        Step p = new AssignStatement("assign","a+b");
+        Step p = new Assign("assign","a+b");
         System.out.println(p.write());
     }
 }
