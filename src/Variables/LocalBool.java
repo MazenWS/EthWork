@@ -7,4 +7,11 @@ public class LocalBool extends ParameterBool implements LocalVariable {
         super(name);
         this. initialValue= initialValue;
     }
+
+    @Override
+    public String write(){
+        String res = super.write();
+        res += " = " + initialValue;
+        return res;
+    }
 }

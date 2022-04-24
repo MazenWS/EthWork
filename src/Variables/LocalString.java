@@ -3,12 +3,15 @@ package Variables;
 public class LocalString extends ParameterString implements LocalVariable{
     String initialValue;
 
-
-
-
     public LocalString(String name, String initialValue){
         super(name);
         this. initialValue= initialValue;
+    }
 
+    @Override
+    public String write(){
+        String res = super.write();
+        res += " = " + initialValue;
+        return res;
     }
 }
