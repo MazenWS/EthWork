@@ -25,10 +25,5 @@ public class Require extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-        Step s = new Function("sum",new Variable[] { });
-        Step t = new Function("mul", new Variable[] { });
-        Condition o = new Condition((Function)s,(Function) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
-        Step p = new Require(o);
-        System.out.println(p.write());
     }
 }

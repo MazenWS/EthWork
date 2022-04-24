@@ -11,6 +11,13 @@ public class VariableAddress implements Variable {
         this.payable= payable;
     }
 
+    @Override
+    public String write(){
+        String res = "address";
+        res += payable? " payable":"";
+        return res;
+    }
+
 
 
 

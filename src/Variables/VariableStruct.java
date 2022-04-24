@@ -6,8 +6,10 @@ public class VariableStruct implements Variable{
         if(!Struct.structNames.contains(theStruct))
             throw new Exception("the struct doesn't exist");
             this.theStruct= theStruct;
+    }
 
-
-
+    @Override
+    public String write() {
+        return theStruct;
     }
 }

@@ -12,4 +12,9 @@ public class VariableMapping implements Variable{
         this.keyType= keyType;
         this.valueType= valueType;
     }
+
+    @Override
+    public String write() {
+        return "mapping ("+keyType.write()+" => "+valueType.write()+")";
+    }
 }

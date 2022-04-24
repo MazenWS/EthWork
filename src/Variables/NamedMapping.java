@@ -5,7 +5,12 @@ String name;
 
     public NamedMapping (String name, Variable keyType, Variable valueType ){
         super( keyType, valueType);
-      this.name =name;}
+        this.name =name;
+    }
 
-
+    @Override
+    public String write(){
+        String res = super.write()+" ";
+        return res+name;
+    }
 }

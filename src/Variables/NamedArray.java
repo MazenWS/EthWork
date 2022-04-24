@@ -16,8 +16,12 @@ public class NamedArray extends VariableArray implements NamedVariable{
     public NamedArray(String name,Variable variable, int size){
         super(variable,size);
         this.name= name;
+    }
 
-
+    @Override
+    public String write(){
+        String res = super.write()+" ";
+        return res+name;
     }
 
 }

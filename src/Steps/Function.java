@@ -1,5 +1,7 @@
 package Steps;
 
+import Variables.Variable;
+
 public class Function extends Step{
     String FunctionName;
     Variable[] parameters;
@@ -21,8 +23,5 @@ public class Function extends Step{
     }
 
     public static void main(String[] args) throws Exception {
-
-        Step p = new Function("sum",new Variable[] {new myInteger("marbles",false,3)  });
-        System.out.println();
     }
 }
