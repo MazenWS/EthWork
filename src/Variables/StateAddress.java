@@ -21,4 +21,18 @@ public class StateAddress extends NamedAddress implements StateVariable{
         this.accessModifier= accessModifier;
 
     }
+    public String Write(){
+        String res ="address";
+        if (payable== true)
+            res+= " payable";
+
+return res;
+    }
+
+
+    public static void main (String [] args){
+      
+    }
+
+
 }
