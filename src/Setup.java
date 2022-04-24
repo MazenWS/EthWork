@@ -108,9 +108,9 @@ public class Setup {
         }
     }
 
-    private static void runNode() throws IOException {
+    private static void runNode(String network, String syncmode) throws IOException {
         try {
-            String command = "geth --rinkeby --syncmode \"light\" -http --allow-insecure-unlock --datadir "+dir;
+            String command = "geth --"+network +" --syncmode \""+syncmode+"\" -http --allow-insecure-unlock --datadir "+dir;
             ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command);
             builder.redirectErrorStream(true);
             Process p = builder.start();
@@ -168,18 +168,18 @@ public class Setup {
     private static void importAccountToNode() throws IOException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter Wallet private key :");
-        walletPK = sc.nextLine();
+        walletPK = sc.nextLine()+"\n";
         System.out.println("Enter Account Password :");
         password = sc.nextLine();
         File pkFile = new File("pk.txt");
         FileWriter myWriter = new FileWriter("pk.txt");
-        myWriter.write(password+"\n");
+        myWriter.write(walletPK+"\n");
         myWriter.close();
         File passFile = new File("pass.txt");
         FileWriter myWriter2 = new FileWriter("pass.txt");
         myWriter2.write(password+"\n");
         myWriter2.close();
-        String command = "geth account import --datadir "+ dir +"--password "+passFile+" "+pkFile;
+        String command = "geth account import --datadir \""+ dir +"\" --password \""+passFile.getAbsolutePath()+"\" \""+pkFile.getAbsolutePath()+"\"";
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -190,6 +190,8 @@ public class Setup {
             if (line == null) break;
             System.out.println(line);
         }
+        pkFile.delete();
+        passFile.delete();
     }
 
     private static void createProject(String path) throws IOException, InterruptedException {

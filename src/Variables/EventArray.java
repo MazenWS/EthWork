@@ -30,4 +30,11 @@ public class EventArray extends VariableArray implements EventVariable {
         this.indexed = indexed;
 
     }
+
+    @Override
+    public String write(){
+        String res = super.write();
+        res += indexed? "indexed ":" ";
+        return res+name;
+    }
 }

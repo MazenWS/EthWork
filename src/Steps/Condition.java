@@ -80,11 +80,6 @@ public class Condition {
     }
 
     public static void main(String[] args) throws Exception {
-        Condition c = new Condition("a","\"b\"","String", RelationalOperator.NOT_EQUAL);
-        Step s = new Function("sum",new Variable[] {});
-        Step t = new Function("mul", new Variable[] { });
-        Condition o = new Condition((Function)s,(Function) t,"uint", RelationalOperator.GREATER_OR_EQUAL);
-        System.out.println(o.write());
     }
 
 }

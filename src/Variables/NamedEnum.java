@@ -6,4 +6,10 @@ public class NamedEnum extends VariableEnum implements NamedVariable {
         super(theEnum);
         this.name = name;
     }
+
+    @Override
+    public String write(){
+        String res = super.write()+" ";
+        return res+name;
+    }
 }

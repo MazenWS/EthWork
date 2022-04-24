@@ -9,4 +9,8 @@ public class VariableBytes implements Variable {
     }
 
 
+    @Override
+    public String write() {
+        return "bytes"+length;
+    }
 }

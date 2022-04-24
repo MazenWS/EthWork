@@ -85,10 +85,10 @@ public class NewContract implements IContract{
 //    }
 //
    public static void main(String[] args) throws Exception {
-      IContract I = new NewContract();
-       myEnum enum1 = new myEnum("grade",new String[]{"Excellent", "good","bad"});
-       Struct struct1 = new Struct("student",new Variable[]{new myString("name"),new myInteger("age",false ,3 )});
-       struct1.addEnum(enum1, "myGrade");
+//      IContract I = new NewContract();
+//       myEnum enum1 = new myEnum("grade",new String[]{"Excellent", "good","bad"});
+//       Struct struct1 = new Struct("student",new Variable[]{new myString("name"),new myInteger("age",false ,3 )});
+//       struct1.addEnum(enum1, "myGrade");
 
     }
 }

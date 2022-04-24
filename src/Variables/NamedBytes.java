@@ -9,4 +9,10 @@ public class NamedBytes extends VariableBytes implements NamedVariable{
         this. name = name;
 
     }
+
+    @Override
+    public String write(){
+        String res = super.write()+" ";
+        return res+name;
+    }
 }

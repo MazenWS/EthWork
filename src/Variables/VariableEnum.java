@@ -7,6 +7,10 @@ public class VariableEnum implements Variable{
             throw new Exception("this enum does not exist");
         }
         this.theEnum = theEnum;
+    }
 
+    @Override
+    public String write() {
+        return theEnum;
     }
 }

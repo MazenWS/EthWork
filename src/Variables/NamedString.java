@@ -7,4 +7,10 @@ public class NamedString  extends VariableString implements NamedVariable{
 
         this.name= name;
     }
+
+    @Override
+    public String write(){
+        String res = super.write()+" ";
+        return res+name;
+    }
 }
