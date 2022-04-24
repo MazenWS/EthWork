@@ -1,8 +1,9 @@
 import Steps.Step;
+import Variables.*;
 
 import java.util.Hashtable;
 //
-//public class NewContract implements IContract{
+public class NewContract implements IContract{
 //    @Override
 //    public String getContractName() {
 //        return "newContract";
@@ -83,8 +84,11 @@ import java.util.Hashtable;
 //        return null;
 //    }
 //
-//    public static void main(String[] args) throws Exception {
-//        NewContract n = new NewContract();
-//        System.out.println(ContractInit.createContract(n));
-//    }
-//}
+   public static void main(String[] args) throws Exception {
+      IContract I = new NewContract();
+       myEnum enum1 = new myEnum("grade",new String[]{"Excellent", "good","bad"});
+       Struct struct1 = new Struct("student",new Variable[]{new myString("name"),new myInteger("age",false ,3 )});
+       struct1.addEnum(enum1, "myGrade");
+
+    }
+}

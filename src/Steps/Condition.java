@@ -1,7 +1,5 @@
 package Steps;
 
-import Variables.Variable;
-
 public class Condition {
     String arg1;
     String arg2;

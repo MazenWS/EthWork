@@ -4,25 +4,26 @@ package Variables;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
 
 
-public class Struct extends Variable {
-    myString name;
-    Variable[] vars;
-    Hashtable<String,String> Enums;
+public class Struct {
+    String name;
+    NamedVariable[] vars;
+    static  ArrayList<String> structNames;
 
-
-        public Struct(myString name, Variable[] vars) {
+        public Struct(String name, NamedVariable[] vars) {
             this.name=name;
             this.vars= vars;
+            structNames.add(name);
+
+
 
         }
-        public void addEnum (myEnum Enum, String member, String name){
-            Enums.put(member, name);
+
+
 
 
         }
 
 
-}
+
