@@ -7,7 +7,7 @@ public class LocalArray extends ParameterArray implements LocalVariable{
 
 
     public LocalArray(Variable  variable, String name,DataLocation dataLocation, int size, ArrayList<String>  initialValue){
-        super(variable, name,dataLocation, size);
+        super(name, variable,dataLocation, size);
         this.initialValue= initialValue;
     }
 

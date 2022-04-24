@@ -13,7 +13,7 @@ public class ParameterArray extends NamedArray implements ParameterVariable {
 
 
     //2// static size
-    public ParameterArray(Variable variable, String name,DataLocation dataLocation, int size){
+    public ParameterArray(String name,Variable variable, DataLocation dataLocation, int size){
         super(name,variable,size);
         this.dataLocation = dataLocation;
     }
