@@ -11,6 +11,12 @@ public class LocalArray extends ParameterArray implements LocalVariable{
         this.initialValue= initialValue;
     }
 
+    public LocalArray(Variable  variable, String name,  DataLocation dataLocation,ArrayList<String>  initialValue){
+        super( name,variable, dataLocation );
+        this.initialValue= initialValue;
+
+    }
+
     @Override
     public String write(){
         String res = super.write();
