@@ -2,7 +2,7 @@
 //
 //import Variables.Struct;
 //
-//public interface IContract {
+public interface IContract {
 //    //write the contract name
 //    public String getContractName();
 //    /* why the constructor is not an object that have steps, parameters and boolean payable?? */
@@ -24,4 +24,4 @@
 //    public boolean payable(String strMethodName);
 //    public  ParameterVar[] getMethodReturnType(String strMethodName );
 //    public Step[] getMethodSteps(String strMethodName );
-//}
+}

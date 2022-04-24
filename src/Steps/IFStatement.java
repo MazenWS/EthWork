@@ -1,7 +1,5 @@
 package Steps;
 
-import Variables.Variable;
-
 public class IFStatement extends Step{
     Condition[] conditions;
     LogicalOperator[] operators;

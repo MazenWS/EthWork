@@ -1,8 +1,6 @@
 package Steps;
 
 
-import Variables.Variable;
-
 public class Require extends Step{
     Condition condition;
     String messageToThrow  = null;

@@ -1,4 +1,4 @@
 package Variables;
 
-public abstract class Variable {
+public interface Variable {
 }
