@@ -13,8 +13,9 @@ public class ParameterArray extends NamedArray implements ParameterVariable {
 
 
     //2// static size
-    public ParameterArray(Variable variable, String name, int size){
+    public ParameterArray( String name,Variable variable, DataLocation dataLocation, int size){
         super(name,variable,size);
+        this.dataLocation= dataLocation;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class ParameterArray extends NamedArray implements ParameterVariable {
     }
 
     public static void main(String[] main){
-        ParameterArray a = new ParameterArray("arr", new VariableInteger(false,64),DataLocation.MEMORY);
+        ParameterArray a = new ParameterArray("arr", new VariableArray(new VariableBool(),3),DataLocation.MEMORY,4);
         System.out.println(a.write());
     }
 

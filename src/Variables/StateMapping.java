@@ -8,5 +8,12 @@ public class StateMapping extends NamedMapping implements StateVariable{
         super(name, keyType, valueType);
         this.accessModifier= accessModifier;
     }
+    public String write(){
+        String res = super.write();
+        String[] var = res.split(" ");
+        res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        res+=";";
+        return res;
+    }
 
 }

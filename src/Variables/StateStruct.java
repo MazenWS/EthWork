@@ -14,4 +14,17 @@ public class StateStruct  extends NamedStruct implements StateVariable{
         super(theStruct,name);
         this.accessModifier = accessModifier;
     }
+
+    public String write(){
+        String res = super.write();
+        String[] var = res.split(" ");
+        res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        if (initialValue!= null){
+            res+= " = ";
+            res+= initialValue ;
+
+        }
+        res+=";";
+        return res;
+    }
 }

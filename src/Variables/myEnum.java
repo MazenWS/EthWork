@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class myEnum {
     String name;
    String[] members;
-   public static ArrayList<String> createdEnums;
+   public static ArrayList<String> createdEnums = new ArrayList<String>();
 
 
     public myEnum (String name,String[] members ){

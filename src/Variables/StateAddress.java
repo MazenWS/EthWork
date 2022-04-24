@@ -1,5 +1,7 @@
 package Variables;
 
+import java.util.Locale;
+
 public class StateAddress extends NamedAddress implements StateVariable{
 
     String initialValue;
@@ -21,17 +23,24 @@ public class StateAddress extends NamedAddress implements StateVariable{
         this.accessModifier= accessModifier;
 
     }
-    public String Write(){
-        String res ="address";
-        if (payable== true)
-            res+= " payable";
+    public String write(){
+        String res ="address ";
+        res+= payable? "payable ": "";
+        res+= accessModifier.name().toLowerCase(Locale.ROOT);
+        res+= name;
+        if (initialValue!= null){
+            res+=" = ";
+            res+= payable? "payable("+ initialValue+")": initialValue;
+        }
+        res+=" ;";
+
 
 return res;
     }
 
 
     public static void main (String [] args){
-      
+
     }
 
 

@@ -17,6 +17,25 @@ public class StateEnum extends NamedEnum implements StateVariable {
         this.initialValue= initialValue;
     }
 
+    public String write(){
+        String res = super.write();
+        String[] var = res.split(" ");
+        res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        if (initialValue!=null){
+            res+= " = ";
+            res+= initialValue;
 
+        }
+        res+=";";
+        return res;
+    }
+
+    public static void main(String[] args) throws Exception {
+        myEnum mmmm = new myEnum("student",new String[]{"ahmed","ali","alaa"});
+        StateEnum bool = new StateEnum("student","enum1",AccessModifier.PUBLIC);
+        StateEnum bool2 = new StateEnum("student","bool2",AccessModifier.PRIVATE, "student.ahmed");
+        System.out.println(bool.write());
+        System.out.println(bool2.write());
+    }
 
 }

@@ -17,5 +17,18 @@ String initialValue;
         this. accessModifier = accessmodifier;
 
     }
+
+    public String write(){
+        String res = super.write();
+        String[] var = res.split(" ");
+        res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        if (initialValue!= null){
+            res+= " = ";
+            res+= initialValue ;
+
+        }
+        res+=";";
+        return res;
+    }
 }
 
