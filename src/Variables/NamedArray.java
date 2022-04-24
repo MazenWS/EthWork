@@ -24,4 +24,9 @@ public class NamedArray extends VariableArray implements NamedVariable{
         return res+name;
     }
 
+    public static void main(String[] args){
+        NamedArray nm = new NamedArray("arr",new VariableBool(),2);
+        System.out.println(nm.write());
+    }
+
 }

@@ -9,6 +9,14 @@ public class LocalAddress extends ParameterAddress implements LocalVariable{
 
     }
 
+    @Override
+    public String write(){
+        String res = super.write();
+        res += " = " + initialValue;
+        return res;
+    }
+
 
 }
+
 

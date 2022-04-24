@@ -13,15 +13,18 @@ public class ParameterArray extends NamedArray implements ParameterVariable {
 
 
     //2// static size
-    public ParameterArray(Variable variable, String name, int size){
+    public ParameterArray(Variable variable, String name,DataLocation dataLocation, int size){
         super(name,variable,size);
+        this.dataLocation = dataLocation;
     }
 
     @Override
     public String write(){
         String res = super.write();
-        String[] var = res.split(" ");
-        return String.join(" ",var[0], dataLocation.name().toLowerCase(),var[1]);
+        int lastSpace = res.lastIndexOf(' ');
+        String type = res.substring(0,lastSpace);
+        String name = res.substring(lastSpace+1);
+        return String.join(" ",type, dataLocation.name().toLowerCase(),name);
     }
 
     public static void main(String[] main){
