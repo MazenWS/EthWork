@@ -7,6 +7,7 @@ Integer size;
      //1// dynamic Size
     public VariableArray(Variable variable ){
         this.arrayType= variable;
+        this.size = 0;
     }
 
     // 2// static size
