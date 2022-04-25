@@ -1,6 +1,6 @@
 package Steps;
 
-public class FireEvent extends Step{
+public class FireEvent implements Step{
     String EventName;
     String[] parameters;
 

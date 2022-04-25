@@ -1,6 +1,6 @@
 package Steps;
 
-public class Assign extends Step{
+public class Assign implements Step{
     String assignToVar;
     String statement;
 

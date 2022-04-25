@@ -1,6 +1,8 @@
 package Variables;
 
-public class LocalBytes extends ParameterBytes implements LocalVariable{
+import Steps.Step;
+
+public class LocalBytes extends ParameterBytes implements Step {
     String initialValueInHex;
     public LocalBytes (String name, int length, String initialValueInHex){
         super(name, length);
@@ -10,7 +12,9 @@ public class LocalBytes extends ParameterBytes implements LocalVariable{
     @Override
     public String write(){
         String res = super.write();
-        res += " = " + initialValueInHex;
+        if(initialValueInHex != null) {
+            res += " = " + initialValueInHex;
+        }
         return res;
     }
 }

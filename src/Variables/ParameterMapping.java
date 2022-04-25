@@ -1,6 +1,8 @@
 package Variables;
 
-public class ParameterMapping  extends NamedMapping implements ParameterVariable{
+import Steps.Step;
+
+public class ParameterMapping  extends NamedMapping implements ParameterVariable, Step {
 
 DataLocation dataLocation;
     public ParameterMapping (String name, Variable keyType, Variable valueType, DataLocation dataLocation){

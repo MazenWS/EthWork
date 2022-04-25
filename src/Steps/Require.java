@@ -1,7 +1,7 @@
 package Steps;
 
 
-public class Require extends Step{
+public class Require implements Step{
     Condition condition;
     String messageToThrow  = null;
 

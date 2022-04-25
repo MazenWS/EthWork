@@ -1,9 +1,7 @@
 package Steps;
 
-public abstract class Step {
+public interface Step {
 
-    public Step() {
-    }
 
-    public abstract String write() throws Exception;
+    public String write() throws Exception;
 }

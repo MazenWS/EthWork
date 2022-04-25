@@ -1,8 +1,9 @@
 package Variables;
 
 
-public class ParameterArray extends NamedArray implements ParameterVariable {
-    String name;
+import Steps.Step;
+
+public class ParameterArray extends NamedArray implements ParameterVariable, Step {
     DataLocation dataLocation;
 
    //1//dynamic size

@@ -14,4 +14,13 @@ public class myEnum {
         createdEnums.add(name);
     }
 
+    public String write() {
+        String res = "enum "+name+"{ ";
+        for(String member : members){
+            res += member +", ";
+        }
+        res = res.substring(0,res.length()-2)+" }";
+        return res;
+    }
+
 }

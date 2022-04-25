@@ -15,6 +15,6 @@ public class VariableMapping implements Variable{
 
     @Override
     public String write() {
-        return "mapping ("+keyType.write()+" => "+valueType.write()+")";
+        return "mapping("+keyType.write()+"=>"+valueType.write()+")";
     }
 }

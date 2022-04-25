@@ -1,6 +1,6 @@
 package Steps;
 
-public class WhileLoop extends Step {
+public class WhileLoop implements Step {
     Condition[] conditions;
     LogicalOperator[] operators;
     Step[] body;

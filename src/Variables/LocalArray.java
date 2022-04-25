@@ -1,8 +1,10 @@
 package Variables;
 
+import Steps.Step;
+
 import java.util.ArrayList;
 
-public class LocalArray extends ParameterArray implements LocalVariable{
+public class LocalArray extends ParameterArray implements Step {
     ArrayList<String> initialValue;
 
 

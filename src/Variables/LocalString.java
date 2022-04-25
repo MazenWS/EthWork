@@ -1,6 +1,9 @@
 package Variables;
+
+import Steps.Step;
+
 //for local variable let it return parameterVar---> the uinitialised version of each
-public class LocalString extends ParameterString implements LocalVariable{
+public class LocalString extends ParameterString implements Step {
     String initialValue;
 
     public LocalString(String name, String initialValue){
@@ -11,7 +14,8 @@ public class LocalString extends ParameterString implements LocalVariable{
     @Override
     public String write(){
         String res = super.write();
-        res += " = " + initialValue;
+        if(initialValue != null)
+            res += " = " + initialValue;
         return res;
     }
 }

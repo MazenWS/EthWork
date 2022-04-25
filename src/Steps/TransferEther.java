@@ -1,6 +1,6 @@
 package Steps;
 
-public class TransferEther extends Step{
+public class TransferEther implements Step{
     String toAddress;
     String value;
 

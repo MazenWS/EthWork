@@ -1,6 +1,6 @@
 package Steps;
 
-public class ForLoop extends Step{
+public class ForLoop implements Step{
     Condition[] conditions;
     LogicalOperator[] operators;
     String initialization;

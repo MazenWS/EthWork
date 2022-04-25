@@ -1,6 +1,8 @@
 package Variables;
 
-public class ParameterStruct extends NamedStruct implements ParameterVariable{
+import Steps.Step;
+
+public class ParameterStruct extends NamedStruct implements ParameterVariable, Step {
 
     DataLocation dataLocation;
     public ParameterStruct(String theStruct,String name, DataLocation  dataLocation) throws Exception {

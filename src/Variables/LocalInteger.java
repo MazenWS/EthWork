@@ -1,8 +1,10 @@
 package Variables;
 
-public class LocalInteger extends ParameterInteger implements LocalVariable {
-    int initialValue;
-    public LocalInteger(String name, boolean signed, int length_powerOfTwo, int initialValue){
+import Steps.Step;
+
+public class LocalInteger extends ParameterInteger implements Step {
+    String initialValue;
+    public LocalInteger(String name, boolean signed, int length_powerOfTwo, String initialValue){
         super(name, signed, length_powerOfTwo);
         this.initialValue= initialValue;
     }
@@ -10,7 +12,8 @@ public class LocalInteger extends ParameterInteger implements LocalVariable {
     @Override
     public String write(){
         String res = super.write();
-        res += " = " + initialValue;
+        if(initialValue != null)
+            res += " = " + initialValue;
         return res;
     }
 }

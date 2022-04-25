@@ -1,6 +1,8 @@
 package Variables;
 
-public class LocalAddress extends ParameterAddress implements LocalVariable{
+import Steps.Step;
+
+public class LocalAddress extends ParameterAddress implements Step, ParameterVariable {
     public String initialValue;
 
     public LocalAddress (String name, boolean payable, String initialValue){
@@ -12,7 +14,9 @@ public class LocalAddress extends ParameterAddress implements LocalVariable{
     @Override
     public String write(){
         String res = super.write();
-        res += " = " + initialValue;
+        if(initialValue != null) {
+            res += " = " + initialValue;
+        }
         return res;
     }
 

@@ -1,6 +1,6 @@
 package Steps;
 
-public class DoWhileLoop extends Step{
+public class DoWhileLoop implements Step{
     Condition[] conditions;
     LogicalOperator[] operators;
     Step[] body;
