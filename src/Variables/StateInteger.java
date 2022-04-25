@@ -7,13 +7,13 @@ public class StateInteger extends NamedInteger implements  StateVariable {
     boolean initialised;
 
     //1// uninitialised
-    public StateInteger ( String name, boolean signed, AccessModifier accessModifier, int length_powerOfTwo){
+    public StateInteger ( String name, boolean signed, AccessModifier accessModifier, int length_powerOfTwo) throws Exception {
         super(name,signed, length_powerOfTwo);
         this.accessModifier= accessModifier;
         this.initialised= false;
     }
     //2// initialised
-    public StateInteger ( String name, boolean signed, AccessModifier accessModifier, int length_powerOfTwo, int initialValue){
+    public StateInteger ( String name, boolean signed, AccessModifier accessModifier, int length_powerOfTwo, int initialValue) throws Exception {
         super(name ,signed, length_powerOfTwo);
         this.accessModifier= accessModifier;
         this.initialValue = initialValue;

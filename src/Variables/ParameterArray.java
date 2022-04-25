@@ -29,7 +29,12 @@ public class ParameterArray extends NamedArray implements ParameterVariable, Ste
     }
 
     public static void main(String[] main){
-        ParameterArray a = new ParameterArray("arr", new VariableInteger(false,3),DataLocation.MEMORY);
+        ParameterArray a = null;
+        try {
+            a = new ParameterArray("arr", new VariableInteger(false,3), DataLocation.MEMORY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println(a.write());
     }
 

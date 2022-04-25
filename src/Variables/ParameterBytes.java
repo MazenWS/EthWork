@@ -5,8 +5,9 @@ import Steps.Step;
 public class ParameterBytes extends NamedBytes implements ParameterVariable, Step {
 
 
-    public ParameterBytes(String name, int length ){
-       super(name, length);
+    public ParameterBytes(String name, int length ) throws Exception {
+
+        super(name, length);
     }
 
     @Override

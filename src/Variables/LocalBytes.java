@@ -4,7 +4,7 @@ import Steps.Step;
 
 public class LocalBytes extends ParameterBytes implements Step {
     String initialValueInHex;
-    public LocalBytes (String name, int length, String initialValueInHex){
+    public LocalBytes (String name, int length, String initialValueInHex) throws Exception {
         super(name, length);
         this .initialValueInHex= initialValueInHex;
     }

@@ -5,13 +5,13 @@ public class EventInteger extends VariableInteger implements EventVariable{
     boolean indexed;
 
     //1// unnamed
-    public EventInteger( boolean signed ,int length_powerOfTwo , boolean indexed){
+    public EventInteger( boolean signed ,int length_powerOfTwo , boolean indexed) throws Exception {
      super(signed, length_powerOfTwo);
         this.indexed= indexed;
 
     }
     //2// named
-    public EventInteger(boolean signed ,int length_powerOfTwo ,String name, boolean indexed){
+    public EventInteger(boolean signed ,int length_powerOfTwo ,String name, boolean indexed) throws Exception {
         super(signed, length_powerOfTwo);
         this.name= name;
         this.indexed= indexed;

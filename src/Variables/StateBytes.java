@@ -6,12 +6,12 @@ public class StateBytes extends NamedBytes implements StateVariable{
     AccessModifier accessModifier;
 
     //2.1// uninitialized
-    public StateBytes(String name, int length, AccessModifier accessModifier ){
+    public StateBytes(String name, int length, AccessModifier accessModifier ) throws Exception {
         super(name,length);
         this. accessModifier= accessModifier;
     }
     //2.2// initialized
-    public StateBytes(String name, int length, AccessModifier accessModifier, String initialValueInHex){
+    public StateBytes(String name, int length, AccessModifier accessModifier, String initialValueInHex) throws Exception {
         super(name,length);
         this. accessModifier= accessModifier;
         this.initialValueInHex = initialValueInHex;
