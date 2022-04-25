@@ -1,6 +1,6 @@
 //import Steps.Step;
 //
-//import Variables.Struct;
+//import Methods.Struct;
 //
 public interface IContract {
 //    //write the contract name

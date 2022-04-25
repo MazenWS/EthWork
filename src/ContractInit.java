@@ -1,5 +1,5 @@
 //import Steps.Step;
-//import Variables.Struct;
+//import Methods.Struct;
 //
 //import java.util.Hashtable;
 //import java.util.Set;

@@ -18,11 +18,8 @@ Integer size;
 
     @Override
     public String write(){
-        String var = arrayType.write();
-        String[] varSplit = var.split(" ");
-        varSplit[0] += "[";
-        varSplit[0] += size >0 ?size+"]" : "]";
-        return String.join(" ",varSplit);
+        String var = arrayType.write() + "[";
+        return var + (size > 0 ? size + "]" : "]");
     }
 
     public static void main(String[] args) {

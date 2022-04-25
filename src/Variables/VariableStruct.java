@@ -1,5 +1,7 @@
 package Variables;
 
+import Methods.Struct;
+
 public class VariableStruct implements Variable{
     String theStruct;
     public VariableStruct (String theStruct) throws Exception {

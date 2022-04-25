@@ -10,13 +10,13 @@ public class NewContract implements IContract{
 //    }
 //
 //    @Override
-//    public Variables.Struct createObject() {
+//    public Methods.Struct createObject() {
 //        Hashtable<String,String > h = new Hashtable<>();
 //        h.put("string","name");
 //        h.put("int","amount");
 //        Variable var1= new Variable(Variables.DataType.BOOLEAN, "isTrue");
 //        Variable var2 = new Variable(Variables.DataType.BYTES,"Character");
-//        Variables.Struct S = new Variables.Struct("Request" ,Variables.AccessModifier.PRIVATE,new Variable[]{var1,var2});
+//        Methods.Struct S = new Methods.Struct("Request" ,Variables.AccessModifier.PRIVATE,new Variable[]{var1,var2});
 //        return S;
 //    }
 //

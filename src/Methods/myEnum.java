@@ -1,4 +1,4 @@
-package Variables;
+package Methods;
 
 import java.util.ArrayList;
 

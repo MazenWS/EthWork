@@ -1,5 +1,7 @@
 package Variables;
 
+import Methods.myEnum;
+
 public class StateEnum extends NamedEnum implements StateVariable {
 
     AccessModifier accessModifier;

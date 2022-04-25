@@ -23,7 +23,7 @@ public class LocalArray extends ParameterArray implements Step {
     public String write(){
         String res = super.write();
         if(initialValue != null){
-            if(size != null) {
+            if(size > 0) {
                 res += "[";
                 for (String val : initialValue){
                     res += val+", ";

@@ -20,8 +20,7 @@ public class NamedArray extends VariableArray implements NamedVariable{
 
     @Override
     public String write(){
-        String res = super.write()+" ";
-        return res+name;
+        return super.write()+" "+name;
     }
 
     public static void main(String[] args){

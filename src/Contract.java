@@ -1,7 +1,6 @@
-import Methods.Method;
-import Methods.Type;
-import Steps.Step;
+import Methods.*;
 import Variables.*;
+import Variables.AccessModifier;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,9 @@ public class Contract {
     ArrayList<myEnum> enums;
     ArrayList<StateVariable> stateVars;
     //class events is not made yettt
-    //ArrayList<Events> events;
+    ArrayList<Event> events;
+    Constructor constructor;
+    ReceiveFunction receive;
 
     public Contract(String contractName){
         this.contractName = contractName;
@@ -21,10 +22,18 @@ public class Contract {
         structs = new ArrayList<Struct>();
         enums = new ArrayList<myEnum>();
         stateVars = new ArrayList<StateVariable>();
+        events = new ArrayList<Event>();
     }
 
     public void addMethod(Method method){
         methods.add(method);
+    }
+
+    public void addConstructor(Constructor constructor) throws Exception {
+        if(constructor == null){
+            throw new Exception("A Constructor is Already Added");
+        }
+        this.constructor = constructor;
     }
 
     public void addStruct(Struct struct){
@@ -39,23 +48,59 @@ public class Contract {
         stateVars.add(var);
     }
 
+    public void addEvent(Event event){
+        events.add(event);
+    }
+
+    public void addReceiveFunction(ReceiveFunction receive) throws Exception {
+        if(receive != null){
+            throw new Exception("A receive Function is already Added");
+        }
+        this.receive = receive;
+    }
+
     public String writeContract() throws Exception {
         String res = "contract "+contractName + " {\n\n\n";
-        for(Struct struct : structs) {
-            res += struct.write()+"\n\n";
-        }
-        res += "\n";
-        for(myEnum enumm : enums){
-            res += enumm.write()+"\n";
-        }
-        res += "\n";
-        for(StateVariable state : stateVars){
-            res += state.write()+"\n";
-        }
-        for(Method method : methods){
-            res += method.write() +"\n\n";
+        if(! structs.isEmpty()) {
+            for (Struct struct : structs) {
+                res += struct.write() + "\n\n";
+            }
+            res += "\n";
         }
 
+        if(! enums.isEmpty()) {
+            for (myEnum enumm : enums) {
+                res += enumm.write() + "\n";
+            }
+            res += "\n";
+        }
+
+        if(!stateVars.isEmpty()) {
+            for (StateVariable state : stateVars) {
+                res += state.write() + "\n";
+            }
+        }
+
+        if(! events.isEmpty()) {
+            for(Event event : events){
+                res += event.write() + "\n";
+            }
+            res += "\n";
+        }
+
+        if(constructor != null){
+            res += constructor.write()+ "\n\n";
+        }
+
+        if (!methods.isEmpty()) {
+            for (Method method : methods) {
+                res += method.write() + "\n\n";
+            }
+        }
+
+        if(receive != null){
+            res += receive.write()+"\n";
+        }
         res += "}";
 
         return res;

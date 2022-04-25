@@ -1,5 +1,7 @@
 package Variables;
 
+import Methods.myEnum;
+
 public class VariableEnum implements Variable{
     String theEnum;
     public VariableEnum(String theEnum) throws Exception {

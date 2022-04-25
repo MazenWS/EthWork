@@ -44,8 +44,10 @@ public class Method {
         }
         if(accessType.equals(Type.PURE))
             res += " pure";
-        if(accessType.equals(Type.VIEW))
+        else if(accessType.equals(Type.VIEW))
             res += " view";
+        else if(accessType.equals(Type.PAYABLE))
+            res += " payable";
         if(returnTypes != null && returnTypes.length != 0){
             res += " returns(";
             for (Variable ret : returnTypes) {
@@ -53,8 +55,6 @@ public class Method {
             }
             res = res.substring(0,res.length()-2)+")";
         }
-        if(accessType.equals(Type.PAYABLE))
-            res += " payable";
         res += "{\n";
         for(Step step : steps){
             res += step.write()+"\n";
