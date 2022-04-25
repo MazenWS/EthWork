@@ -1,5 +1,5 @@
 package Methods;
 
 public enum Type {
-    PURE,VIEW,PAYABLE
+    PURE,VIEW,PAYABLE,NONE
 }

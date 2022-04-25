@@ -3,13 +3,17 @@ package Variables;
 import Steps.Step;
 
 public class ParameterString extends NamedString implements ParameterVariable, Step {
-
-    public ParameterString(String name){
-super(name);
+DataLocation dataLocation;
+    public ParameterString(String name, DataLocation dataLocation){
+        super(name);
+        this.dataLocation = dataLocation;
     }
 
     @Override
     public String write(){
-        return super.write();
+        String res = super.write();
+        String[] var = res.split(" ");
+        res= String.join(" ",var[0], dataLocation.name().toLowerCase(),var[1]);
+       return res;
     }
 }

@@ -12,11 +12,12 @@ public class Method {
     AccessModifier accessModifier;
     Type accessType;
     ParameterVariable[] returnTypes;
-    ArrayList<Step> steps;
+    ArrayList<Step> steps = new ArrayList<>();
 
 
     public Method(String name, ParameterVariable[] parameters, AccessModifier accessModifier, Type accessType,
                   ParameterVariable[] returnTypes ){
+        this.name= name;
         this.parameters= parameters;
         this.accessModifier= accessModifier;
         this.accessType= accessType;

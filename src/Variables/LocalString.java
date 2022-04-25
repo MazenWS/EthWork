@@ -5,9 +5,10 @@ import Steps.Step;
 //for local variable let it return parameterVar---> the uinitialised version of each
 public class LocalString extends ParameterString implements Step {
     String initialValue;
+    DataLocation dataLocation;
 
-    public LocalString(String name, String initialValue){
-        super(name);
+    public LocalString(String name, String initialValue ,DataLocation dataLocation){
+        super(name,dataLocation);
         this. initialValue= initialValue;
     }
 

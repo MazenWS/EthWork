@@ -21,7 +21,7 @@ Integer size;
         String var = arrayType.write();
         String[] varSplit = var.split(" ");
         varSplit[0] += "[";
-        varSplit[0] += size != null ?size+"]" : "]";
+        varSplit[0] += size >0 ?size+"]" : "]";
         return String.join(" ",varSplit);
     }
 

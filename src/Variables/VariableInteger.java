@@ -11,6 +11,6 @@ public class VariableInteger implements Variable{
 
     @Override
     public String write() {
-        return signed? "int"+length_powerOfTwo : "uint"+length_powerOfTwo;
+        return signed? "int"+(int)Math.pow(2, length_powerOfTwo) : "uint"+ (int)Math.pow(2, length_powerOfTwo);
     }
 }

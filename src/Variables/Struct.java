@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Struct {
     String name;
     NamedVariable[] vars;
-    static  ArrayList<String> structNames;
+    static  ArrayList<String> structNames= new ArrayList<>();
 
         public Struct(String name, NamedVariable[] vars) {
             this.name=name;
