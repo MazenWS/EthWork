@@ -1,9 +1,6 @@
 package Variables;
 
-
-
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 
 public class Struct {
@@ -15,14 +12,17 @@ public class Struct {
             this.name=name;
             this.vars= vars;
             structNames.add(name);
-
-
-
         }
 
 
-
-
+        public String write() {
+            String res = "struct "+name+" {\n";
+            for(NamedVariable var : vars ){
+                res += var.write()+";\n";
+            }
+            res += "}";
+            return res;
+        }
         }
 
 

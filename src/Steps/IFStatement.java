@@ -1,6 +1,6 @@
 package Steps;
 
-public class IFStatement extends Step{
+public class IFStatement implements Step{
     Condition[] conditions;
     LogicalOperator[] operators;
     Step[] body;

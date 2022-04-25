@@ -1,8 +1,9 @@
 package Variables;
 
 
-public class ParameterArray extends NamedArray implements ParameterVariable {
-    String name;
+import Steps.Step;
+
+public class ParameterArray extends NamedArray implements ParameterVariable, Step {
     DataLocation dataLocation;
 
    //1//dynamic size
@@ -13,20 +14,22 @@ public class ParameterArray extends NamedArray implements ParameterVariable {
 
 
     //2// static size
-    public ParameterArray( String name,Variable variable, DataLocation dataLocation, int size){
+    public ParameterArray(String name,Variable variable, DataLocation dataLocation, int size){
         super(name,variable,size);
-        this.dataLocation= dataLocation;
+        this.dataLocation = dataLocation;
     }
 
     @Override
     public String write(){
         String res = super.write();
-        String[] var = res.split(" ");
-        return String.join(" ",var[0], dataLocation.name().toLowerCase(),var[1]);
+        int lastSpace = res.lastIndexOf(' ');
+        String type = res.substring(0,lastSpace);
+        String name = res.substring(lastSpace+1);
+        return String.join(" ",type, dataLocation.name().toLowerCase(),name);
     }
 
     public static void main(String[] main){
-        ParameterArray a = new ParameterArray("arr", new VariableArray(new VariableBool(),3),DataLocation.MEMORY,4);
+        ParameterArray a = new ParameterArray("arr", new VariableInteger(false,64),DataLocation.MEMORY);
         System.out.println(a.write());
     }
 

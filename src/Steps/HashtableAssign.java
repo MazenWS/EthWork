@@ -1,6 +1,6 @@
 package Steps;
 
-public class HashtableAssign extends Step{
+public class HashtableAssign implements Step{
     String hashtableName;
     String insertTokey;
     String statement;

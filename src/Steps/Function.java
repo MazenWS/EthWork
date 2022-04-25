@@ -2,7 +2,7 @@ package Steps;
 
 import Variables.Variable;
 
-public class Function extends Step{
+public class Function implements Step{
     String FunctionName;
     Variable[] parameters;
 

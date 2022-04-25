@@ -42,30 +42,30 @@ public class StateArray extends NamedArray implements StateVariable{
         this.initialValue= initialValue;
 
     }
-public String write(){
-    String res  = super.write();
-    String[] var = res.split(" ");
-    res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+    public String write(){
+        String res  = super.write();
+        String[] var = res.split(" ");
+        res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
 
 
-    if(initialValue!=null){
+        if(initialValue!=null){
 
-        res+= " = [";
+            res+= " = [";
 
-        Iterator iter=initialValue.iterator();
-        while (iter.hasNext()) {
-            res+=iter.next();
-            res+=",";
+            Iterator iter=initialValue.iterator();
+            while (iter.hasNext()) {
+                res+=iter.next();
+                res+=",";
+
+        }
+            res=res.substring(0, res.length() - 1);
+            res+= "]";
+
+        }
+        res+=";";
+        return res;
 
     }
-        res=res.substring(0, res.length() - 1);
-        res+= "]";
-
-    }
-    res+=";";
-    return res;
-
-}
     public static void main(String[] main){
        ArrayList values= new ArrayList<String>( );
        values.add ("1");

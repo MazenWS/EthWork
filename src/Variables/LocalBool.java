@@ -1,10 +1,20 @@
 package Variables;
 
-public class LocalBool extends ParameterBool implements LocalVariable {
+import Steps.Step;
 
-    boolean initialValue;
-    public LocalBool(String name, boolean initialValue){
+public class LocalBool extends ParameterBool implements Step {
+
+    String initialValue;
+    public LocalBool(String name, String initialValue){
         super(name);
         this. initialValue= initialValue;
+    }
+
+    @Override
+    public String write(){
+        String res = super.write();
+        if(initialValue != null)
+            res += " = " + initialValue;
+        return res;
     }
 }

@@ -1,9 +1,14 @@
 package Variables;
 
-public class ParameterEnum extends NamedEnum implements ParameterVariable{
-    String name;
+import Steps.Step;
+
+public class ParameterEnum extends NamedEnum implements ParameterVariable, Step {
     public ParameterEnum( String theEnum,String name) throws Exception {
      super(theEnum, name);
     }
 
+    @Override
+    public String write(){
+        return super.write();
+    }
 }
