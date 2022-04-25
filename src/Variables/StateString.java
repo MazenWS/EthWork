@@ -24,7 +24,7 @@ String initialValue;
         res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
         if (initialValue!= null){
             res+= " = ";
-            res+= initialValue ;
+            res+= " \""+initialValue+" \"" ;
 
         }
         res+=";";

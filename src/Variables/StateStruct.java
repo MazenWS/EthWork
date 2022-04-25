@@ -3,9 +3,9 @@ package Variables;
 public class StateStruct  extends NamedStruct implements StateVariable{
 
     AccessModifier  accessModifier;
-    String initialValue;
+    String[] initialValue;
 
-    public StateStruct(String theStruct,String name, AccessModifier  accessModifier,String initialValue) throws Exception {
+    public StateStruct(String theStruct,String name, AccessModifier  accessModifier,String[] initialValue) throws Exception {
         super(theStruct, name);
         this.accessModifier = accessModifier;
         this.initialValue= initialValue;
@@ -21,7 +21,16 @@ public class StateStruct  extends NamedStruct implements StateVariable{
         res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
         if (initialValue!= null){
             res+= " = ";
-            res+= initialValue ;
+            res+= theStruct +"( ";
+            for (String s: initialValue ) {
+                res+=s;
+                res+= ",";
+
+            }
+            res=res.substring(0, res.length() - 1);
+            res+= ");";
+
+
 
         }
         res+=";";
