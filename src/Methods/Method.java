@@ -1,27 +1,32 @@
 package Methods;
 
 import Steps.Step;
+import Variables.ParameterVariable;
 import Variables.Variable;
+
+import java.util.ArrayList;
 
 public class Method {
     String name;
-    Variable[] parameters;
+    ParameterVariable[] parameters;
     AccessModifier accessModifier;
     Type accessType;
-    Variable[] returnTypes;
-    Step[] steps;
+    ParameterVariable[] returnTypes;
+    ArrayList<Step> steps;
 
 
-    public Method(String name, Variable[] parameters, AccessModifier accessModifier, Type accessType,
-                  Variable[] returnTypes, Step[] steps){
-        this.name= name;
+    public Method(String name, ParameterVariable[] parameters, AccessModifier accessModifier, Type accessType,
+                  ParameterVariable[] returnTypes ){
         this.parameters= parameters;
         this.accessModifier= accessModifier;
         this.accessType= accessType;
         this.returnTypes= returnTypes;
-        this.steps= steps;
-    }
 
+    }
+     public  void addSteps( Step step){
+        steps.add(step);
+
+     }
     public String write() throws Exception {
         String res = "function "+name+"(";
         if(parameters != null && parameters.length != 0) {
