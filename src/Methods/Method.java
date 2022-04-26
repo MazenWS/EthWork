@@ -57,7 +57,11 @@ public class Method {
         }
         res += "{\n";
         for(Step step : steps){
-            res += step.write()+"\n";
+            String str = step.write();
+            if(str.charAt(str.length()-1) != ';'){
+                str += ';';
+            }
+            res += str+"\n";
         }
         res += "}";
 
