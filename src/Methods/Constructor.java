@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Constructor {
     ParameterVariable[] parameters;
-    ArrayList<Step> steps;
+    ArrayList<Step> steps = new ArrayList<Step>();
     boolean payable;
 
     public Constructor(ParameterVariable[] parameters, boolean payable){
@@ -19,7 +19,14 @@ public class Constructor {
     }
 
     public String write() throws Exception {
-        String res = "constructor ";
+        String res = "constructor( ";
+        if(parameters.length >0 ) {
+            for (ParameterVariable param : parameters) {
+                res += param.write() + ", ";
+            }
+            res = res.substring(0,res.length()-2) ;
+        }
+        res += ")";
         res += payable? "payable {": "{\n";
         for(Step s : steps) {
             String str = s.write();

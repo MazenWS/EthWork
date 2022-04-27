@@ -26,7 +26,7 @@ public class StateAddress extends NamedAddress implements StateVariable{
     public String write(){
         String res ="address ";
         res+= payable? "payable ": "";
-        res+= accessModifier.name().toLowerCase(Locale.ROOT);
+        res+= accessModifier.name().toLowerCase(Locale.ROOT)+" ";
         res+= name;
         if (initialValue!= null){
             res+=" = ";

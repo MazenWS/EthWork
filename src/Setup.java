@@ -269,13 +269,13 @@ public class Setup {
             error = true;
             System.out.println(line);
         }
-        if(error){
-            File f = new File(contractName+".sol");
-            f.delete();
-        }
-        else{
-            System.out.println("Successfully compiled");
-        }
+//        if(error){
+//            File f = new File(contractName+".sol");
+//            f.delete();
+//        }
+//        else{
+//            System.out.println("Successfully compiled");
+//        }
     }
 
     private static void writeScript(String name) throws IOException {
