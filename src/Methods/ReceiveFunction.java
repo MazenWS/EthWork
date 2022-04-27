@@ -20,7 +20,11 @@ public class ReceiveFunction {
         if (! steps.isEmpty()) {
             res += "\n";
             for (Step s : steps) {
-                res += s.write() + "\n";
+                String str = s.write();
+                if(str.charAt(str.length()-1) != ';'){
+                    str += ';';
+                }
+                res += str + "\n";
             }
         }
         res += "}";

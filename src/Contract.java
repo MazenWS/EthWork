@@ -79,6 +79,7 @@ public class Contract {
             for (StateVariable state : stateVars) {
                 res += state.write() + "\n";
             }
+            res += "\n";
         }
 
         if(! events.isEmpty()) {
@@ -104,6 +105,15 @@ public class Contract {
         res += "}";
 
         return res;
+    }
+
+    public void createContract(){
+        try {
+            Setup.createContract(contractName, writeContract());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args){
@@ -170,13 +180,14 @@ public class Contract {
             ));
             Method m = null;
 
-                m = new Method("m1", new ParameterVariable[]{new ParameterAddress("add", false), new ParameterAddress("add11", true), new ParameterBool("right"), new ParameterString("name", DataLocation.MEMORY), new ParameterBytes("ages", 3), new ParameterInteger("height", false, 3), new ParameterInteger("weight", true, 3), new ParameterMapping("student", new VariableBytes(5), new VariableArray(new VariableArray(new VariableBool())), DataLocation.STORAGE), new ParameterStruct("chair", "mychair", DataLocation.MEMORY), new ParameterEnum("directions", "varenum")}, Methods.AccessModifier.PUBLIC, Type.PURE,
+                m = new Method("m1", new ParameterVariable[]{new ParameterAddress("add", false), new ParameterAddress("add11", true), new ParameterBool("right"), new ParameterString("name", DataLocation.MEMORY), new ParameterBytes("ages", 3), new ParameterInteger("height", false, 3), new ParameterInteger("weight", true, 3), new ParameterMapping("student", new VariableBytes(5), new VariableArray(new VariableArray(new VariableBool())), DataLocation.MEMORY), new ParameterStruct("chair", "mychair", DataLocation.MEMORY), new ParameterEnum("directions", "varenum")}, Methods.AccessModifier.PUBLIC, Type.PURE,
                         null);
 
             m.addSteps(new LocalBool("bright", "false"));
             c.addMethod(m);
 
-                System.out.println(c.writeContract());
+                //System.out.println(c.writeContract());
+            c.createContract();
 
             }
         catch (Exception e) {

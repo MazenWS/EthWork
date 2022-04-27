@@ -194,78 +194,87 @@ public class Setup {
         passFile.delete();
     }
 
-    private static void createProject(String path) throws IOException, InterruptedException {
-        String command = "cd "+path+" && mkdir App";
-        path += "\\App";
+//    private static void createProject(String path) throws IOException, InterruptedException {
+//        String command = "cd "+path+" && mkdir App";
+//        path += "\\App";
+//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+//        builder.redirectErrorStream(true);
+//        Process p = builder.start();
+//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//        String line;
+//        while (true) {
+//            line = r.readLine();
+//            if (line == null) break;
+//            System.out.println(line);
+//        }
+//        p.waitFor();
+//        installTruffle(path);
+//    }
+//
+//    private static void installTruffle(String path) throws IOException, InterruptedException {
+//        String command = "cd "+path+" && npm install truffle";
+//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+//        builder.redirectErrorStream(true);
+//        Process p = builder.start();
+//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//        String line;
+//        while (true) {
+//            line = r.readLine();
+//            if (line == null) break;
+//            System.out.println(line);
+//        }
+//        p.waitFor();
+//        truffleInit(path);
+//    }
+//
+//    private static void truffleInit(String path) throws IOException, InterruptedException {
+//        String command = "cd "+path+" && truffle init";
+//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+//        builder.redirectErrorStream(true);
+//        Process p = builder.start();
+//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//        String line;
+//        while (true) {
+//            line = r.readLine();
+//            if (line == null) break;
+//            System.out.println(line);
+//        }
+//    }
+//
+//    private static void createContract(String name, String path) throws IOException, InterruptedException {
+//        String command = "cd "+path+" && truffle create contract "+name;
+//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
+//        builder.redirectErrorStream(true);
+//        Process p = builder.start();
+//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//        String line;
+//        while (true) {
+//            line = r.readLine();
+//            if (line == null) break;
+//            System.out.println(line);
+//        }
+//    }
+
+    private static void compileContract(String contractName) throws IOException {
+        String command = "solcjs --bin "+contractName+".sol && solcjs --abi "+contractName+".sol";
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
         builder.redirectErrorStream(true);
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
+        boolean error = false;
         while (true) {
             line = r.readLine();
             if (line == null) break;
+            error = true;
             System.out.println(line);
         }
-        p.waitFor();
-        installTruffle(path);
-    }
-
-    private static void installTruffle(String path) throws IOException, InterruptedException {
-        String command = "cd "+path+" && npm install truffle";
-        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) break;
-            System.out.println(line);
+        if(error){
+            File f = new File(contractName+".sol");
+            f.delete();
         }
-        p.waitFor();
-        truffleInit(path);
-    }
-
-    private static void truffleInit(String path) throws IOException, InterruptedException {
-        String command = "cd "+path+" && truffle init";
-        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) break;
-            System.out.println(line);
-        }
-    }
-
-    private static void createContract(String name, String path) throws IOException, InterruptedException {
-        String command = "cd "+path+" && truffle create contract "+name;
-        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) break;
-            System.out.println(line);
-        }
-    }
-
-    private static void compileContract() throws IOException {
-        String command = "solcjs --bin PhotoShop.sol && solcjs --abi PhotoShop.sol";
-        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) break;
-            System.out.println(line);
+        else{
+            System.out.println("Successfully compiled");
         }
     }
 
@@ -363,9 +372,17 @@ public class Setup {
         }
     }
 
+    public static void createContract(String contractName, String code) throws IOException {
+        File contract = new File(contractName+".sol");
+        FileWriter myWriter = new FileWriter(contractName+".sol");
+        myWriter.write(code);
+        myWriter.close();
+        if(! checkSolidity()){
+            installSolidity();;
+        }
+        compileContract(contractName);
+    }
+
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
-        compileContract();
-        writeScript("PhotoShop");
-        runScript();
     }
 }
