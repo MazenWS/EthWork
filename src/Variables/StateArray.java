@@ -40,6 +40,37 @@ public class StateArray extends NamedArray implements StateVariable{
         this.initialValue= initialValue;
 
     }
+    //1// constructor for the dynamic storage array as a state variable
+    public StateArray(Variable variable, String name){
+        super(name, variable);
+        this.accessModifier = AccessModifier.INTERNAL;
+
+
+    }
+
+
+    //2//constructor for the static size
+    public StateArray(Variable variable, String name, int size){
+        super(name,variable, size);
+        this.accessModifier = AccessModifier.INTERNAL;
+
+    }
+
+    //3// static size with initial values
+    public StateArray(Variable  variable ,String name, int size, String[]  initialValue){
+        super(name,variable, size);
+        this.accessModifier = AccessModifier.INTERNAL;
+        this.initialValue= initialValue;
+
+    }
+
+    //4// initial values only
+    public StateArray(Variable  variable,  String name, String[]  initialValue){
+        super(name,variable);
+        this.accessModifier = AccessModifier.INTERNAL;
+        this.initialValue= initialValue;
+
+    }
     public String write(){
         String res  = "";
         res+= arrayType.write();

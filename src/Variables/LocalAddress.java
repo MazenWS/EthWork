@@ -10,6 +10,12 @@ public class LocalAddress extends ParameterAddress implements Step, ParameterVar
         this. initialValue= initialValue;
 
     }
+    public LocalAddress (String name, boolean payable){
+        super(name, payable);
+
+
+    }
+
 
     @Override
     public String write(){
@@ -17,6 +23,7 @@ public class LocalAddress extends ParameterAddress implements Step, ParameterVar
         if(initialValue != null) {
             res += " = " + initialValue;
         }
+        res+=";";
         return res;
     }
 

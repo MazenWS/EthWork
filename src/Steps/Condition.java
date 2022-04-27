@@ -38,20 +38,18 @@ public class Condition {
         arg1 = func.write();
         sign = equalNotEqual;
     }
-
     public Condition(String bool, RelationalOperator equalNotEqual){
-        this.bool = bool;
-        sign = equalNotEqual;
+       this.bool= bool;
+       sign = equalNotEqual;
     }
-
     public String write() throws Exception {
-        if(bool != null){
+        if(bool!= null){
             if(sign.equals(RelationalOperator.EQUAL))
                 return bool;
             if(sign.equals(RelationalOperator.NOT_EQUAL))
-                return "!" +bool;
-            else
-                throw new Exception("can only be if (RelationalOperator.EQUAL) or if not (RelationalOperator.NOT_EQUAL) for boolean");
+                return "! "+bool;
+            throw new Exception("can only be if (RelationalOperator.EQUAL) or if not (RelationalOperator.NOT_EQUAL) for boolean functions");
+
         }
         if(arg2 == null){
             arg1 = arg1.substring(0,arg1.length()-1);

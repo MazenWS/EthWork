@@ -21,6 +21,22 @@ public class StateBool extends NamedBool implements StateVariable {
         this.initialValue= initialValue;
         this.initialised= true;
     }
+
+
+    //1// uninitialised
+    public StateBool(String name){
+        super(name);
+        this. accessModifier = AccessModifier.INTERNAL;
+        this.initialised=false;
+
+    }
+    //2// init
+    public StateBool(String name, boolean initialValue){
+        super(name);
+        this. accessModifier = AccessModifier.INTERNAL;
+        this.initialValue= initialValue;
+        this.initialised= true;
+    }
     public String write(){
              String res = super.write();
              String[] var = res.split(" ");

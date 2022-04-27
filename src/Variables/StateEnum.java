@@ -19,6 +19,18 @@ public class StateEnum extends NamedEnum implements StateVariable {
         this.initialValue= initialValue;
     }
 
+    public StateEnum (String theEnum, String name) throws Exception {
+        super(theEnum, name);
+        this.accessModifier = AccessModifier.INTERNAL;
+
+    }
+    //initialised
+    public StateEnum (String theEnum, String name, String initialValue) throws Exception {
+        super(theEnum, name);
+        this.accessModifier = AccessModifier.INTERNAL;
+        this.initialValue= initialValue;
+    }
+
     public String write(){
         String res = super.write();
         String[] var = res.split(" ");

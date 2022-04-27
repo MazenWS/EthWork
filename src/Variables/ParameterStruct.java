@@ -2,7 +2,7 @@ package Variables;
 
 import Steps.Step;
 
-public class ParameterStruct extends NamedStruct implements ParameterVariable, Step {
+public class ParameterStruct extends NamedStruct implements ParameterVariable {
 
     DataLocation dataLocation;
     public ParameterStruct(String theStruct,String name, DataLocation  dataLocation) throws Exception {

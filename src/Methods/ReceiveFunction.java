@@ -21,9 +21,6 @@ public class ReceiveFunction {
             res += "\n";
             for (Step s : steps) {
                 String str = s.write();
-                if(str.charAt(str.length()-1) != ';'){
-                    str += ';';
-                }
                 res += str + "\n";
             }
         }

@@ -13,6 +13,7 @@ public class Contract {
     ArrayList<myEnum> enums;
     ArrayList<StateVariable> stateVars;
     ArrayList<Event> events;
+    ArrayList<Modifier> modifiers;
     Constructor constructor;
     ReceiveFunction receive;
 
@@ -23,6 +24,7 @@ public class Contract {
         enums = new ArrayList<myEnum>();
         stateVars = new ArrayList<StateVariable>();
         events = new ArrayList<Event>();
+        modifiers= new ArrayList<Modifier>();
     }
 
     public void addMethod(Method method){
@@ -36,7 +38,9 @@ public class Contract {
         }
         this.constructor = constructor;
     }
-
+    public void addModifier( Modifier modifier){
+        modifiers.add(modifier);
+       }
     public void addStruct(Struct struct){
         structs.add(struct);
     }
@@ -118,13 +122,32 @@ public class Contract {
     }
 
     public static void main(String[] args){
-        Contract c = new Contract("newContract");
+        Contract c = new Contract("TwoStepOwnable");
 
         try {
 
-
-                //System.out.println(c.writeContract());
-            c.createContract();
+            //address
+            c.addStateVariable(new StateAddress("_owner", false, AccessModifier.PRIVATE));
+            c.addStateVariable(new StateAddress("_newPotentialOwner", false, AccessModifier.PRIVATE));
+            c.addEvent(new Event("OwnershipTransferred",new EventVariable[]{new EventAddress("previousOwner",true,false), new EventAddress("newOwner",true, false)}));
+            c. addEvent(new Event("TransferInitiated", new EventVariable[]{new EventAddress("newOwner", true, false)}));
+            c. addEvent(new Event("TransferCancelled", new EventVariable[]{new EventAddress("newPotentialOwner", true, false)}));
+            Constructor newConstructor = new Constructor(null,false,Methods.AccessModifier.INTERNAL);
+            c.addConstructor(newConstructor);
+            newConstructor.addStep(new Assign("_owner" , "tx.origin;"));
+            newConstructor.addStep(new FireEvent("OwnershipTransferred", new String[]{"address(0)", "_owner"}));
+            Method first = new Method("getOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add1", false)});
+            first.addSteps(new Return("_owner"));
+            c.addMethod(first);
+            Method second = new Method("getNewPotentialOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add1", false)});
+            second.addSteps(new Return("_newPotentialOwner"));
+            c.addMethod(second);
+            Modifier modifier = new Modifier("onlyOwner",null);
+            modifier.addSteps(new Require(new Condition("isOwner()",RelationalOperator.EQUAL),"\"TwoStepOwnable: caller is not the owner.\""));
+            modifier.addSteps(new CallAfter());
+            c.addModifier(modifier);
+            System.out.println(c.writeContract());
+            //c.createContract();
 
             }
         catch (Exception e) {

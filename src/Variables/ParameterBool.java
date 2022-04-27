@@ -2,7 +2,7 @@ package Variables;
 
 import Steps.Step;
 
-public class ParameterBool extends NamedBool implements ParameterVariable, Step {
+public class ParameterBool extends NamedBool implements ParameterVariable {
     public ParameterBool (String name){
         super(name);
     }

@@ -2,7 +2,7 @@ package Variables;
 
 import Steps.Step;
 
-public class ParameterString extends NamedString implements ParameterVariable, Step {
+public class ParameterString extends NamedString implements ParameterVariable {
 DataLocation dataLocation;
     public ParameterString(String name, DataLocation dataLocation){
         super(name);

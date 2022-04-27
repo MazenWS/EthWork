@@ -9,13 +9,17 @@ String initialValue;
         super(theEnum,name);
         this.initialValue = initialValue;
     }
+    public LocalEnum( String theEnum,String name) throws Exception {
+        super(theEnum,name);
 
+    }
     @Override
     public String write(){
         String res = super.write();
         if(initialValue != null) {
             res += " = " + initialValue;
         }
+        res+=";";
         return res;
     }
 
