@@ -1,4 +1,5 @@
 import Methods.*;
+import Steps.*;
 import Variables.*;
 import Variables.AccessModifier;
 
@@ -12,6 +13,7 @@ public class Contract {
     ArrayList<myEnum> enums;
     ArrayList<StateVariable> stateVars;
     ArrayList<Event> events;
+    ArrayList<Modifier> modifiers;
     Constructor constructor;
     ReceiveFunction receive;
 
@@ -22,6 +24,7 @@ public class Contract {
         enums = new ArrayList<myEnum>();
         stateVars = new ArrayList<StateVariable>();
         events = new ArrayList<Event>();
+        modifiers= new ArrayList<Modifier>();
     }
 
     public void addMethod(Method method){
@@ -35,7 +38,9 @@ public class Contract {
         }
         this.constructor = constructor;
     }
-
+    public void addModifier( Modifier modifier){
+        modifiers.add(modifier);
+       }
     public void addStruct(Struct struct){
         structs.add(struct);
     }
@@ -124,70 +129,38 @@ public class Contract {
             //address
             c.addStateVariable(new StateAddress("_owner", false, AccessModifier.PRIVATE));
             c.addStateVariable(new StateAddress("_newPotentialOwner", false, AccessModifier.PRIVATE));
-            c.addEvent();
-            c.addEnum(new myEnum("directions", new String[]{"RIGHT", "LEFT", "UP", "Down"}));
-
-            c.addStruct(new Struct("chair", new NamedVariable[]{
-
-                        new NamedBool("high"),
-                        new NamedAddress("add111", true),
-
-                        new NamedMapping("mappy", new VariableInteger(true, 6), new VariableEnum("directions"))
-                        , new NamedBytes("byt", 15)
-                        , new NamedEnum("directions", "TheThe")
-                        , new NamedString("typ"),
-                        new NamedInteger("legs", false, 7)
-            }));
-
-                    c.addStruct(new Struct("owner", new NamedVariable[]{
-                            new NamedInteger("age", true, 7),
-                            new NamedAddress("paying", false),
-                            new NamedArray("arr22", new VariableString(), 3),
-                            new NamedArray("chairss", new VariableStruct("chair"))}));
+            c.addEvent(new Event("OwnershipTransferred",new EventVariable[]{new EventAddress("previousOwner",true,false), new EventAddress("newOwner",true, false)}));
+            c. addEvent(new Event("TransferInitiated", new EventVariable[]{new EventAddress("newOwner", true, false)}));
+            c. addEvent(new Event("TransferCancelled", new EventVariable[]{new EventAddress("newPotentialOwner", true, false)}));
+            Constructor newConstructor = new Constructor(null,false,Methods.AccessModifier.INTERNAL);
+            c.addConstructor(newConstructor);
+            newConstructor.addStep(new Assign("_owner" , "tx.origin;"));
+            newConstructor.addStep(new FireEvent("OwnershipTransferred", new String[]{"address(0)", "_owner"}));
+            Method first = new Method("getOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add1", false)});
+            first.addSteps(new Return("_owner"));
+            c.addMethod(first);
+            Method second = new Method("getNewPotentialOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add1", false)});
+            second.addSteps(new Return("_newPotentialOwner"));
+            c.addMethod(second);
+            Modifier modifier = new Modifier("onlyOwner",null);
+            modifier.addSteps(new Require(new Condition("isOwner()",RelationalOperator.EQUAL),"\"TwoStepOwnable: caller is not the owner.\""));
+            modifier.addSteps(new CallAfter());
+            c.addModifier(modifier);
 
 
 
-            //array
 
-            c.addStateVariable(new StateArray(new VariableMapping(new VariableAddress(false), new VariableStruct("chair")), AccessModifier.INTERNAL, "complexArray"));
 
-            c.addStateVariable(new StateArray(new VariableInteger(false, 5), AccessModifier.PUBLIC, "initialised", new String[]{"1", "2", "3"}));
-            //address
-            c.addStateVariable(new StateAddress("owner", true, AccessModifier.PRIVATE));
-            //bool
-            c.addStateVariable(new StateBool("alive", AccessModifier.PRIVATE));
-            c.addStateVariable(new StateBool("good", AccessModifier.PUBLIC, false));
-            //bytes
-            c.addStateVariable(new StateBytes("buyers", 2, AccessModifier.INTERNAL, "0x0AFF"));
-            c.addStateVariable(new StateBytes("nonBuyers", 8, AccessModifier.PRIVATE));
-            //enum
-            c.addStateVariable(new StateEnum("directions", "dir2", AccessModifier.INTERNAL));
-            c.addStateVariable(new StateEnum("directions", "dir1", AccessModifier.INTERNAL, "directions.UP"));
 
-            //int
-            c.addStateVariable(new StateInteger("yee", false, AccessModifier.PUBLIC, 7));
-            c.addStateVariable(new StateInteger("count", true, AccessModifier.PUBLIC, 4, 55));
 
-            //string
-            c.addStateVariable(new StateString("firstName", "alia", AccessModifier.PRIVATE));
-            c.addStateVariable(new StateString("LastName", AccessModifier.PRIVATE));
-            //struct
-            c.addStateVariable(new StateStruct("chair", "cc1", AccessModifier.INTERNAL));
 
-                //mapping
-            c.addStateVariable(new StateMapping(new VariableBool(),
-                    new VariableBytes(15), "mapp1", AccessModifier.PUBLIC
-            ));
-            Method m = null;
 
-                m = new Method("m1", new ParameterVariable[]{new ParameterAddress("add", false), new ParameterAddress("add11", true), new ParameterBool("right"), new ParameterString("name", DataLocation.MEMORY), new ParameterBytes("ages", 3), new ParameterInteger("height", false, 3), new ParameterInteger("weight", true, 3), new ParameterMapping("student", new VariableBytes(5), new VariableArray(new VariableArray(new VariableBool())), DataLocation.MEMORY), new ParameterStruct("chair", "mychair", DataLocation.MEMORY), new ParameterEnum("directions", "varenum")}, Methods.AccessModifier.PUBLIC, Type.PURE,
-                        null);
 
-            m.addSteps(new LocalBool("bright", "false"));
-            c.addMethod(m);
 
-                //System.out.println(c.writeContract());
-            c.createContract();
+
+
+            System.out.println(c.writeContract());
+            //c.createContract();
 
             }
         catch (Exception e) {

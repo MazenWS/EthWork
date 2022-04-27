@@ -13,15 +13,17 @@ public class Method {
     Type accessType;
     ParameterVariable[] returnTypes;
     ArrayList<Step> steps = new ArrayList<>();
+    String modifier;
 
 
     public Method(String name, ParameterVariable[] parameters, AccessModifier accessModifier, Type accessType,
-                  ParameterVariable[] returnTypes ){
+               String modifier  , ParameterVariable[] returnTypes ){
         this.name= name;
         this.parameters= parameters;
         this.accessModifier= accessModifier;
         this.accessType= accessType;
         this.returnTypes= returnTypes;
+        this.modifier= modifier;
 
     }
      public  void addSteps( Step step){
@@ -47,9 +49,10 @@ public class Method {
         else if(accessType.equals(Type.VIEW))
             res += " view";
         else if(accessType.equals(Type.PAYABLE))
-            res += " payable";
+            res += " payable ";
+        res+= modifier!=null ? modifier+" ":"";
         if(returnTypes != null && returnTypes.length != 0){
-            res += " returns(";
+            res += "returns(";
             for (Variable ret : returnTypes) {
                 res += ret.write() + ", ";
             }
@@ -58,9 +61,6 @@ public class Method {
         res += "{\n";
         for(Step step : steps){
             String str = step.write();
-            if(str.charAt(str.length()-1) != ';'){
-                str += ';';
-            }
             res += str+"\n";
         }
         res += "}";
