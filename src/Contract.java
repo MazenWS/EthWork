@@ -107,9 +107,14 @@ public class Contract {
     }
 
     public static void main(String[] args){
-        Contract c = new Contract("newContract");
+        Contract c = new Contract("TwoStepOwnable");
 
         try {
+
+            //address
+            c.addStateVariable(new StateAddress("_owner", false, AccessModifier.PRIVATE));
+            c.addStateVariable(new StateAddress("_newPotentialOwner", false, AccessModifier.PRIVATE));
+            c.addEvent();
             c.addEnum(new myEnum("directions", new String[]{"RIGHT", "LEFT", "UP", "Down"}));
 
             c.addStruct(new Struct("chair", new NamedVariable[]{

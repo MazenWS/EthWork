@@ -10,11 +10,17 @@ public class LocalBool extends ParameterBool implements Step {
         this. initialValue= initialValue;
     }
 
+    public LocalBool(String name){
+        super(name);
+    }
+
+
     @Override
     public String write(){
         String res = super.write();
         if(initialValue != null)
             res += " = " + initialValue;
+        res+=";";
         return res;
     }
 }

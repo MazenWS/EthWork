@@ -11,16 +11,27 @@ public class StateAddress extends NamedAddress implements StateVariable{
     //1// uninitialised
     public StateAddress(String name, boolean payable, AccessModifier accessModifier){
         super(name,payable);
-        this.name = name ;
         this.accessModifier= accessModifier;
 
     }
     //2// initialized
     public StateAddress(String name, boolean payable, String initialValue, AccessModifier accessModifier){
         super(name,payable);
-        this.name = name ;
         this. initialValue= initialValue;
         this.accessModifier= accessModifier;
+
+    }
+    //1// uninitialised
+    public StateAddress(String name, boolean payable){
+        super(name,payable);
+        this.accessModifier= AccessModifier.INTERNAL;
+
+    }
+    //2// initialized
+    public StateAddress(String name, boolean payable, String initialValue){
+        super(name,payable);
+        this. initialValue= initialValue;
+        this.accessModifier= AccessModifier.INTERNAL;
 
     }
     public String write(){

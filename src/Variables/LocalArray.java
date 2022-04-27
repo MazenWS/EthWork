@@ -18,7 +18,16 @@ public class LocalArray extends ParameterArray implements Step {
         this.initialValue= initialValue;
 
     }
+    public LocalArray(Variable  variable, String name,DataLocation dataLocation, int size ){
+        super(name, variable,dataLocation, size);
 
+    }
+
+    public LocalArray(Variable  variable, String name,  DataLocation dataLocation ){
+        super( name,variable, dataLocation );
+
+
+    }
     @Override
     public String write(){
         String res = super.write();
@@ -31,6 +40,7 @@ public class LocalArray extends ParameterArray implements Step {
                 res += res.substring(0,res.length()-2) +"]";
             }
         }
+        res+=";";
         return res;
     }
 

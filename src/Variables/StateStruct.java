@@ -15,6 +15,16 @@ public class StateStruct  extends NamedStruct implements StateVariable{
         this.accessModifier = accessModifier;
     }
 
+    public StateStruct(String theStruct,String name, String[] initialValue) throws Exception {
+        super(theStruct, name);
+        this.accessModifier =AccessModifier.INTERNAL;
+        this.initialValue= initialValue;
+    }
+    public StateStruct(String theStruct,String name) throws Exception {
+        super(theStruct,name);
+        this.accessModifier = AccessModifier.INTERNAL;
+    }
+
     public String write(){
         String res = super.write();
         String[] var = res.split(" ");

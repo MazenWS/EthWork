@@ -5,11 +5,14 @@ import Steps.Step;
 //for local variable let it return parameterVar---> the uinitialised version of each
 public class LocalString extends ParameterString implements Step {
     String initialValue;
-    DataLocation dataLocation;
+
 
     public LocalString(String name, String initialValue ,DataLocation dataLocation){
         super(name,dataLocation);
         this. initialValue= initialValue;
+    }
+    public LocalString(String name,DataLocation dataLocation){
+        super(name,dataLocation);
     }
 
     @Override
@@ -17,6 +20,7 @@ public class LocalString extends ParameterString implements Step {
         String res = super.write();
         if(initialValue != null)
             res += " = " + initialValue;
+        res+=";";
         return res;
     }
 }

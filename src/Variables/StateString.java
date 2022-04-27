@@ -18,6 +18,18 @@ String initialValue;
 
     }
 
+    public StateString(String name ){
+        super(name);
+        this.accessModifier= AccessModifier.INTERNAL;
+    }
+    //2.2// initialised
+    public StateString(String name, String initialValue ){
+        super(name);
+        this. initialValue= initialValue;
+        this. accessModifier = AccessModifier.INTERNAL;
+
+    }
+
     public String write(){
         String res = super.write();
         String[] var = res.split(" ");

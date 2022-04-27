@@ -8,6 +8,9 @@ public class LocalBytes extends ParameterBytes implements Step {
         super(name, length);
         this .initialValueInHex= initialValueInHex;
     }
+    public LocalBytes (String name, int length ) throws Exception {
+        super(name, length);
+    }
 
     @Override
     public String write(){
@@ -15,6 +18,7 @@ public class LocalBytes extends ParameterBytes implements Step {
         if(initialValueInHex != null) {
             res += " = " + initialValueInHex;
         }
+        res+=";";
         return res;
     }
 }

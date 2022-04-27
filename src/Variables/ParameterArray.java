@@ -3,7 +3,7 @@ package Variables;
 
 import Steps.Step;
 
-public class ParameterArray extends NamedArray implements ParameterVariable, Step {
+public class ParameterArray extends NamedArray implements ParameterVariable  {
     DataLocation dataLocation;
 
    //1//dynamic size

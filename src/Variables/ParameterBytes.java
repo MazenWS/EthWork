@@ -2,7 +2,7 @@ package Variables;
 
 import Steps.Step;
 
-public class ParameterBytes extends NamedBytes implements ParameterVariable, Step {
+public class ParameterBytes extends NamedBytes implements ParameterVariable  {
 
 
     public ParameterBytes(String name, int length ) throws Exception {
