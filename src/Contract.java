@@ -98,6 +98,12 @@ public class Contract {
             res += constructor.write()+ "\n\n";
         }
 
+        if(! modifiers.isEmpty()) {
+            for(Modifier mod : modifiers) {
+                res += mod.write() + "\n\n";
+            }
+        }
+
         if (!methods.isEmpty()) {
             for (Method method : methods) {
                 res += method.write() + "\n\n";
