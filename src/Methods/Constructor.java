@@ -24,7 +24,7 @@ public class Constructor {
 
     public String write() throws Exception {
         String res = "constructor( ";
-        if(parameters.length >0 ) {
+        if(parameters!= null &&parameters.length >0 ) {
             for (ParameterVariable param : parameters) {
                 res += param.write() + ", ";
             }
