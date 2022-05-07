@@ -25,17 +25,12 @@ public void  addSteps(Step step){
         for (Variable param : parameters) {
             res += param.write() + ", ";
         }
-        res = res.substring(0,res.length()-2)+"){ " +"\n";
+        res = res.substring(0,res.length()-2);
     }
         res+="){ "+"\n";
 
-        for(Step step : steps){
-            String str = step.write();
-            if(str.charAt(str.length()-1) != ';'){
-                str += ';';
-            }
-            res += str+"\n";
-        }
+        for(Step step : steps)
+            res += step.write()+"\n";
         res += "}";
         return res;
 

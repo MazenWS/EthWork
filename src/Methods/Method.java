@@ -13,22 +13,21 @@ public class Method {
     Type accessType;
     ParameterVariable[] returnTypes;
     ArrayList<Step> steps = new ArrayList<>();
-    String modifier;
+    String[] modifiers;
 
 
     public Method(String name, ParameterVariable[] parameters, AccessModifier accessModifier, Type accessType,
-               String modifier  , ParameterVariable[] returnTypes ){
+               String[] modifiers  , ParameterVariable[] returnTypes ){
         this.name= name;
         this.parameters= parameters;
         this.accessModifier= accessModifier;
         this.accessType= accessType;
         this.returnTypes= returnTypes;
-        this.modifier= modifier;
+        this.modifiers= modifiers;
 
     }
      public  void addSteps( Step step){
         steps.add(step);
-
      }
     public String write() throws Exception {
         String res = "function "+name+"(";
@@ -36,33 +35,32 @@ public class Method {
             for (Variable param : parameters) {
                 res += param.write() + ", ";
             }
-            res = res.substring(0,res.length()-2)+")";
+            res = res.substring(0,res.length()-2);
         }
-        switch (accessModifier){
-            case INTERNAL -> {res += " internal";break;}
-            case PRIVATE -> {res += " private";break;}
-            case PUBLIC -> {res += " public";break;}
-            case EXTERNAL -> {res += " exteral";break;}
-        }
+        res += ") ";
+        res += accessModifier.name().toLowerCase();
         if(accessType.equals(Type.PURE))
             res += " pure";
         else if(accessType.equals(Type.VIEW))
             res += " view";
         else if(accessType.equals(Type.PAYABLE))
             res += " payable ";
-        res+= modifier!=null ? modifier+" ":"";
+        if( modifiers != null && modifiers.length != 0 ){
+            for(String mod : modifiers) {
+                res += mod + ", ";
+            }
+            res = res.substring(0,res.length()-2);
+        }
         if(returnTypes != null && returnTypes.length != 0){
-            res += "returns(";
+            res += " returns(";
             for (Variable ret : returnTypes) {
                 res += ret.write() + ", ";
             }
             res = res.substring(0,res.length()-2)+")";
         }
         res += "{\n";
-        for(Step step : steps){
-            String str = step.write();
-            res += str+"\n";
-        }
+        for(Step step : steps)
+            res += step.write()+"\n";
         res += "}";
 
         return res;
