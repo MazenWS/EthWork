@@ -140,7 +140,7 @@ public class Contract {
             c. addEvent(new Event("TransferCancelled", new EventVariable[]{new EventAddress("newPotentialOwner", true, false)}));
             Constructor newConstructor = new Constructor(null,false,Methods.AccessModifier.INTERNAL);
             c.addConstructor(newConstructor);
-            newConstructor.addStep(new Assign("_owner" , "tx.origin;"));
+            newConstructor.addStep(new Assign("_owner" , "tx.origin"));
             newConstructor.addStep(new FireEvent("OwnershipTransferred", new String[]{"address(0)", "_owner"}));
             Method first = new Method("getOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add1", false)});
             first.addSteps(new Return("_owner"));
@@ -155,13 +155,13 @@ public class Contract {
            Method third= new Method("isOwner", null, Methods.AccessModifier.PUBLIC,Type.VIEW,null,new ParameterVariable[]{new ParameterBool("b1")});
            third.addSteps(new Return("msg.sender == _owner"));
            c.addMethod(third);
-           Method fourth= new Method("transferOwnership",  new ParameterVariable[]{new ParameterAddress("newPotentialOwner", false)}, Methods.AccessModifier.PUBLIC,Type.NONE,"onlyOwner",null);
+           Method fourth= new Method("transferOwnership",  new ParameterVariable[]{new ParameterAddress("newPotentialOwner", false)}, Methods.AccessModifier.PUBLIC,Type.NONE,new String[]{"onlyOwner"},null);
            fourth.addSteps(new Require(new Condition("newPotentialOwner","address(0)","address",RelationalOperator.NOT_EQUAL),"\"TwoStepOwnable: new potential owner is the zero address.\""));
            fourth.addSteps(new Assign("_newPotentialOwner","newPotentialOwner"));
            fourth.addSteps(new FireEvent("TransferInitiated", new String[]{"address(newPotentialOwner)"}));
            c.addMethod(fourth);
-           Method fifth = new Method("cancelOwnershipTransfer",null, Methods.AccessModifier.PUBLIC,Type.NONE,"onlyOwner",null);
-           fifth.addSteps(new FireEvent("TransferCancelled",new String[]{"address(_newPotentialOwner"}));
+           Method fifth = new Method("cancelOwnershipTransfer",null, Methods.AccessModifier.PUBLIC,Type.NONE,new String[]{"onlyOwner"},null);
+           fifth.addSteps(new FireEvent("TransferCancelled",new String[]{"address(_newPotentialOwner)"}));
            fifth.addSteps(new Delete("_newPotentialOwner"));
            c.addMethod(fifth);
            Method sixth = new Method("acceptOwnership",null, Methods.AccessModifier.PUBLIC,Type.NONE,null,null);

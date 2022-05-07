@@ -38,13 +38,14 @@ public class Method {
             res = res.substring(0,res.length()-2);
         }
         res += ") ";
-        res += accessModifier.name().toLowerCase();
+        res += accessModifier.name().toLowerCase()+" ";
+
         if(accessType.equals(Type.PURE))
-            res += " pure";
+            res += "pure ";
         else if(accessType.equals(Type.VIEW))
-            res += " view";
+            res += "view ";
         else if(accessType.equals(Type.PAYABLE))
-            res += " payable ";
+            res += "payable ";
         if( modifiers != null && modifiers.length != 0 ){
             for(String mod : modifiers) {
                 res += mod + ", ";

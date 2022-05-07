@@ -5,6 +5,7 @@ import Variables.ParameterVariable;
 import Variables.Variable;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Constructor {
     ParameterVariable[] parameters;
@@ -31,7 +32,9 @@ public class Constructor {
             res = res.substring(0,res.length()-2) ;
         }
         res += ")";
-        res += payable? "payable {": "{\n";
+        res += payable? "payable ":" ";
+        res+=accessModifier.name().toLowerCase(Locale.ROOT)+" ";
+        res+="{"+"\n";
         for(Step s : steps) {
             String str = s.write();
             res += str + "\n";
