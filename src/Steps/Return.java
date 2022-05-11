@@ -11,7 +11,8 @@ public class Return implements Step{
     @Override
     public String write() throws Exception {
         String res = "return";
-        res +=" "+ statement +";";
+        if(statement != null)
+            res +=" "+ statement +";";
         return res;
     }
 }
