@@ -7,7 +7,7 @@ public class LocalString extends ParameterString implements Step {
     String initialValue;
 
 
-    public LocalString(String name, String initialValue ,DataLocation dataLocation){
+    public LocalString(String name,DataLocation dataLocation, String initialValue ){
         super(name,dataLocation);
         this. initialValue= initialValue;
     }

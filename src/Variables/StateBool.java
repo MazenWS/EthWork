@@ -22,6 +22,7 @@ public class StateBool extends NamedBool implements StateVariable {
         this.initialised= true;
     }
 
+//if the user did not specify an AccessModifier then it's internal
 
     //1// uninitialised
     public StateBool(String name){

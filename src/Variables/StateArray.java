@@ -10,7 +10,7 @@ public class StateArray extends NamedArray implements StateVariable{
 
 
     //1// constructor for the dynamic storage array as a state variable
-    public StateArray(Variable variable,Variables.AccessModifier accessModifier, String name){
+    public StateArray( String name,Variable variable,Variables.AccessModifier accessModifier){
         super(name, variable);
         this.accessModifier = accessModifier;
 
@@ -19,14 +19,14 @@ public class StateArray extends NamedArray implements StateVariable{
 
 
     //2//constructor for the static size
-    public StateArray(Variable variable, Variables.AccessModifier accessModifier, String name, int size){
+    public StateArray(String name, Variable variable, Variables.AccessModifier accessModifier, int size){
         super(name,variable, size);
         this.accessModifier = accessModifier;
 
     }
 
     //3// static size with initial values
-    public StateArray(Variable  variable, Variables.AccessModifier accessModifier, String name, int size, String[]  initialValue){
+    public StateArray(String name,Variable  variable, Variables.AccessModifier accessModifier, int size, String[]  initialValue){
      super(name,variable, size);
         this.accessModifier = accessModifier;
         this.initialValue= initialValue;
@@ -34,14 +34,14 @@ public class StateArray extends NamedArray implements StateVariable{
     }
 
     //4// initial values only
-    public StateArray(Variable  variable, Variables.AccessModifier accessModifier, String name, String[]  initialValue){
+    public StateArray( String name ,Variable  variable, Variables.AccessModifier accessModifier, String[]  initialValue){
         super(name,variable);
         this.accessModifier = accessModifier;
         this.initialValue= initialValue;
 
     }
     //1// constructor for the dynamic storage array as a state variable
-    public StateArray(Variable variable, String name){
+    public StateArray(String name, Variable variable){
         super(name, variable);
         this.accessModifier = AccessModifier.INTERNAL;
 
@@ -50,14 +50,14 @@ public class StateArray extends NamedArray implements StateVariable{
 
 
     //2//constructor for the static size
-    public StateArray(Variable variable, String name, int size){
+    public StateArray( String name,Variable variable, int size){
         super(name,variable, size);
         this.accessModifier = AccessModifier.INTERNAL;
 
     }
 
     //3// static size with initial values
-    public StateArray(Variable  variable ,String name, int size, String[]  initialValue){
+    public StateArray(String name,Variable  variable , int size, String[]  initialValue){
         super(name,variable, size);
         this.accessModifier = AccessModifier.INTERNAL;
         this.initialValue= initialValue;
@@ -65,7 +65,7 @@ public class StateArray extends NamedArray implements StateVariable{
     }
 
     //4// initial values only
-    public StateArray(Variable  variable,  String name, String[]  initialValue){
+    public StateArray( String name ,Variable  variable, String[]  initialValue){
         super(name,variable);
         this.accessModifier = AccessModifier.INTERNAL;
         this.initialValue= initialValue;

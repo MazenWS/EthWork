@@ -6,16 +6,16 @@ public class LocalStruct extends ParameterStruct implements Step {
    String[] initialValue;
    String initValue;
 
-    public LocalStruct(String theStruct,String name, DataLocation  dataLocation, String[] initialValue) throws Exception {
+    public LocalStruct(String theStruct,String name, DataLocation  dataLocation, String[] initialValue)  {
         super(theStruct,name,dataLocation);
         this.name = name;
         this.initialValue= initialValue;
     }
-    public LocalStruct(String theStruct,String name, DataLocation  dataLocation, String initValue) throws Exception {
+    public LocalStruct(String theStruct,String name, DataLocation  dataLocation, String initValue)  {
         super(theStruct,name,dataLocation);
         this.initValue= initValue;
     }
-    public LocalStruct(String theStruct,String name, DataLocation  dataLocation ) throws Exception {
+    public LocalStruct(String theStruct,String name, DataLocation  dataLocation )  {
         super(theStruct,name,dataLocation);
 
     }

@@ -8,22 +8,22 @@ public class LocalArray extends ParameterArray implements Step {
     ArrayList<String> initialValue;
 
 
-    public LocalArray(Variable  variable, String name,DataLocation dataLocation, int size, ArrayList<String>  initialValue){
+    public LocalArray(String name,Variable  variable, DataLocation dataLocation, int size, ArrayList<String>  initialValue){
         super(name, variable,dataLocation, size);
         this.initialValue= initialValue;
     }
 
-    public LocalArray(Variable  variable, String name,  DataLocation dataLocation,ArrayList<String>  initialValue){
+    public LocalArray( String name, Variable  variable, DataLocation dataLocation,ArrayList<String>  initialValue){
         super( name,variable, dataLocation );
         this.initialValue= initialValue;
 
     }
-    public LocalArray(Variable  variable, String name,DataLocation dataLocation, int size ){
+    public LocalArray(String name,Variable  variable, DataLocation dataLocation, int size ){
         super(name, variable,dataLocation, size);
 
     }
 
-    public LocalArray(Variable  variable, String name,  DataLocation dataLocation ){
+    public LocalArray( String name, Variable  variable, DataLocation dataLocation ){
         super( name,variable, dataLocation );
 
 

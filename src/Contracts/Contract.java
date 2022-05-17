@@ -107,7 +107,7 @@ public void addLibrary(String libraryFile,String[] libraryNames){
          res+= "contract "+contractName ;
 
         if (!extendsContract.isEmpty()){
-            res+= "is ";
+            res+= " is ";
             for (String names : extendsContract) {
                 res += names+", ";
             }

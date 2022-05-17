@@ -16,7 +16,7 @@ public class StateBytes extends NamedBytes implements StateVariable{
         this. accessModifier= accessModifier;
         this.initialValueInHex = initialValueInHex;
     }
-
+    //if the user did not specify an AccessModifier then it's internal
     //2.1// uninitialized
     public StateBytes(String name, int length) throws Exception {
         super(name,length);
