@@ -1,6 +1,7 @@
 package Contracts;
 
 
+import Lines.LineCounter;
 import Methods.*;
 import Variables.StateVariable;
 
@@ -31,9 +32,11 @@ public Library(String contractName){
 }
     public void addModifier( Modifier modifier){
         modifiers.add(modifier);
+        modifier.setJavaLine(LineCounter.getLine());
     }
     public void addEvent(Event event){
         events.add(event);
+        event.setJavaLine(LineCounter.getLine());
     }
     public String write() throws Exception {
         String res= super.write();

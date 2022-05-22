@@ -5,6 +5,7 @@ import Steps.Step;
 public class LocalStruct extends ParameterStruct implements Step {
    String[] initialValue;
    String initValue;
+   int javaLine;
 
     public LocalStruct(String theStruct,String name, DataLocation  dataLocation, String[] initialValue) throws Exception {
         super(theStruct,name,dataLocation);
@@ -21,6 +22,10 @@ public class LocalStruct extends ParameterStruct implements Step {
     }
 
 
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 
     public String write() {
         String res = super.write();

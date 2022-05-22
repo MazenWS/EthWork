@@ -1,11 +1,15 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 import java.util.Locale;
 
 public class StateAddress extends NamedAddress implements StateVariable{
 
     String initialValue;
     AccessModifier accessModifier;
+    int javaLine;
 
 
     //1// uninitialised
@@ -37,7 +41,7 @@ public class StateAddress extends NamedAddress implements StateVariable{
     public String write(){
         String res ="address ";
         res+= payable? "payable ": "";
-        res+= accessModifier.name().toLowerCase(Locale.ROOT)+" ";
+        res+= accessModifier.name().toLowerCase()+" ";
         res+= name;
         if (initialValue!= null){
             res+=" = ";
@@ -45,8 +49,9 @@ public class StateAddress extends NamedAddress implements StateVariable{
         }
         res+=" ;";
 
-
-return res;
+        int solLine = ++TheFile.solidityCount;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
+        return res;
     }
 
 
@@ -55,4 +60,8 @@ return res;
     }
 
 
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 }

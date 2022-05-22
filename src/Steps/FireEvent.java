@@ -3,11 +3,18 @@ package Steps;
 public class FireEvent implements Step{
     String EventName;
     String[] parameters;
+    int javaLine;
 
     //emit EventName(parameters)
     public FireEvent(String EventName, String[] parameters){
         this.EventName = EventName;
         this.parameters = parameters;
+    }
+
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 
     @Override

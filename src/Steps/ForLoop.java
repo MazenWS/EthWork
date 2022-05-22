@@ -6,6 +6,7 @@ public class ForLoop implements Step{
     String initialization;
     String iterationStatement;
     Step[] body;
+    int javaLine;
 
     public ForLoop(Condition condition,String initialization, String iterationStatement, Step[] body){
         conditions = new Condition[] {condition};
@@ -23,6 +24,11 @@ public class ForLoop implements Step{
         this.body = body;
     }
 
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 
     @Override
     public String write() throws Exception {

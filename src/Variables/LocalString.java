@@ -5,6 +5,7 @@ import Steps.Step;
 //for local variable let it return parameterVar---> the uinitialised version of each
 public class LocalString extends ParameterString implements Step {
     String initialValue;
+    int javaLine;
 
 
     public LocalString(String name, String initialValue ,DataLocation dataLocation){
@@ -13,6 +14,12 @@ public class LocalString extends ParameterString implements Step {
     }
     public LocalString(String name,DataLocation dataLocation){
         super(name,dataLocation);
+    }
+
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 
     @Override

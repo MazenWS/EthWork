@@ -5,6 +5,7 @@ public class IFStatement implements Step{
     LogicalOperator[] operators;
     Step[] then;
     Step[] elseBody;
+    int javaLine;
 
     public IFStatement(Condition[] conditions,LogicalOperator[] operators, Step[] body){
         this.conditions = conditions;
@@ -30,6 +31,13 @@ public class IFStatement implements Step{
         this.operators = operators;
         this.then = then;
         this.elseBody = elseBody;
+    }
+
+
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 
 

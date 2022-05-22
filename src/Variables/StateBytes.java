@@ -1,9 +1,13 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class StateBytes extends NamedBytes implements StateVariable{
 
     String initialValueInHex;
     AccessModifier accessModifier;
+    int javaLine;
 
     //2.1// uninitialized
     public StateBytes(String name, int length, AccessModifier accessModifier ) throws Exception {
@@ -38,6 +42,14 @@ public class StateBytes extends NamedBytes implements StateVariable{
 
         }
         res+=";";
+
+        int solLine = ++TheFile.solidityCount;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 }

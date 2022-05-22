@@ -5,11 +5,18 @@ import Variables.Variable;
 public class Function implements Step{
     String FunctionName;
     Variable[] parameters;
+    int javaLine;
 
     //func(params)
     public Function(String FunctionName, Variable[] parameters){
         this.FunctionName = FunctionName;
         this.parameters = parameters;
+    }
+
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 
     @Override

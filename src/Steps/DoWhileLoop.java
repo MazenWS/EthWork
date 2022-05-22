@@ -4,6 +4,7 @@ public class DoWhileLoop implements Step{
     Condition[] conditions;
     LogicalOperator[] operators;
     Step[] body;
+    int javaLine;
 
     public DoWhileLoop(Condition condition, Step[] body){
         conditions = new Condition[] {condition};
@@ -17,6 +18,12 @@ public class DoWhileLoop implements Step{
         this.body = body;
     }
 
+
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 
     @Override
     public String write() throws Exception {

@@ -3,6 +3,7 @@ package Steps;
 public class Assign implements Step{
     String assignToVar;
     String statement;
+    int javaLine;
 
     //assignToVar = statement
     public Assign(String assignToVar, String statement){
@@ -14,6 +15,11 @@ public class Assign implements Step{
     public Assign(String assignToVar, Function function){
         this.assignToVar = assignToVar;
         this.statement = function.write();
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 
     @Override

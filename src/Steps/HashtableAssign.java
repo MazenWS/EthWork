@@ -4,6 +4,7 @@ public class HashtableAssign implements Step{
     String hashtableName;
     String insertTokey;
     String statement;
+    int javaLine;
 
     //hashtable[key] = a+b
     public HashtableAssign(String hashtableName, String insertTokey, String statement){
@@ -18,6 +19,12 @@ public class HashtableAssign implements Step{
         this.insertTokey = insertTokey;
         this.statement = function.write();
     }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
+
     @Override
     public String write() throws Exception{
         String res = hashtableName+"["+insertTokey+"] = ";

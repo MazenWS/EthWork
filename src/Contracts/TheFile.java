@@ -1,15 +1,19 @@
-import Contracts.Contract;
-import Contracts.TypeContract;
+package Contracts;
+
+import Lines.LinesArrangment;
 import Methods.*;
 import Steps.*;
 import Variables.*;
 import Variables.AccessModifier;
+import Setup.Setup;
 
 import java.util.ArrayList;
 
 public class TheFile {
     String fileName;
     ArrayList<TypeContract> contracts;
+    public static LinesArrangment lineMap;
+    public static int solidityCount;
 
 
     public TheFile(String fileName){

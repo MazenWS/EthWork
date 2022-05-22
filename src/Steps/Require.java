@@ -4,6 +4,7 @@ package Steps;
 public class Require implements Step{
     Condition condition;
     String messageToThrow  = null;
+    int javaLine;
 
     //require(bool statement,if false throw message)
     public Require(Condition condition, String messageToThrow){
@@ -22,6 +23,11 @@ public class Require implements Step{
         res += "require("+condition.write();
         res += messageToThrow != null ? ", "+messageToThrow+");" : ");";
         return res;
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 
     public static void main(String[] args) throws Exception {

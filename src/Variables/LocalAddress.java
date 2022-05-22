@@ -4,6 +4,7 @@ import Steps.Step;
 
 public class LocalAddress extends ParameterAddress implements Step, ParameterVariable {
     public String initialValue;
+    int javaLine;
 
     public LocalAddress (String name, boolean payable, String initialValue){
         super(name, payable);
@@ -16,6 +17,10 @@ public class LocalAddress extends ParameterAddress implements Step, ParameterVar
 
     }
 
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 
     @Override
     public String write(){

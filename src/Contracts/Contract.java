@@ -1,9 +1,9 @@
 package Contracts;
 
+import Lines.LineCounter;
 import Methods.*;
 import Variables.StateVariable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -35,42 +35,47 @@ public class Contract extends TypeContract{
         modifiers= new ArrayList<Modifier>();
         extendsContract= new ArrayList<>();
         fileAndLib=new Hashtable<>();
-allLibs= new ArrayList<>();
+        allLibs= new ArrayList<>();
     }
 
-public void setAbstract(){
-        isAbstract= true;
-}
-public void addAContractToExtend(String extendsContract){
-        this.extendsContract.add(extendsContract);
-}
-public void addLibrary(String libraryFile,String[] libraryNames){
-        fileAndLib.put(libraryFile,libraryNames);
-}
+    public void setAbstract(){
+            isAbstract= true;
+    }
+    public void addAContractToExtend(String extendsContract){
+            this.extendsContract.add(extendsContract);
+    }
+    public void addLibrary(String libraryFile,String[] libraryNames){
+            fileAndLib.put(libraryFile,libraryNames);
+    }
     public void addConstructor(Constructor constructor) throws Exception {
 
         if(this.constructor != null){
             throw new Exception("A Constructor is Already Added");
         }
+        constructor.setJavaLine(LineCounter.getLine());
         this.constructor = constructor;
     }
     public void addModifier( Modifier modifier){
+        modifier.setJavaLine(LineCounter.getLine());
         modifiers.add(modifier);
     }
 
 
     public void addStateVariable(StateVariable var){
         stateVars.add(var);
+        var.setJavaLine(LineCounter.getLine());
     }
 
     public void addEvent(Event event){
         events.add(event);
+        event.setJavaLine(LineCounter.getLine());
     }
 
     public void addReceiveFunction(ReceiveFunction receive) throws Exception {
         if(this.receive != null){
             throw new Exception("A receive Function is already Added");
         }
+        receive.setJavaLine(LineCounter.getLine());
         this.receive = receive;
     }
 
