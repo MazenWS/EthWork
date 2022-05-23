@@ -5,10 +5,10 @@ import Lines.Line;
 import java.util.ArrayList;
 
 public class LinesArrangment {
-    ArrayList<Line> lines = new ArrayList<>();
+    static ArrayList<Line> lines = new ArrayList<>();
 
 
-    public int getJavaLine(int solLine){
+    public static int getJavaLine(int solLine){
         for(Line line : lines) {
             if(solLine >= line.solStart && solLine <= line.solEnd)
                 return line.javaLine;

@@ -45,7 +45,7 @@ public class StateStruct  extends NamedStruct implements StateVariable{
             res+= ");";
         }
         res+=";";
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount++;
         TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }

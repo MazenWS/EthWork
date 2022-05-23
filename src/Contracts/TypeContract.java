@@ -26,11 +26,14 @@ public  abstract class TypeContract {
 
 public  String write() throws Exception{
     String res = "contract "+contractName + " {\n\n\n";
+    TheFile.solidityCount+=3;
     if(! structs.isEmpty()) {
         for (Struct struct : structs) {
             res += struct.write() + "\n\n";
+            TheFile.solidityCount++;
         }
         res += "\n";
+        TheFile.solidityCount++;
     }
 
     if(! enums.isEmpty()) {
@@ -38,13 +41,15 @@ public  String write() throws Exception{
             res += enumm.write() + "\n";
         }
         res += "\n";
+        TheFile.solidityCount++;
     }
     if (!methods.isEmpty()) {
         for (Method method : methods) {
             res += method.write() + "\n\n";
+            TheFile.solidityCount++;
         }
     }
 
-return res;
-}
+    return res;
+    }
 }

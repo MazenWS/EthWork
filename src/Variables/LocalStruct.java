@@ -1,5 +1,7 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 public class LocalStruct extends ParameterStruct implements Step {
@@ -40,6 +42,8 @@ public class LocalStruct extends ParameterStruct implements Step {
             res = res.substring(0,res.length()-2)+")";
 
         }
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res+";";
     }
 }

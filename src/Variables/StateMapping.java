@@ -22,7 +22,7 @@ public class StateMapping extends NamedMapping implements StateVariable{
         res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
         res+=";";
 
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount++;
         TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }

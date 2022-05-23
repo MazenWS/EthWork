@@ -1,5 +1,8 @@
 package Steps;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class ForLoop implements Step{
     Condition[] conditions;
     LogicalOperator[] operators;
@@ -32,6 +35,7 @@ public class ForLoop implements Step{
 
     @Override
     public String write() throws Exception {
+        int start = TheFile.solidityCount++;
         if(conditions.length != operators.length+1)
             throw new Exception("Conditions should be ONE more than Operators");
         String res = "for("+initialization+"; "+conditions[0].write();
@@ -40,9 +44,12 @@ public class ForLoop implements Step{
             res += op+conditions[i].write();
         }
         res += "; "+iterationStatement+") {\n";
-        for(Step step : body)
-            res += step.write()+"\n";
+        for(Step step : body) {
+            step.setJavaLine(javaLine);
+            res += step.write() + "\n";
+        }
         res += "}";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",start,TheFile.solidityCount++));
         return res;
     }
 }

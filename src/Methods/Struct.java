@@ -33,7 +33,7 @@ public class Struct {
         }
         res += "}";
 
-        TheFile.lineMap.addLine(new Line(javaLine,"Struct",++TheFile.solidityCount,TheFile.solidityCount+=count));
+        TheFile.lineMap.addLine(new Line(javaLine,"Struct",TheFile.solidityCount++,TheFile.solidityCount+=count+1));
 
         return res;
     }

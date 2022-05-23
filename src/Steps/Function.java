@@ -1,5 +1,7 @@
 package Steps;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Variables.Variable;
 
 public class Function implements Step{
@@ -21,6 +23,8 @@ public class Function implements Step{
 
     @Override
     public String write() {
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         String res = FunctionName+"(";
         for(Variable param : parameters){
             res += param.getClass() +", ";

@@ -1,5 +1,6 @@
 package Contracts;
 
+import Lines.Line;
 import Lines.LineCounter;
 import Methods.*;
 import Variables.StateVariable;
@@ -80,12 +81,11 @@ public class Contract extends TypeContract{
     }
 
     public String write() throws Exception {
-        String res="";
+        String res="//SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.13;\n";
+        TheFile.solidityCount+=2;
         if (!fileAndLib.isEmpty()){
             Enumeration<String> e = fileAndLib.keys();
             while (e.hasMoreElements()) {
-
-
                String filename = e.nextElement();
                res+="import {";
                 for (String lib:
@@ -96,17 +96,17 @@ public class Contract extends TypeContract{
                res = res.substring(0,res.length()-2) ;
                 res+="} from \""+filename+"\" ;";
                 res+="\n";
-
+                TheFile.solidityCount++;
         }
             for (String lib:
                     allLibs) {
                 res+="using "+ lib +" *;";
                 res+="\n";
-
-
+                TheFile.solidityCount++;
             }
+            res+="\n\n\n";
+            TheFile.solidityCount+=3;
         }
-     res+="\n\n\n";
 
 
          res+= "contract "+contractName ;
@@ -120,12 +120,15 @@ public class Contract extends TypeContract{
             res = res.substring(0,res.length()-2) ;
         }
         res+=  " {\n\n\n";
+        TheFile.solidityCount+=4;
 
         if(! structs.isEmpty()) {
             for (Struct struct : structs) {
                 res += struct.write() + "\n\n";
+                TheFile.solidityCount++;
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(! enums.isEmpty()) {
@@ -133,6 +136,7 @@ public class Contract extends TypeContract{
                 res += enumm.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(!stateVars.isEmpty()) {
@@ -140,6 +144,7 @@ public class Contract extends TypeContract{
                 res += state.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(! events.isEmpty()) {
@@ -147,21 +152,25 @@ public class Contract extends TypeContract{
                 res += event.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(constructor != null){
             res += constructor.write()+ "\n\n";
+            TheFile.solidityCount++;
         }
 
         if(! modifiers.isEmpty()) {
             for(Modifier mod : modifiers) {
                 res += mod.write() + "\n\n";
+                TheFile.solidityCount++;
             }
         }
 
         if (!methods.isEmpty()) {
             for (Method method : methods) {
                 res += method.write() + "\n\n";
+                TheFile.solidityCount++;
             }
         }
 
@@ -169,7 +178,6 @@ public class Contract extends TypeContract{
             res += receive.write()+"\n";
         }
         res += "}";
-
         return res;
     }
 

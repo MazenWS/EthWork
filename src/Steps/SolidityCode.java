@@ -1,5 +1,8 @@
 package Steps;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class SolidityCode implements Step{
 
     String code;
@@ -17,6 +20,8 @@ public class SolidityCode implements Step{
 
     @Override
     public String write() throws Exception {
+        String[] lines = code.split("\n");
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount+=lines.length));
         return code;
     }
 }

@@ -25,8 +25,9 @@ public class ReceiveFunction {
     public String write() throws Exception {
         String res = "receive() external payable {";
 
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount;
         TheFile.lineMap.addLine(new Line(javaLine,"ReceiveFunction",solLine,solLine));
+        TheFile.solidityCount++;
 
         if (! steps.isEmpty()) {
             res += "\n";
@@ -36,6 +37,7 @@ public class ReceiveFunction {
             }
         }
         res += "}";
+        TheFile.solidityCount++;
         return res;
     }
 }

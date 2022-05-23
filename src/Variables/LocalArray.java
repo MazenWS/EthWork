@@ -1,5 +1,7 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ public class LocalArray extends ParameterArray implements Step {
             }
         }
         res+=";";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res;
     }
 

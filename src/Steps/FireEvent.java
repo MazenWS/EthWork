@@ -1,5 +1,8 @@
 package Steps;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class FireEvent implements Step{
     String EventName;
     String[] parameters;
@@ -19,6 +22,8 @@ public class FireEvent implements Step{
 
     @Override
     public String write() {
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         String res = "emit "+EventName+"(";
         for(String param : parameters){
             res += param + ", ";

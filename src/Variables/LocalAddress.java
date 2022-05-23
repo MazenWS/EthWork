@@ -1,5 +1,7 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 public class LocalAddress extends ParameterAddress implements Step, ParameterVariable {
@@ -29,6 +31,8 @@ public class LocalAddress extends ParameterAddress implements Step, ParameterVar
             res += " = " + initialValue;
         }
         res+=";";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res;
     }
 

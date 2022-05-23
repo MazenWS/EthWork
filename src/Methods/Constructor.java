@@ -43,13 +43,15 @@ public class Constructor {
         res+=accessModifier.name().toLowerCase()+" ";
         res+="{"+"\n";
 
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount;
         TheFile.lineMap.addLine(new Line(javaLine,"Constructor",solLine,solLine));
+        TheFile.solidityCount++;
 
         for(Step s : steps) {
             String str = s.write();
             res += str + "\n";
         }
+        TheFile.solidityCount++;
         return res + "}";
     }
 }

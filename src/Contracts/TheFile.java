@@ -19,6 +19,7 @@ public class TheFile {
     public TheFile(String fileName){
         this.fileName= fileName;
         contracts = new ArrayList<>();
+        lineMap = new LinesArrangment();
     }
 
 
@@ -32,6 +33,7 @@ public class TheFile {
         if(! contracts.isEmpty()) {
             for (TypeContract contract : contracts) {
                 res += contract.write() + "\n\n";
+                solidityCount+=2;
             }
 
         }

@@ -29,8 +29,9 @@ public class myEnum {
         }
         res = res.substring(0,res.length()-2)+" }";
 
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount;
         TheFile.lineMap.addLine(new Line(javaLine,"Enum",solLine,solLine));
+        TheFile.solidityCount++;
 
         return res;
     }

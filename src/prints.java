@@ -14,15 +14,13 @@ public class prints {
             objReader = new BufferedReader(new FileReader(args[0]));
             boolean inMain = false;
             boolean newStatement = true;
-            int printsAdded = 0;
             int lineCount = 0;
 
             while ((strCurrentLine = objReader.readLine()) != null) {
 
                 lineCount++;
                 if(inMain && newStatement && strCurrentLine != ""){
-                    System.out.println("Lines.LineCounter.track("+(lineCount-printsAdded)+");");
-                    printsAdded ++;
+                    System.out.println("LineCounter.track("+lineCount+");");
                     String s = strCurrentLine;
                     newStatement = (s.replaceAll("\\s+"," ").trim().charAt(s.length()-1) != ';') ? false : true;
                 }

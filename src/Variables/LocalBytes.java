@@ -1,5 +1,7 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 public class LocalBytes extends ParameterBytes implements Step {
@@ -26,6 +28,8 @@ public class LocalBytes extends ParameterBytes implements Step {
             res += " = " + initialValueInHex;
         }
         res+=";";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res;
     }
 }

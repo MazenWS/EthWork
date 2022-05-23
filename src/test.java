@@ -1,5 +1,6 @@
 import Contracts.Contract;
 import Contracts.TheFile;
+import Lines.LineCounter;
 import Methods.*;
 import Steps.*;
 import Variables.*;
@@ -17,31 +18,31 @@ public class test {
         try {
 
             //address
-            c.addStateVariable(new StateAddress("_owner", false, AccessModifier.PRIVATE));
-            c.addStateVariable(new StateAddress("_newPotentialOwner", false, AccessModifier.PRIVATE));
-            c.addEvent(new Event("OwnershipTransferred",new EventVariable[]{new EventAddress("previousOwner",true,false), new EventAddress("newOwner",true, false)}));
-            c. addEvent(new Event("TransferInitiated", new EventVariable[]{new EventAddress("newOwner", true, false)}));
-            c. addEvent(new Event("TransferCancelled", new EventVariable[]{new EventAddress("newPotentialOwner", true, false)}));
-            Constructor newConstructor = new Constructor(null,false,Methods.AccessModifier.INTERNAL);
-            c.addConstructor(newConstructor);
-            newConstructor.addStep(new Assign("_owner" , "tx.origin"));
-            newConstructor.addStep(new FireEvent("OwnershipTransferred", new String[]{"address(0)", "_owner"}));
+            LineCounter.track(21);c.addStateVariable(new StateAddress("_owner", false, AccessModifier.PRIVATE));
+            LineCounter.track(22);c.addStateVariable(new StateAddress("_newPotentialOwner", false, AccessModifier.PRIVATE));
+            LineCounter.track(23);c.addEvent(new Event("OwnershipTransferred",new EventVariable[]{new EventAddress("previousOwner",true,false), new EventAddress("newOwner",true, false)}));
+            LineCounter.track(24);c. addEvent(new Event("TransferInitiated", new EventVariable[]{new EventAddress("newOwner", true, false)}));
+            LineCounter.track(25);c. addEvent(new Event("TransferCancelled", new EventVariable[]{new EventAddress("newPotentialOwner", true, false)}));
+            Constructor newConstructor = new Constructor(null,false,Methods.AccessModifier.PUBLIC);
+            LineCounter.track(27);c.addConstructor(newConstructor);
+            LineCounter.track(28);newConstructor.addStep(new Assign("_owner" , "tx.origin"));
+            LineCounter.track(29);newConstructor.addStep(new FireEvent("OwnershipTransferred", new String[]{"address(0)", "_owner"}));
             Method first = new Method("getOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add1", false)});
-            first.addSteps(new Return("_owner"));
-            c.addMethod(first);
+            LineCounter.track(31);first.addSteps(new Return("_owner"));
+            LineCounter.track(32);c.addMethod(first);
 
 
             Method second = new Method("getNewPotentialOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add2", false)});
-            second.addSteps(new Return("_newPotentialOwner"));
-            c.addMethod(second);
+            LineCounter.track(36);second.addSteps(new Return("_newPotentialOwner"));
+            LineCounter.track(37);c.addMethod(second);
             Modifier modifier = new Modifier("onlyOwner",null);
-            modifier.addSteps(new Require(new Condition("isOwner()",RelationalOperator.EQUAL),"\"TwoStepOwnable: caller is not the owner.\""));
-            modifier.addSteps(new CallAfter());
-            c.addModifier(modifier);
+            LineCounter.track(39);modifier.addSteps(new Require(new Condition("isOwner()",RelationalOperator.EQUAL),"\"TwoStepOwnable: caller is not the owner.\""));
+            LineCounter.track(40);modifier.addSteps(new CallAfter());
+            LineCounter.track(41);c.addModifier(modifier);
 
             Method third= new Method("isOwner", null, Methods.AccessModifier.PUBLIC,Type.VIEW,null,new ParameterVariable[]{new ParameterBool("b1")});
-            third.addSteps(new Return("msg.sender == _owner"));
-            c.addMethod(third);
+            LineCounter.track(44);third.addSteps(new Return("msg.sender == _owner"));
+            LineCounter.track(45);c.addMethod(third);
 
             Method fourth= new Method("transferOwnership",  new ParameterVariable[]{new ParameterAddress("newPotentialOwner", false)}, Methods.AccessModifier.PUBLIC,Type.NONE,new String[]{"onlyOwner"},null);
             fourth.addSteps(new Require(new Condition("newPotentialOwner","address(0)","address",RelationalOperator.NOT_EQUAL),"\"TwoStepOwnable: new potential owner is the zero address.\""));
@@ -60,8 +61,8 @@ public class test {
             c.addMethod(sixth);
             f.addContract(c);
 
-            System.out.println(f.writeFile());
-            //c.createContract();
+            //System.out.println(f.writeFile());
+            f.createContract();
 
         }
         catch (Exception e) {

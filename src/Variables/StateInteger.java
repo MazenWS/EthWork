@@ -48,7 +48,7 @@ public class StateInteger extends NamedInteger implements  StateVariable {
         }
         res+=";";
 
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount++;
         TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }

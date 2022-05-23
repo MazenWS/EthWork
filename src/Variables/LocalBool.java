@@ -1,5 +1,7 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 public class LocalBool extends ParameterBool implements Step {
@@ -28,6 +30,8 @@ public class LocalBool extends ParameterBool implements Step {
         if(initialValue != null)
             res += " = " + initialValue;
         res+=";";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res;
     }
 }

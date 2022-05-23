@@ -34,12 +34,14 @@ public void  addSteps(Step step){
     }
         res+="){ "+"\n";
 
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount;
         TheFile.lineMap.addLine(new Line(javaLine,"Modifier",solLine,solLine));
+        TheFile.solidityCount++;
 
         for(Step step : steps)
             res += step.write()+"\n";
         res += "}";
+        TheFile.solidityCount++;
         return res;
 
     }

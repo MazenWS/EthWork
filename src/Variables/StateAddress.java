@@ -49,7 +49,7 @@ public class StateAddress extends NamedAddress implements StateVariable{
         }
         res+=" ;";
 
-        int solLine = ++TheFile.solidityCount;
+        int solLine = TheFile.solidityCount++;
         TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }

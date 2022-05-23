@@ -45,12 +45,16 @@ public Library(String contractName){
                 res += event.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
         if(! modifiers.isEmpty()) {
             for(Modifier mod : modifiers) {
                 res += mod.write() + "\n\n";
+                TheFile.solidityCount++;
             }
         }
         res += "}";
-        return res;}
+        TheFile.solidityCount++;
+        return res;
+    }
 }

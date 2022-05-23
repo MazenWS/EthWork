@@ -1,5 +1,8 @@
 package Steps;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class Assign implements Step{
     String assignToVar;
     String statement;
@@ -24,12 +27,9 @@ public class Assign implements Step{
 
     @Override
     public String write() throws Exception{
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         String res  = assignToVar + " = ";
-        if(statement.contains(".get")){
-            String[] get = statement.split(".get");
-            get[1] = get[1].substring(1,get[1].length()-1);
-            statement = get[0]+"["+get[1]+"]";
-        }
         res += statement +";";
         return res;
     }

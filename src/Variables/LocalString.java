@@ -1,5 +1,7 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 //for local variable let it return parameterVar---> the uinitialised version of each
@@ -28,6 +30,8 @@ public class LocalString extends ParameterString implements Step {
         if(initialValue != null)
             res += " = " + initialValue;
         res+=";";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res;
     }
 }

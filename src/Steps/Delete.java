@@ -1,5 +1,8 @@
 package Steps;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class Delete  implements Step{
     String statement;
     int javaLine;
@@ -9,6 +12,8 @@ public class Delete  implements Step{
 
     @Override
     public String write() throws Exception {
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return "delete "+statement+";";
     }
 
