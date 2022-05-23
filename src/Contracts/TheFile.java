@@ -1,20 +1,25 @@
-import Contracts.Contract;
-import Contracts.TypeContract;
+package Contracts;
+
+import Lines.LinesArrangment;
 import Methods.*;
 import Steps.*;
 import Variables.*;
 import Variables.AccessModifier;
+import Setup.Setup;
 
 import java.util.ArrayList;
 
 public class TheFile {
     String fileName;
     ArrayList<TypeContract> contracts;
+    public static LinesArrangment lineMap;
+    public static int solidityCount;
 
 
     public TheFile(String fileName){
         this.fileName= fileName;
         contracts = new ArrayList<>();
+        lineMap = new LinesArrangment();
     }
 
 
@@ -28,6 +33,7 @@ public class TheFile {
         if(! contracts.isEmpty()) {
             for (TypeContract contract : contracts) {
                 res += contract.write() + "\n\n";
+                solidityCount+=2;
             }
 
         }

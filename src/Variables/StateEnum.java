@@ -1,11 +1,14 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Methods.myEnum;
 
 public class StateEnum extends NamedEnum implements StateVariable {
 
     AccessModifier accessModifier;
      String initialValue;
+     int javaLine;
      //uninitialised
     public StateEnum ( String name,String theEnum, AccessModifier accessModifier) throws Exception {
         super(theEnum, name);
@@ -42,6 +45,9 @@ public class StateEnum extends NamedEnum implements StateVariable {
 
         }
         res+=";";
+
+        int solLine = TheFile.solidityCount++;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }
 
@@ -53,4 +59,8 @@ public class StateEnum extends NamedEnum implements StateVariable {
         System.out.println(bool2.write());
     }
 
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 }

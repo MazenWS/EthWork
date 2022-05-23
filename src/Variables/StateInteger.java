@@ -1,10 +1,14 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class StateInteger extends NamedInteger implements  StateVariable {
 
     AccessModifier accessModifier;
     int initialValue;
     boolean initialised;
+    int javaLine;
 
     //1// uninitialised
     public StateInteger ( String name, boolean signed, int length_powerOfTwo, AccessModifier accessModifier) throws Exception {
@@ -44,6 +48,14 @@ public class StateInteger extends NamedInteger implements  StateVariable {
 
         }
         res+=";";
+
+        int solLine = TheFile.solidityCount++;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 }

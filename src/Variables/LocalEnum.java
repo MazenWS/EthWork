@@ -1,9 +1,12 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 public class LocalEnum extends ParameterEnum implements Step {
 String initialValue;
+int javaLine;
 
     public LocalEnum( String name,String theEnum, String initialValue) throws Exception {
         super(theEnum,name);
@@ -13,6 +16,12 @@ String initialValue;
         super(theEnum,name);
 
     }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
+
     @Override
     public String write(){
         String res = super.write();
@@ -20,6 +29,8 @@ String initialValue;
             res += " = " + initialValue;
         }
         res+=";";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res;
     }
 

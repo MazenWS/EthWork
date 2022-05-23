@@ -1,10 +1,13 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 public class LocalStruct extends ParameterStruct implements Step {
    String[] initialValue;
    String initValue;
+   int javaLine;
 
     public LocalStruct(String theStruct,String name, DataLocation  dataLocation, String[] initialValue)  {
         super(theStruct,name,dataLocation);
@@ -21,6 +24,10 @@ public class LocalStruct extends ParameterStruct implements Step {
     }
 
 
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 
     public String write() {
         String res = super.write();
@@ -35,6 +42,8 @@ public class LocalStruct extends ParameterStruct implements Step {
             res = res.substring(0,res.length()-2)+")";
 
         }
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res+";";
     }
 }

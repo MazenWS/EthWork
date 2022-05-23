@@ -1,10 +1,14 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class StateBool extends NamedBool implements StateVariable {
 
     AccessModifier accessModifier;
     boolean initialValue;
     boolean initialised;
+    int javaLine;
 
 
     //1// uninitialised
@@ -39,16 +43,19 @@ public class StateBool extends NamedBool implements StateVariable {
         this.initialised= true;
     }
     public String write(){
-             String res = super.write();
-             String[] var = res.split(" ");
-             res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
-             if (initialised){
-                 res+= " = ";
-                res+= initialValue? "true": "false";
+         String res = super.write();
+         String[] var = res.split(" ");
+         res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+         if (initialised){
+             res+= " = ";
+             res+= initialValue? "true": "false";
 
-             }
-             res+=";";
-             return res;
+         }
+         res+=";";
+
+        int solLine = TheFile.solidityCount++;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
+        return res;
     }
 
     public static void main(String[] args){
@@ -56,5 +63,10 @@ public class StateBool extends NamedBool implements StateVariable {
             StateBool bool2 = new StateBool("bool2",AccessModifier.PRIVATE, false);
             System.out.println(bool.write());
             System.out.println(bool2.write());
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 }

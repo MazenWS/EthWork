@@ -1,9 +1,13 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class StateString extends NamedString implements StateVariable{
 
 AccessModifier accessModifier;
 String initialValue;
+int javaLine;
 
 
     public StateString(String name, AccessModifier accessmodifier){
@@ -40,7 +44,15 @@ String initialValue;
 
         }
         res+=";";
+
+        int solLine = TheFile.solidityCount++;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 }
 

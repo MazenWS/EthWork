@@ -20,6 +20,7 @@ public class Interface extends TypeContract{
     }
     @Override
     public String write() throws Exception {
+        TheFile.solidityCount++;
         return super.write()+"\n"+"}";
     }
 }

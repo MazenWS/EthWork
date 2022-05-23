@@ -1,5 +1,7 @@
 package Methods;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 import Variables.NamedVariable;
 import Variables.Variable;
@@ -10,6 +12,7 @@ public class Modifier {
     String name;
     NamedVariable[] parameters;
     ArrayList<Step> steps = new ArrayList<>();
+    int javaLine;
 
 public Modifier (String name, NamedVariable[] parameters){
     this.name= name;
@@ -17,8 +20,10 @@ public Modifier (String name, NamedVariable[] parameters){
 }
 public void  addSteps(Step step){
     steps.add(step);
-
 }
+    public void setJavaLine(int javaLine){
+        this.javaLine = javaLine;
+    }
     public String write() throws Exception {
     String res= "modifier " + name+ "(";
     if (parameters!= null && parameters.length != 0){
@@ -29,9 +34,14 @@ public void  addSteps(Step step){
     }
         res+="){ "+"\n";
 
+        int solLine = TheFile.solidityCount;
+        TheFile.lineMap.addLine(new Line(javaLine,"Modifier",solLine,solLine));
+        TheFile.solidityCount++;
+
         for(Step step : steps)
             res += step.write()+"\n";
         res += "}";
+        TheFile.solidityCount++;
         return res;
 
     }

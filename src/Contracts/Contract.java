@@ -1,9 +1,10 @@
 package Contracts;
 
+import Lines.Line;
+import Lines.LineCounter;
 import Methods.*;
 import Variables.StateVariable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -35,52 +36,56 @@ public class Contract extends TypeContract{
         modifiers= new ArrayList<Modifier>();
         extendsContract= new ArrayList<>();
         fileAndLib=new Hashtable<>();
-allLibs= new ArrayList<>();
+        allLibs= new ArrayList<>();
     }
 
-public void setAbstract(){
-        isAbstract= true;
-}
-public void addAContractToExtend(String extendsContract){
-        this.extendsContract.add(extendsContract);
-}
-public void addLibrary(String libraryFile,String[] libraryNames){
-        fileAndLib.put(libraryFile,libraryNames);
-}
+    public void setAbstract(){
+            isAbstract= true;
+    }
+    public void addAContractToExtend(String extendsContract){
+            this.extendsContract.add(extendsContract);
+    }
+    public void addLibrary(String libraryFile,String[] libraryNames){
+            fileAndLib.put(libraryFile,libraryNames);
+    }
     public void addConstructor(Constructor constructor) throws Exception {
 
         if(this.constructor != null){
             throw new Exception("A Constructor is Already Added");
         }
+        constructor.setJavaLine(LineCounter.getLine());
         this.constructor = constructor;
     }
     public void addModifier( Modifier modifier){
+        modifier.setJavaLine(LineCounter.getLine());
         modifiers.add(modifier);
     }
 
 
     public void addStateVariable(StateVariable var){
         stateVars.add(var);
+        var.setJavaLine(LineCounter.getLine());
     }
 
     public void addEvent(Event event){
         events.add(event);
+        event.setJavaLine(LineCounter.getLine());
     }
 
     public void addReceiveFunction(ReceiveFunction receive) throws Exception {
         if(this.receive != null){
             throw new Exception("A receive Function is already Added");
         }
+        receive.setJavaLine(LineCounter.getLine());
         this.receive = receive;
     }
 
     public String write() throws Exception {
-        String res="";
+        String res="//SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.13;\n";
+        TheFile.solidityCount+=2;
         if (!fileAndLib.isEmpty()){
             Enumeration<String> e = fileAndLib.keys();
             while (e.hasMoreElements()) {
-
-
                String filename = e.nextElement();
                res+="import {";
                 for (String lib:
@@ -91,17 +96,17 @@ public void addLibrary(String libraryFile,String[] libraryNames){
                res = res.substring(0,res.length()-2) ;
                 res+="} from \""+filename+"\" ;";
                 res+="\n";
-
+                TheFile.solidityCount++;
         }
             for (String lib:
                     allLibs) {
                 res+="using "+ lib +" *;";
                 res+="\n";
-
-
+                TheFile.solidityCount++;
             }
+            res+="\n\n\n";
+            TheFile.solidityCount+=3;
         }
-     res+="\n\n\n";
 
 
          res+= "contract "+contractName ;
@@ -115,12 +120,15 @@ public void addLibrary(String libraryFile,String[] libraryNames){
             res = res.substring(0,res.length()-2) ;
         }
         res+=  " {\n\n\n";
+        TheFile.solidityCount+=4;
 
         if(! structs.isEmpty()) {
             for (Struct struct : structs) {
                 res += struct.write() + "\n\n";
+                TheFile.solidityCount++;
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(! enums.isEmpty()) {
@@ -128,6 +136,7 @@ public void addLibrary(String libraryFile,String[] libraryNames){
                 res += enumm.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(!stateVars.isEmpty()) {
@@ -135,6 +144,7 @@ public void addLibrary(String libraryFile,String[] libraryNames){
                 res += state.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(! events.isEmpty()) {
@@ -142,21 +152,25 @@ public void addLibrary(String libraryFile,String[] libraryNames){
                 res += event.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
 
         if(constructor != null){
             res += constructor.write()+ "\n\n";
+            TheFile.solidityCount++;
         }
 
         if(! modifiers.isEmpty()) {
             for(Modifier mod : modifiers) {
                 res += mod.write() + "\n\n";
+                TheFile.solidityCount++;
             }
         }
 
         if (!methods.isEmpty()) {
             for (Method method : methods) {
                 res += method.write() + "\n\n";
+                TheFile.solidityCount++;
             }
         }
 
@@ -164,7 +178,6 @@ public void addLibrary(String libraryFile,String[] libraryNames){
             res += receive.write()+"\n";
         }
         res += "}";
-
         return res;
     }
 

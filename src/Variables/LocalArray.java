@@ -1,11 +1,14 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 
 import java.util.ArrayList;
 
 public class LocalArray extends ParameterArray implements Step {
     ArrayList<String> initialValue;
+    int javaLine;
 
 
     public LocalArray(String name,Variable  variable, DataLocation dataLocation, int size, ArrayList<String>  initialValue){
@@ -28,6 +31,13 @@ public class LocalArray extends ParameterArray implements Step {
 
 
     }
+
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
+
     @Override
     public String write(){
         String res = super.write();
@@ -41,6 +51,8 @@ public class LocalArray extends ParameterArray implements Step {
             }
         }
         res+=";";
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
         return res;
     }
 

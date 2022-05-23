@@ -1,9 +1,13 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class StateStruct  extends NamedStruct implements StateVariable{
 
     AccessModifier  accessModifier;
     String[] initialValue;
+    int javaLine;
 
     public StateStruct(String name, String theStruct,AccessModifier  accessModifier,String[] initialValue) {
         super(theStruct, name);
@@ -39,11 +43,15 @@ public class StateStruct  extends NamedStruct implements StateVariable{
             }
             res=res.substring(0, res.length() - 1);
             res+= ");";
-
-
-
         }
         res+=";";
+        int solLine = TheFile.solidityCount++;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 }

@@ -1,3 +1,7 @@
+package Setup;
+
+import Lines.LinesArrangment;
+
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
@@ -263,19 +267,25 @@ public class Setup {
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
         boolean error = false;
+        int errLine = 0;
         while (true) {
             line = r.readLine();
             if (line == null) break;
             error = true;
+            String[] err = line.split(":");
+            if(err.length == 3){
+                errLine = LinesArrangment.getJavaLine(Integer.parseInt(err[1]));
+            }
             System.out.println(line);
         }
-//        if(error){
-//            File f = new File(contractName+".sol");
-//            f.delete();
-//        }
-//        else{
-//            System.out.println("Successfully compiled");
-//        }
+        if(error){
+            File f = new File(contractName+".sol");
+            f.delete();
+            System.out.println("Error in JavaFile Line: "+errLine);
+        }
+        else{
+            System.out.println("Successfully compiled");
+        }
     }
 
     private static void writeScript(String name) throws IOException {

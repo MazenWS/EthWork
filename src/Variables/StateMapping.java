@@ -1,7 +1,11 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class StateMapping extends NamedMapping implements StateVariable{
     AccessModifier accessModifier;
+    int javaLine;
 
 
     public StateMapping (String name,Variable keyType, Variable valueType, AccessModifier accessModifier){
@@ -17,7 +21,14 @@ public class StateMapping extends NamedMapping implements StateVariable{
         String[] var = res.split(" ");
         res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
         res+=";";
+
+        int solLine = TheFile.solidityCount++;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }
 
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
 }

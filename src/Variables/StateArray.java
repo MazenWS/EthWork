@@ -1,5 +1,8 @@
 package Variables;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -7,6 +10,7 @@ public class StateArray extends NamedArray implements StateVariable{
 
     Variables.AccessModifier accessModifier;
     String[] initialValue;
+    int javaLine;
 
 
     //1// constructor for the dynamic storage array as a state variable
@@ -93,6 +97,8 @@ public class StateArray extends NamedArray implements StateVariable{
 
         }
         res+=";";
+        int solLine = TheFile.solidityCount++;
+        TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
 
     }
@@ -102,5 +108,10 @@ public class StateArray extends NamedArray implements StateVariable{
        values.add("2");
         //StateArray a = new StateArray( new VariableInteger(false,64), AccessModifier.PUBLIC,"arr",values);
         //System.out.println(a.write());
+    }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
     }
 }
