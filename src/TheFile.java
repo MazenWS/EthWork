@@ -112,8 +112,7 @@ public class TheFile {
 
 
 
-            System.out.println(f.writeFile());
-            //c.createContract();
+            f.createContract();
 
             }
         catch (Exception e) {
