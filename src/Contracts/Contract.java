@@ -19,9 +19,11 @@ public class Contract extends TypeContract{
     //each file has multiple libraries
     //we supposed to say it will be used for which data type but we will use * (all) for simplicity
     //import {Library1, Library3} from "./library-file.sol";
-    //using MathLib for *;
+    //using Library1 for *;
+    //using Lubrary2 for *
     ArrayList<String> allLibs;
     Hashtable<String, String[]> fileAndLib;
+    Hashtable<String,Integer> libraryLines ;
     boolean isAbstract;
 
 
@@ -37,6 +39,7 @@ public class Contract extends TypeContract{
         extendsContract= new ArrayList<>();
         fileAndLib=new Hashtable<>();
         allLibs= new ArrayList<>();
+       libraryLines = new Hashtable<String,Integer>();
     }
 
     public void setAbstract(){
@@ -45,9 +48,13 @@ public class Contract extends TypeContract{
     public void addAContractToExtend(String extendsContract){
             this.extendsContract.add(extendsContract);
     }
+
     public void addLibrary(String libraryFile,String[] libraryNames){
-            fileAndLib.put(libraryFile,libraryNames);
+        fileAndLib.put(libraryFile,libraryNames);
+        libraryLines.put(libraryFile,LineCounter.getLine());
+
     }
+
     public void addConstructor(Constructor constructor) throws Exception {
 
         if(this.constructor != null){
@@ -81,11 +88,13 @@ public class Contract extends TypeContract{
     }
 
     public String write() throws Exception {
-        String res="//SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.13;\n";
-        TheFile.solidityCount+=2;
+        String res="";
+
         if (!fileAndLib.isEmpty()){
             Enumeration<String> e = fileAndLib.keys();
+
             while (e.hasMoreElements()) {
+
                String filename = e.nextElement();
                res+="import {";
                 for (String lib:
@@ -93,9 +102,10 @@ public class Contract extends TypeContract{
                     allLibs.add(lib);
                     res+=lib+", ";
                 }
-               res = res.substring(0,res.length()-2) ;
+                res = res.substring(0,res.length()-2) ;
                 res+="} from \""+filename+"\" ;";
                 res+="\n";
+                TheFile.lineMap.addLine(new Line(libraryLines.get(filename),"library",TheFile.solidityCount,  TheFile.solidityCount));
                 TheFile.solidityCount++;
         }
             for (String lib:

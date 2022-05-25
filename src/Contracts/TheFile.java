@@ -29,7 +29,9 @@ public class TheFile {
 
 
     public String writeFile() throws Exception {
-        String res = "";
+        String res = "//SPDX-License-Identifier: UNLICENSED \npragma solidity ^0.8.13;\n";
+        solidityCount+=2;
+
         if(! contracts.isEmpty()) {
             for (TypeContract contract : contracts) {
                 res += contract.write() + "\n\n";
@@ -56,7 +58,7 @@ public class TheFile {
         try {
             c.addEvent(new Event("ProposalCreated",new EventVariable[]{new EventInteger("id",false,7,false),new EventAddress("proposer",false,false), new EventArray("targets",false,new VariableAddress(false)),new EventArray("values",false,new VariableInteger(false,7)),new EventArray("signatures",false,new VariableString()),new EventArray("calldatas",false,new VariableBytes()),
         new EventInteger("startBlock",false,7,false),
-        new EventInteger ("startBlock", false,7,false),
+
         new EventString("description",false)}));
             c.addEvent(new Event("VoteCast",new EventVariable[]{new EventAddress("voter",true,false),
             new EventInteger("proposalId",false,7,false),
