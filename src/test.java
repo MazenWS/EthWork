@@ -19,9 +19,13 @@ public class test {
 
             //address
              c.addStateVariable(new StateAddress("_owner", false, AccessModifier.PRIVATE));
-            c.addStateVariable(new StateAddress("_newPotentialOwner", false, AccessModifier.PRIVATE));
-          c.addEvent(new Event("OwnershipTransferred",new EventVariable[]{new EventAddress("previousOwner",true,false), new EventAddress("newOwner",true, false)}));
-             c. addEvent(new Event("TransferInitiated", new EventVariable[]{new EventAddress("newOwner", true, false)}));
+            c.addStateVariable(new StateAddress("_newPotentialOwner",
+                    false, AccessModifier.PRIVATE));
+          c.addEvent(new Event("OwnershipTransferred",
+                  new EventVariable[]{new EventAddress("previousOwner",true,false), new EventAddress("newOwner",true, false)}));
+
+             c. addEvent(new Event("TransferInitiated",
+                     new EventVariable[]{new EventAddress("newOwner", true, false)}));
             c. addEvent(new Event("TransferCancelled", new EventVariable[]{new EventAddress("newPotentialOwner", true, false)}));
             Constructor newConstructor = new Constructor(null,false,Methods.AccessModifier.PUBLIC);
             c.addConstructor(newConstructor);

@@ -19,19 +19,18 @@ public class prints {
             while ((strCurrentLine = objReader.readLine()) != null) {
 
                 lineCount++;
+                String s = strCurrentLine;
                if( strCurrentLine  .contains("public class test {"))
                    strCurrentLine="public class NewTest {";
 
 
-                if (strCurrentLine.contains("catch (Exception e) {") )
-                newStatement = false ;
-
+//                if (strCurrentLine.contains("catch (Exception e) {") )
+//                newStatement = false ;
                 if(inMain && newStatement && strCurrentLine != ""  ){
                     System.out.println("LineCounter.track("+lineCount+");");
-                    String s = strCurrentLine;
-
                 }
 
+                newStatement = ((s.trim().length() == 0)|| (s.trim().charAt(s.trim().length() - 1) == '{')||(s.trim().charAt(0) == '/')|| (s.trim().charAt(s.trim().length() - 1) == ';')) ? true : false;
                 if(strCurrentLine.contains("public static void main")){
                     inMain = true;
                 }
