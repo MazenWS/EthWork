@@ -9,10 +9,14 @@ public class VariableBytes implements Variable {
             throw new Exception("this bytes length doesn't exist");
         this. length = length;
     }
+    public VariableBytes(   ) throws Exception {
+
+
+    }
 
 
     @Override
     public String write() {
-        return "bytes"+length;
+        return length!=0?"bytes"+length:"bytes";
     }
 }

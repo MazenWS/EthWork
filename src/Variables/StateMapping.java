@@ -8,11 +8,11 @@ public class StateMapping extends NamedMapping implements StateVariable{
     int javaLine;
 
 
-    public StateMapping (Variable keyType, Variable valueType,String name, AccessModifier accessModifier){
+    public StateMapping (String name,Variable keyType, Variable valueType, AccessModifier accessModifier){
         super(name, keyType, valueType);
         this.accessModifier= accessModifier;
     }
-    public StateMapping (Variable keyType, Variable valueType,String name){
+    public StateMapping (String name ,Variable keyType, Variable valueType){
         super(name, keyType, valueType);
         this.accessModifier= AccessModifier.INTERNAL;
     }

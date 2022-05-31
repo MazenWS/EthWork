@@ -29,7 +29,9 @@ public class TheFile {
 
 
     public String writeFile() throws Exception {
-        String res = "";
+        String res = "//SPDX-License-Identifier: UNLICENSED \npragma solidity ^0.8.13;\n";
+        solidityCount+=2;
+
         if(! contracts.isEmpty()) {
             for (TypeContract contract : contracts) {
                 res += contract.write() + "\n\n";
@@ -50,53 +52,75 @@ public class TheFile {
     }
 
     public static void main(String[] args){
-        TheFile f= new TheFile("TwoStepOwnable");
-        Contract c = new Contract("TwoStepOwnable");
+        TheFile f= new TheFile("GovernorBravoInterfaces");
+        Contract c = new Contract("GovernorBravoEvents");
 
         try {
+            c.addEvent(new Event("ProposalCreated",new EventVariable[]{new EventInteger("id",false,7,false),new EventAddress("proposer",false,false), new EventArray("targets",false,new VariableAddress(false)),new EventArray("values",false,new VariableInteger(false,7)),new EventArray("signatures",false,new VariableString()),new EventArray("calldatas",false,new VariableBytes()),
+        new EventInteger("startBlock",false,7,false),
 
-            //address
-            c.addStateVariable(new StateAddress("_owner", false, AccessModifier.PRIVATE));
-            c.addStateVariable(new StateAddress("_newPotentialOwner", false, AccessModifier.PRIVATE));
-            c.addEvent(new Event("OwnershipTransferred",new EventVariable[]{new EventAddress("previousOwner",true,false), new EventAddress("newOwner",true, false)}));
-            c. addEvent(new Event("TransferInitiated", new EventVariable[]{new EventAddress("newOwner", true, false)}));
-            c. addEvent(new Event("TransferCancelled", new EventVariable[]{new EventAddress("newPotentialOwner", true, false)}));
-            Constructor newConstructor = new Constructor(null,false,Methods.AccessModifier.INTERNAL);
-            c.addConstructor(newConstructor);
-            newConstructor.addStep(new Assign("_owner" , "tx.origin"));
-            newConstructor.addStep(new FireEvent("OwnershipTransferred", new String[]{"address(0)", "_owner"}));
-            Method first = new Method("getOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add1", false)});
-            first.addSteps(new Return("_owner"));
-            c.addMethod(first);
-            Method second = new Method("getNewPotentialOwner",null, Methods.AccessModifier.EXTERNAL, Type.VIEW,null,new ParameterVariable[]{new ParameterAddress("add2", false)});
-            second.addSteps(new Return("_newPotentialOwner"));
-            c.addMethod(second);
-            Modifier modifier = new Modifier("onlyOwner",null);
-            modifier.addSteps(new Require(new Condition("isOwner()",RelationalOperator.EQUAL),"\"TwoStepOwnable: caller is not the owner.\""));
-            modifier.addSteps(new CallAfter());
-            c.addModifier(modifier);
-           Method third= new Method("isOwner", null, Methods.AccessModifier.PUBLIC,Type.VIEW,null,new ParameterVariable[]{new ParameterBool("b1")});
-           third.addSteps(new Return("msg.sender == _owner"));
-           c.addMethod(third);
-           Method fourth= new Method("transferOwnership",  new ParameterVariable[]{new ParameterAddress("newPotentialOwner", false)}, Methods.AccessModifier.PUBLIC,Type.NONE,new String[]{"onlyOwner"},null);
-           fourth.addSteps(new Require(new Condition("newPotentialOwner","address(0)","address",RelationalOperator.NOT_EQUAL),"\"TwoStepOwnable: new potential owner is the zero address.\""));
-           fourth.addSteps(new Assign("_newPotentialOwner","newPotentialOwner"));
-           fourth.addSteps(new FireEvent("TransferInitiated", new String[]{"address(newPotentialOwner)"}));
-           c.addMethod(fourth);
-           Method fifth = new Method("cancelOwnershipTransfer",null, Methods.AccessModifier.PUBLIC,Type.NONE,new String[]{"onlyOwner"},null);
-           fifth.addSteps(new FireEvent("TransferCancelled",new String[]{"address(_newPotentialOwner)"}));
-           fifth.addSteps(new Delete("_newPotentialOwner"));
-           c.addMethod(fifth);
-           Method sixth = new Method("acceptOwnership",null, Methods.AccessModifier.PUBLIC,Type.NONE,null,null);
-           sixth.addSteps(new Require(new Condition( Environment.MSG_SENDER,"_newPotentialOwner","address",RelationalOperator.EQUAL),"\"TwoStepOwnable: current owner must set caller as new potential owner.\""));
-          sixth.addSteps(new Delete("_newPotentialOwner"));
-          sixth.addSteps(new FireEvent("OwnershipTransferred",new String[]{"_owner",Environment.MSG_SENDER}));
-          sixth.addSteps(new Assign("_owner",Environment.MSG_SENDER));
-          c.addMethod(sixth);
-          f.addContract(c);
+        new EventString("description",false)}));
+            c.addEvent(new Event("VoteCast",new EventVariable[]{new EventAddress("voter",true,false),
+            new EventInteger("proposalId",false,7,false),
+            new EventInteger("support",false,3,false),
+            new EventInteger("votes",false,7,false),
+            new EventString("reason",false)}));
+          c.addEvent(new Event("proposalCanceled",new EventVariable[]{
+                  new EventInteger("id",false ,7,false)
+          }));
+          c.addEvent(new Event("ProposalQueued", new EventVariable[]{
+                  new EventInteger("id",false,7,false),
+                  new EventInteger("eta",false,7,false)
+          }));
 
-           System.out.println(f.writeFile());
-            //c.createContract();
+            c.addEvent(new Event("ProposalExecuted", new EventVariable[]{
+                    new EventInteger("id",false,7,false)}));
+            c.addEvent(new Event("VotingDelaySet", new EventVariable[]{
+                    new EventInteger("oldVotingDelay",false,7,false),
+                    new EventInteger("newVotingDelay",false,7,false)
+            }));
+
+            c.addEvent(new Event("VotingPeriodSet", new EventVariable[]{
+                    new EventInteger("oldVotingPeriod",false,7,false),
+                    new EventInteger("newVotingPeriod",false,7,false)
+            }));
+            c.addEvent(new Event("NewImplementation", new EventVariable[]{
+                    new EventAddress("oldImplementation",false,false),
+                    new EventAddress("newImplementation",false,false)
+            }));
+
+            c.addEvent(new Event("ProposalThresholdSet", new EventVariable[]{
+                    new EventInteger("oldProposalThreshold",false,7,false),
+                    new EventInteger("newProposalThreshold",false,7,false)
+            }));
+
+            c.addEvent(new Event("NewPendingAdmin", new EventVariable[]{
+                    new EventAddress("oldPendingAdmin",false,false),
+                    new EventAddress("newPendingAdmin",false,false)
+            }));
+
+            c.addEvent(new Event("NewAdmin", new EventVariable[]{
+                    new EventAddress("oldAdmin",false,false),
+                    new EventAddress("newAdmin",false,false)
+            }));
+             f.addContract(c);
+            Contract c1 = new Contract("GovernorBravoDelegatorStorage");
+            c1.addStateVariable(new StateAddress("admin",false,AccessModifier.PUBLIC));
+            c1.addStateVariable(new StateAddress("implementation",false,AccessModifier.PUBLIC));
+            c1.addStateVariable(new StateAddress("pendingAdmin",false,AccessModifier.PUBLIC));
+
+            f.addContract(c1);
+            Contract c2 = new Contract("GovernorBravoDelegateStorageV1");
+            c2.addAContractToExtend("GovernorBravoDelegatorStorage");
+            c2.addStateVariable(new StateInteger("votingDelay",false, 7 ,AccessModifier.PUBLIC));
+            c2.addStateVariable(new StateInteger("votingPeriod",false,7,AccessModifier.PUBLIC));
+            c2.addStateVariable(new StateInteger("proposalThreshold",false,7,AccessModifier.PUBLIC));
+            c2.addStateVariable(new StateInteger("initialProposalId",false,7,AccessModifier.PUBLIC));
+            c2.addStateVariable(new StateInteger("proposalCount",false,7,AccessModifier.PUBLIC));
+
+
+
+            f.createContract();
 
             }
         catch (Exception e) {

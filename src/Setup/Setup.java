@@ -18,6 +18,11 @@ public class Setup {
     static boolean running;
     static String password;
 
+public static void deploy(ArrayList<String> contractnames, String Network,String syncMode) throws Exception {
+    checkGeth();
+    checkAccounts();
+    runNode(Network,syncMode);
+}
     private static boolean checkNpm() throws IOException {
         ProcessBuilder builder = new ProcessBuilder("cmd.exe","/c","npm -v");
         builder.redirectErrorStream(true);
@@ -35,7 +40,7 @@ public class Setup {
         return res;
     }
 
-    private static boolean checkGeth() throws IOException, URISyntaxException {
+    private static boolean checkGeth() throws Exception {
         ProcessBuilder builder = new ProcessBuilder("cmd.exe","/c","geth version");
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -52,7 +57,7 @@ public class Setup {
         }
         if(!res) {
             downloadGeth();
-            System.out.println("Please install Geth");
+            throw new Exception("Please install Geth");
         }
         else {
             Scanner sc = new Scanner(System.in);
@@ -114,8 +119,10 @@ public class Setup {
 
     private static void runNode(String network, String syncmode) throws IOException {
         try {
+
             String command = "geth --"+network +" --syncmode \""+syncmode+"\" -http --allow-insecure-unlock --datadir "+dir;
             ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command);
+
             builder.redirectErrorStream(true);
             Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));

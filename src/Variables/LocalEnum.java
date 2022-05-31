@@ -8,11 +8,11 @@ public class LocalEnum extends ParameterEnum implements Step {
 String initialValue;
 int javaLine;
 
-    public LocalEnum( String theEnum,String name, String initialValue) throws Exception {
+    public LocalEnum( String name,String theEnum, String initialValue) throws Exception {
         super(theEnum,name);
         this.initialValue = initialValue;
     }
-    public LocalEnum( String theEnum,String name) throws Exception {
+    public LocalEnum( String name,String theEnum) throws Exception {
         super(theEnum,name);
 
     }

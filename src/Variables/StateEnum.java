@@ -10,25 +10,26 @@ public class StateEnum extends NamedEnum implements StateVariable {
      String initialValue;
      int javaLine;
      //uninitialised
-    public StateEnum (String theEnum, String name, AccessModifier accessModifier) throws Exception {
+    public StateEnum ( String name,String theEnum, AccessModifier accessModifier) throws Exception {
         super(theEnum, name);
         this.accessModifier = accessModifier;
 
     }
     //initialised
-    public StateEnum (String theEnum, String name, AccessModifier accessModifier, String initialValue) throws Exception {
+    public StateEnum ( String name,String theEnum, AccessModifier accessModifier, String initialValue) throws Exception {
         super(theEnum, name);
         this.accessModifier = accessModifier;
         this.initialValue= initialValue;
     }
+    //if the user did not specify an AccessModifier then it's internal
 
-    public StateEnum (String theEnum, String name) throws Exception {
+    public StateEnum ( String name,String theEnum) throws Exception {
         super(theEnum, name);
         this.accessModifier = AccessModifier.INTERNAL;
 
     }
     //initialised
-    public StateEnum (String theEnum, String name, String initialValue) throws Exception {
+    public StateEnum ( String name,String theEnum, String initialValue) throws Exception {
         super(theEnum, name);
         this.accessModifier = AccessModifier.INTERNAL;
         this.initialValue= initialValue;

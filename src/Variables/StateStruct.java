@@ -9,22 +9,22 @@ public class StateStruct  extends NamedStruct implements StateVariable{
     String[] initialValue;
     int javaLine;
 
-    public StateStruct(String theStruct,String name, AccessModifier  accessModifier,String[] initialValue) throws Exception {
+    public StateStruct(String name, String theStruct,AccessModifier  accessModifier,String[] initialValue) {
         super(theStruct, name);
         this.accessModifier = accessModifier;
         this.initialValue= initialValue;
     }
-    public StateStruct(String theStruct,String name, AccessModifier  accessModifier) throws Exception {
+    public StateStruct(String name, String theStruct,AccessModifier  accessModifier) {
         super(theStruct,name);
         this.accessModifier = accessModifier;
     }
 
-    public StateStruct(String theStruct,String name, String[] initialValue) throws Exception {
+    public StateStruct(String name,String theStruct, String[] initialValue) {
         super(theStruct, name);
         this.accessModifier =AccessModifier.INTERNAL;
         this.initialValue= initialValue;
     }
-    public StateStruct(String theStruct,String name) throws Exception {
+    public StateStruct( String name,String theStruct) {
         super(theStruct,name);
         this.accessModifier = AccessModifier.INTERNAL;
     }

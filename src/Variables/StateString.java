@@ -15,7 +15,7 @@ int javaLine;
         this.accessModifier= accessmodifier;
     }
     //2.2// initialised
-    public StateString(String name, String initialValue, AccessModifier accessmodifier){
+    public StateString(String name, AccessModifier accessmodifier, String initialValue){
         super(name);
         this. initialValue= initialValue;
         this. accessModifier = accessmodifier;
