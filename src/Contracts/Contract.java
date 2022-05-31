@@ -1,6 +1,5 @@
 package Contracts;
 
-import Lines.Line;
 import Lines.LineCounter;
 import Methods.*;
 import Variables.StateVariable;

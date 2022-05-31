@@ -23,4 +23,8 @@ public class Expression {
         return "bytes("+varName+").length";
     }
 
+    public static void main(String[] args){
+        System.out.println(structMemberValue(arrayValue("arr","1"),"member"));
+    }
+
 }
