@@ -10,6 +10,8 @@ public class StateArray extends NamedArray implements StateVariable{
 
     Variables.AccessModifier accessModifier;
     String[] initialValue;
+    boolean constant;
+    boolean immutable;
     int javaLine;
 
 
@@ -75,11 +77,26 @@ public class StateArray extends NamedArray implements StateVariable{
         this.initialValue= initialValue;
 
     }
+
+    public void isConstant() {
+        constant = true;
+    }
+
+    public void isImmutable() {
+        immutable = true;
+    }
+
     public String write(){
         String res  = "";
         res+= arrayType.write();
         res+=size >0 ?"["+size+"]" : "[]";
         res+= " "+ accessModifier.name().toLowerCase()+" ";
+        if(immutable){
+            res += "immutable ";
+        }
+        else if(constant){
+            res += "constant ";
+        }
         res+= name;
 
 

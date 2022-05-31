@@ -8,6 +8,8 @@ public class StateInteger extends NamedInteger implements  StateVariable {
     AccessModifier accessModifier;
     int initialValue;
     boolean initialised;
+    boolean constant;
+    boolean immutable;
     int javaLine;
 
     //1// uninitialised
@@ -41,7 +43,15 @@ public class StateInteger extends NamedInteger implements  StateVariable {
     public String write(){
         String res = super.write();
         String[] var = res.split(" ");
-        res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        //res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        res = var[0] + " "+ accessModifier.name().toLowerCase()+" ";
+        if(immutable){
+            res += "immutable ";
+        }
+        else if(constant){
+            res += "constant ";
+        }
+        res += var[1];
         if (initialised){
             res+= " = ";
             res+= initialValue ;
@@ -53,6 +63,15 @@ public class StateInteger extends NamedInteger implements  StateVariable {
         TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }
+
+    public void isConstant() {
+        constant = true;
+    }
+
+    public void isImmutable() {
+        immutable = true;
+    }
+
 
     @Override
     public void setJavaLine(int javaLine) {

@@ -8,6 +8,8 @@ public class StateEnum extends NamedEnum implements StateVariable {
 
     AccessModifier accessModifier;
      String initialValue;
+    boolean constant;
+    boolean immutable;
      int javaLine;
      //uninitialised
     public StateEnum ( String name,String theEnum, AccessModifier accessModifier) throws Exception {
@@ -38,7 +40,15 @@ public class StateEnum extends NamedEnum implements StateVariable {
     public String write(){
         String res = super.write();
         String[] var = res.split(" ");
-        res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        //res= String.join(" ",var[0], accessModifier.name().toLowerCase(),var[1]);
+        res = var[0] + " "+ accessModifier.name().toLowerCase()+" ";
+        if(immutable){
+            res += "immutable ";
+        }
+        else if(constant){
+            res += "constant ";
+        }
+        res += var[1];
         if (initialValue!=null){
             res+= " = ";
             res+= initialValue;
@@ -50,6 +60,15 @@ public class StateEnum extends NamedEnum implements StateVariable {
         TheFile.lineMap.addLine(new Line(javaLine,"State",solLine,solLine));
         return res;
     }
+
+    public void isConstant() {
+        constant = true;
+    }
+
+    public void isImmutable() {
+        immutable = true;
+    }
+
 
     public static void main(String[] args) throws Exception {
         myEnum mmmm = new myEnum("student",new String[]{"ahmed","ali","alaa"});
