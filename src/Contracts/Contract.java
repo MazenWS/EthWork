@@ -20,7 +20,7 @@ public class Contract extends TypeContract{
     //we supposed to say it will be used for which data type but we will use * (all) for simplicity
     //import {Library1, Library3} from "./library-file.sol";
     //using Library1 for *;
-    //using Lubrary2 for *
+    //using Library2 for *
     ArrayList<String> allLibs;
     Hashtable<String, String[]> fileAndLib;
     Hashtable<String,Integer> libraryLines ;
