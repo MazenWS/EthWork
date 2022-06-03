@@ -9,6 +9,9 @@ public class StateAddress extends NamedAddress implements StateVariable{
 
     String initialValue;
     AccessModifier accessModifier;
+
+    boolean constant;
+    boolean immutable;
     int javaLine;
 
 
@@ -42,6 +45,12 @@ public class StateAddress extends NamedAddress implements StateVariable{
         String res ="address ";
         res+= payable? "payable ": "";
         res+= accessModifier.name().toLowerCase()+" ";
+        if(immutable){
+            res += "immutable ";
+        }
+        else if(constant){
+            res += "constant ";
+        }
         res+= name;
         if (initialValue!= null){
             res+=" = ";
@@ -57,6 +66,14 @@ public class StateAddress extends NamedAddress implements StateVariable{
 
     public static void main (String [] args){
 
+    }
+
+    public void isConstant() {
+        constant = true;
+    }
+
+    public void isImmutable() {
+        immutable = true;
     }
 
 

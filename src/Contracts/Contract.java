@@ -4,7 +4,6 @@ import Lines.Line;
 import Lines.LineCounter;
 import Methods.*;
 import Variables.StateVariable;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;

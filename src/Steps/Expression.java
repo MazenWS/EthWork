@@ -23,4 +23,20 @@ public class Expression {
         return "bytes("+varName+").length";
     }
 
+    public static String newStruct(String structName, String[] structMembers){
+        String res = structName+"(";
+        if(structMembers == null || structMembers.length==0){
+            return res + ")";
+        }
+        res += structMembers[0];
+        for(int i = 1; i<structMembers.length;i++){
+            res += ", "+ structMembers[i];
+        }
+        return res + ")";
+    }
+
+    public static void main(String[] args){
+        System.out.println(newStruct("player",new String[] {"2", "Cf", "captain"}));
+    }
+
 }

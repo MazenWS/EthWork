@@ -17,6 +17,7 @@ public class Method {
     ParameterVariable[] returnTypes;
     ArrayList<Step> steps = new ArrayList<>();
     String[] modifiers;
+    boolean abstractMethod;
     int javaLine;
 
 
@@ -37,6 +38,10 @@ public class Method {
 
      public void setJavaLine(int javaLine){
         this.javaLine = javaLine;
+     }
+
+     public void setAbstractMethod(){
+        abstractMethod = true;
      }
 
     public String write() throws Exception {
@@ -68,6 +73,13 @@ public class Method {
                 res += ret.write() + ", ";
             }
             res = res.substring(0,res.length()-2)+")";
+        }
+        if(abstractMethod){
+            res += ";";
+            int solLine = TheFile.solidityCount;
+            TheFile.lineMap.addLine(new Line(javaLine,"Method",solLine,solLine));
+            TheFile.solidityCount++;
+            return res;
         }
         res += "{\n";
 
