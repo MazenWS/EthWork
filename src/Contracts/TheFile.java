@@ -14,6 +14,7 @@ public class TheFile {
     ArrayList<TypeContract> contracts;
     public static LinesArrangment lineMap;
     public static int solidityCount;
+    public static ArrayList<String> contractNames;
 
 
     public TheFile(String fileName){
@@ -25,9 +26,12 @@ public class TheFile {
 
     public void addContract(TypeContract contract){
         contracts.add(contract);
+        contractNames.add(contract.contractName);
     }
 
-
+    public static ArrayList<String> getContractNames(){
+        return contractNames;
+    }
     public String writeFile() throws Exception {
         String res = "//SPDX-License-Identifier: UNLICENSED \npragma solidity ^0.8.13;\n";
         solidityCount+=2;

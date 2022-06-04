@@ -15,6 +15,7 @@ public class Contract extends TypeContract{
     Constructor constructor;
     ReceiveFunction receive;
     ArrayList<String> extendsContract;
+
     //each file has multiple libraries
     //we supposed to say it will be used for which data type but we will use * (all) for simplicity
     //import {Library1, Library3} from "./library-file.sol";

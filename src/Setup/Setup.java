@@ -1,5 +1,6 @@
 package Setup;
 
+import Contracts.TheFile;
 import Lines.LinesArrangment;
 
 import java.awt.*;
@@ -18,7 +19,15 @@ public class Setup {
     static boolean running;
     static String password;
 
-    public static void deploy(ArrayList<String> contractnames, String Network,String syncMode) throws Exception {
+    //1 it calls checkGeth() which checks that geth is downloaded on the pc and if not it will download it?
+    //2 calls checkAccounts() ??
+    //3 runNode(Network,syncMode) -->run a Node choosing a network and a syncmode
+    //4 check if geth is running and if it runs it will get out of the loop to go to step 5
+    //5 for each contract writescript and runit --> run and compile??
+    //6
+
+    //EDIT: Removed the input of all contracts written and add the names directly with a getter
+    public static void deploy(String Network,String syncMode) throws Exception {
         checkGeth();
         checkAccounts();
         runNode(Network,syncMode);
@@ -28,14 +37,28 @@ public class Setup {
             }
             TimeUnit.SECONDS.sleep(20);
         }
-        for(String contract: contractnames) {
+        for(String contract: TheFile.getContractNames()) {
             writeScript(contract);
             runScript();
         }
     }
 
-    private static boolean checkNpm() throws IOException {
-        ProcessBuilder builder = new ProcessBuilder("cmd.exe","/c","npm -v");
+   //checks that npm is installed and if not it installs it
+    private static boolean checkNpm() throws Exception {
+        ProcessBuilder builder = null;
+
+        switch (CheckOs.CheckOS()) {
+            case WINDOWS:
+                builder = new ProcessBuilder("cmd.exe", "/c", "npm -v");
+            break;
+            //whatever we write in linux
+            case LINUX:
+                builder = new ProcessBuilder();break;
+            case MAC:
+                //whatever we write in Mac
+                builder =new ProcessBuilder(); break;
+        }
+
         builder.redirectErrorStream(true);
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
