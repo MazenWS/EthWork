@@ -14,11 +14,14 @@ import java.util.concurrent.TimeUnit;
 public class Setup {
     static String wallet;
     static String walletPK;
-    static String dir = "C:\\EthereumDB";
+    static String dir ;
     static boolean running;
     static String password;
 
+    static int accNum;
+
     public static void deploy(ArrayList<String> contractnames, String Network,String syncMode) throws Exception {
+        closeNode();
         checkGeth();
         checkAccounts();
         runNode(Network,syncMode);
@@ -32,9 +35,10 @@ public class Setup {
             writeScript(contract);
             runScript();
         }
+        closeNode();
     }
 
-    private static boolean checkNpm() throws IOException {
+    private static void checkNpm() throws IOException, Exception {
         ProcessBuilder builder = new ProcessBuilder("cmd.exe","/c","npm -v");
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -47,8 +51,7 @@ public class Setup {
             res=true;
         System.out.println(line);
         if(!res)
-            System.out.println("Please install Node");
-        return res;
+            throw new Exception("Please install Node");
     }
 
     private static boolean checkGeth() throws Exception {
@@ -95,18 +98,16 @@ public class Setup {
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
-        boolean res = false;
         while(true) {
             line = r.readLine();
             if(line==null)
                 break;
             if(line.contains("Account")){
-                res=true;
                 System.out.println(line);
                 accounts.add(line);
             }
         }
-        if(res){
+        if(! accounts.isEmpty()){
             int index = 0;
             while(true) {
                 System.out.println("Please Enter Account Number from Above List (-1 if none):");
@@ -114,17 +115,22 @@ public class Setup {
                 index = sc.nextInt();
                 if (index < -1 || index >= accounts.size()) {
                     System.out.println("wrong input");
-                }
-                else
+                } else
                     break;
             }
             if(index == -1){
+                accNum = accounts.size();
                 importAccountToNode();
                 return;
             }
+            accNum = index;
             String acc = accounts.get(index);
             String[] spl = acc.split("--");
             wallet = spl[spl.length-1];
+        }
+        else {
+            accNum = 0;
+            importAccountToNode();
         }
     }
 
@@ -174,7 +180,7 @@ public class Setup {
     }
 
     private static void closeNode() throws IOException {
-        String command = "taskkill \\IM geth.exe \\F";
+        String command = "taskkill /IM geth.exe /F";
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -263,13 +269,13 @@ public class Setup {
             abi += (char)i;
         reader2.close();
         try{
-            String data = "personal.unlockAccount(eth.accounts[0],\""+password+"\",null)\n" +
+            String data = "personal.unlockAccount(eth.accounts["+accNum+"],\""+password+"\",null)\n" +
                     "var contractInst = eth.contract("+abi+")\n" +
                     "var publisher = contractInst.new({\n" +
                     "data: '0x"+bin+"',\n" +
                     "arguments: [\n" +
                     "      ],\n" +
-                    "from: eth.accounts[0], \n" +
+                    "from: eth.accounts["+accNum+"], \n" +
                     "      gas: '4700000'\n" +
                     "})\n" +
                     "console.log(publisher.transactionHash)";
@@ -339,12 +345,13 @@ public class Setup {
         }
     }
 
-    public static void createContract(String contractName, String code) throws IOException {
+    public static void createContract(String contractName, String code) throws Exception {
         File contract = new File(contractName+".sol");
         FileWriter myWriter = new FileWriter(contractName+".sol");
         myWriter.write(code);
         myWriter.close();
         if(! checkSolidity()){
+            checkNpm();
             installSolidity();;
         }
         compileContract(contractName);

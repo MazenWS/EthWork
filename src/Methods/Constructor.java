@@ -40,7 +40,8 @@ public class Constructor {
         }
         res += ")";
         res += payable? "payable ":" ";
-        res+=accessModifier.name().toLowerCase()+" ";
+        if(! accessModifier.name().toLowerCase().equals("public"))
+            res+=accessModifier.name().toLowerCase()+" ";
         res+="{"+"\n";
 
         int solLine = TheFile.solidityCount;
