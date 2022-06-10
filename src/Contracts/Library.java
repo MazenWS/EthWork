@@ -39,7 +39,8 @@ public Library(String contractName){
         event.setJavaLine(LineCounter.getLine());
     }
     public String write() throws Exception {
-        String res= super.write();
+        String res = "library "+contractName ;
+        res+= super.write();
         if(! events.isEmpty()) {
             for(Event event : events){
                 res += event.write() + "\n";

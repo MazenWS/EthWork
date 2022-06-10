@@ -15,6 +15,7 @@ public  abstract class TypeContract {
         methods.add(method);
         method.setJavaLine(LineCounter.getLine());
     }
+
     public void addStruct(Struct struct){
         structs.add(struct);
         struct.setJavaLine(LineCounter.getLine());
@@ -25,8 +26,9 @@ public  abstract class TypeContract {
     }
 
 public  String write() throws Exception{
-    String res = "contract "+contractName + " {\n\n\n";
-    TheFile.solidityCount+=3;
+
+    String res =  " {\n\n\n";
+    TheFile.solidityCount+=4;
     if(! structs.isEmpty()) {
         for (Struct struct : structs) {
             res += struct.write() + "\n\n";
