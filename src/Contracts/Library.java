@@ -1,6 +1,7 @@
 package Contracts;
 
 
+import Lines.LineCounter;
 import Methods.*;
 import Variables.StateVariable;
 
@@ -31,23 +32,30 @@ public Library(String contractName){
 }
     public void addModifier( Modifier modifier){
         modifiers.add(modifier);
+        modifier.setJavaLine(LineCounter.getLine());
     }
     public void addEvent(Event event){
         events.add(event);
+        event.setJavaLine(LineCounter.getLine());
     }
     public String write() throws Exception {
-        String res= super.write();
+        String res = "library "+contractName ;
+        res+= super.write();
         if(! events.isEmpty()) {
             for(Event event : events){
                 res += event.write() + "\n";
             }
             res += "\n";
+            TheFile.solidityCount++;
         }
         if(! modifiers.isEmpty()) {
             for(Modifier mod : modifiers) {
                 res += mod.write() + "\n\n";
+                TheFile.solidityCount++;
             }
         }
         res += "}";
-        return res;}
+        TheFile.solidityCount++;
+        return res;
+    }
 }

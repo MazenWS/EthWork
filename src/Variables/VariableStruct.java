@@ -4,9 +4,10 @@ import Methods.Struct;
 
 public class VariableStruct implements Variable{
     String theStruct;
-    public VariableStruct (String theStruct) throws Exception {
-        if(!Struct.structNames.contains(theStruct))
-            throw new Exception("the struct doesn't exist");
+
+    //removed the exception because inheritance make it impossible to know.
+    public VariableStruct (String theStruct){
+
             this.theStruct= theStruct;
     }
 

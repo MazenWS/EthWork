@@ -19,7 +19,7 @@ public class EventBytes extends VariableBytes implements EventVariable{
     @Override
     public String write(){
         String res = super.write();
-        res += indexed? "indexed ":" ";
+        res += indexed? " indexed ":" ";
         return res+name;
     }
 

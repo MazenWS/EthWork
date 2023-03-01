@@ -1,5 +1,7 @@
 package Methods;
 
+import Contracts.TheFile;
+import Lines.Line;
 import Steps.Step;
 import Variables.ParameterVariable;
 import Variables.Variable;
@@ -12,6 +14,7 @@ public class Constructor {
     ArrayList<Step> steps = new ArrayList<Step>();
     boolean payable;
     AccessModifier accessModifier;
+    int javaLine;
 
     public Constructor(ParameterVariable[] parameters, boolean payable, AccessModifier accessModifier){
         this.payable= payable;
@@ -21,6 +24,10 @@ public class Constructor {
 
     public void addStep(Step step){
         steps.add(step);
+    }
+
+    public void setJavaLine(int javaLine){
+        this.javaLine = javaLine;
     }
 
     public String write() throws Exception {
@@ -33,12 +40,19 @@ public class Constructor {
         }
         res += ")";
         res += payable? "payable ":" ";
-        res+=accessModifier.name().toLowerCase(Locale.ROOT)+" ";
+        if(! accessModifier.name().toLowerCase().equals("public"))
+            res+=accessModifier.name().toLowerCase()+" ";
         res+="{"+"\n";
+
+        int solLine = TheFile.solidityCount;
+        TheFile.lineMap.addLine(new Line(javaLine,"Constructor",solLine,solLine));
+        TheFile.solidityCount++;
+
         for(Step s : steps) {
             String str = s.write();
             res += str + "\n";
         }
+        TheFile.solidityCount++;
         return res + "}";
     }
 }

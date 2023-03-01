@@ -1,3 +1,7 @@
+package Setup;
+
+import Lines.LinesArrangment;
+
 import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
@@ -10,11 +14,31 @@ import java.util.concurrent.TimeUnit;
 public class Setup {
     static String wallet;
     static String walletPK;
-    static String dir = "C:\\EthereumDB";
+    static String dir ;
     static boolean running;
     static String password;
 
-    private static boolean checkNpm() throws IOException {
+    static int accNum;
+
+    public static void deploy(ArrayList<String> contractnames, String Network,String syncMode) throws Exception {
+        closeNode();
+        checkGeth();
+        checkAccounts();
+        runNode(Network,syncMode);
+        while(true) {
+            if(checkIfGethIsRunning()==1){
+                break;
+            }
+            TimeUnit.SECONDS.sleep(20);
+        }
+        for(String contract: contractnames) {
+            writeScript(contract);
+            runScript();
+        }
+        closeNode();
+    }
+
+    private static void checkNpm() throws IOException, Exception {
         ProcessBuilder builder = new ProcessBuilder("cmd.exe","/c","npm -v");
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -27,11 +51,10 @@ public class Setup {
             res=true;
         System.out.println(line);
         if(!res)
-            System.out.println("Please install Node");
-        return res;
+            throw new Exception("Please install Node");
     }
 
-    private static boolean checkGeth() throws IOException, URISyntaxException {
+    private static boolean checkGeth() throws Exception {
         ProcessBuilder builder = new ProcessBuilder("cmd.exe","/c","geth version");
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -48,7 +71,7 @@ public class Setup {
         }
         if(!res) {
             downloadGeth();
-            System.out.println("Please install Geth");
+            throw new Exception("Please install Geth");
         }
         else {
             Scanner sc = new Scanner(System.in);
@@ -75,18 +98,16 @@ public class Setup {
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
-        boolean res = false;
         while(true) {
             line = r.readLine();
             if(line==null)
                 break;
             if(line.contains("Account")){
-                res=true;
                 System.out.println(line);
                 accounts.add(line);
             }
         }
-        if(res){
+        if(! accounts.isEmpty()){
             int index = 0;
             while(true) {
                 System.out.println("Please Enter Account Number from Above List (-1 if none):");
@@ -94,24 +115,31 @@ public class Setup {
                 index = sc.nextInt();
                 if (index < -1 || index >= accounts.size()) {
                     System.out.println("wrong input");
-                }
-                else
+                } else
                     break;
             }
             if(index == -1){
+                accNum = accounts.size();
                 importAccountToNode();
                 return;
             }
+            accNum = index;
             String acc = accounts.get(index);
             String[] spl = acc.split("--");
             wallet = spl[spl.length-1];
+        }
+        else {
+            accNum = 0;
+            importAccountToNode();
         }
     }
 
     private static void runNode(String network, String syncmode) throws IOException {
         try {
+
             String command = "geth --"+network +" --syncmode \""+syncmode+"\" -http --allow-insecure-unlock --datadir "+dir;
             ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command);
+
             builder.redirectErrorStream(true);
             Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -152,7 +180,7 @@ public class Setup {
     }
 
     private static void closeNode() throws IOException {
-        String command = "taskkill \\IM geth.exe \\F";
+        String command = "taskkill /IM geth.exe /F";
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -194,67 +222,6 @@ public class Setup {
         passFile.delete();
     }
 
-//    private static void createProject(String path) throws IOException, InterruptedException {
-//        String command = "cd "+path+" && mkdir App";
-//        path += "\\App";
-//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-//        builder.redirectErrorStream(true);
-//        Process p = builder.start();
-//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//        String line;
-//        while (true) {
-//            line = r.readLine();
-//            if (line == null) break;
-//            System.out.println(line);
-//        }
-//        p.waitFor();
-//        installTruffle(path);
-//    }
-//
-//    private static void installTruffle(String path) throws IOException, InterruptedException {
-//        String command = "cd "+path+" && npm install truffle";
-//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-//        builder.redirectErrorStream(true);
-//        Process p = builder.start();
-//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//        String line;
-//        while (true) {
-//            line = r.readLine();
-//            if (line == null) break;
-//            System.out.println(line);
-//        }
-//        p.waitFor();
-//        truffleInit(path);
-//    }
-//
-//    private static void truffleInit(String path) throws IOException, InterruptedException {
-//        String command = "cd "+path+" && truffle init";
-//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-//        builder.redirectErrorStream(true);
-//        Process p = builder.start();
-//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//        String line;
-//        while (true) {
-//            line = r.readLine();
-//            if (line == null) break;
-//            System.out.println(line);
-//        }
-//    }
-//
-//    private static void createContract(String name, String path) throws IOException, InterruptedException {
-//        String command = "cd "+path+" && truffle create contract "+name;
-//        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
-//        builder.redirectErrorStream(true);
-//        Process p = builder.start();
-//        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//        String line;
-//        while (true) {
-//            line = r.readLine();
-//            if (line == null) break;
-//            System.out.println(line);
-//        }
-//    }
-
     private static void compileContract(String contractName) throws IOException {
         String command = "solcjs --bin "+contractName+".sol && solcjs --abi "+contractName+".sol";
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c",command);
@@ -263,19 +230,25 @@ public class Setup {
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
         boolean error = false;
+        int errLine = 0;
         while (true) {
             line = r.readLine();
             if (line == null) break;
             error = true;
+            String[] err = line.split(":");
+            if(err.length == 3){
+                errLine = LinesArrangment.getJavaLine(Integer.parseInt(err[1]));
+            }
             System.out.println(line);
         }
-//        if(error){
-//            File f = new File(contractName+".sol");
-//            f.delete();
-//        }
-//        else{
-//            System.out.println("Successfully compiled");
-//        }
+        if(error){
+            File f = new File(contractName+".sol");
+            f.delete();
+            System.out.println("Error in JavaFile Line: "+errLine);
+        }
+        else{
+            System.out.println("Successfully compiled");
+        }
     }
 
     private static void writeScript(String name) throws IOException {
@@ -296,13 +269,13 @@ public class Setup {
             abi += (char)i;
         reader2.close();
         try{
-            String data = "personal.unlockAccount(eth.accounts[0],\""+password+"\",null)\n" +
+            String data = "personal.unlockAccount(eth.accounts["+accNum+"],\""+password+"\",null)\n" +
                     "var contractInst = eth.contract("+abi+")\n" +
                     "var publisher = contractInst.new({\n" +
                     "data: '0x"+bin+"',\n" +
                     "arguments: [\n" +
                     "      ],\n" +
-                    "from: eth.accounts[0], \n" +
+                    "from: eth.accounts["+accNum+"], \n" +
                     "      gas: '4700000'\n" +
                     "})\n" +
                     "console.log(publisher.transactionHash)";
@@ -372,12 +345,13 @@ public class Setup {
         }
     }
 
-    public static void createContract(String contractName, String code) throws IOException {
+    public static void createContract(String contractName, String code) throws Exception {
         File contract = new File(contractName+".sol");
         FileWriter myWriter = new FileWriter(contractName+".sol");
         myWriter.write(code);
         myWriter.close();
         if(! checkSolidity()){
+            checkNpm();
             installSolidity();;
         }
         compileContract(contractName);

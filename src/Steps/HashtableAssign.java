@@ -1,31 +1,38 @@
 package Steps;
 
+import Contracts.TheFile;
+import Lines.Line;
+
 public class HashtableAssign implements Step{
     String hashtableName;
-    String insertTokey;
+    String insertToken;
     String statement;
+    int javaLine;
 
     //hashtable[key] = a+b
-    public HashtableAssign(String hashtableName, String insertTokey, String statement){
+    public HashtableAssign(String hashtableName, String insertToken, String statement){
         this.hashtableName = hashtableName;
-        this.insertTokey = insertTokey;
+        this.insertToken = insertToken;
         this.statement = statement;
     }
 
     //hashtable[key] = sum(a,b)
-    public HashtableAssign(String hashtableName, String insertTokey, Function function){
+    public HashtableAssign(String hashtableName, String insertToken, Function function){
         this.hashtableName = hashtableName;
-        this.insertTokey = insertTokey;
+        this.insertToken = insertToken;
         this.statement = function.write();
     }
+
+    @Override
+    public void setJavaLine(int javaLine) {
+        this.javaLine = javaLine;
+    }
+
     @Override
     public String write() throws Exception{
-        String res = hashtableName+"["+insertTokey+"] = ";
-        if(statement.contains(".get")){
-            String[] get = statement.split(".get");
-            get[1] = get[1].substring(1,get[1].length()-1);
-            statement = get[0]+"["+get[1]+"]";
-        }
+        TheFile.lineMap.addLine(new Line(javaLine,"Step",TheFile.solidityCount,TheFile.solidityCount));
+        TheFile.solidityCount++;
+        String res = hashtableName+"["+insertToken+"] = ";
         res += statement +";";
         return res;
     }

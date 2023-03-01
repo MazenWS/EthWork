@@ -1,5 +1,8 @@
 package Methods;
 
+import Contracts.TheFile;
+import Lines.Line;
+import Lines.LineCounter;
 import Steps.Step;
 import Variables.ParameterVariable;
 import Variables.Variable;
@@ -14,6 +17,8 @@ public class Method {
     ParameterVariable[] returnTypes;
     ArrayList<Step> steps = new ArrayList<>();
     String[] modifiers;
+    boolean abstractMethod;
+    int javaLine;
 
 
     public Method(String name, ParameterVariable[] parameters, AccessModifier accessModifier, Type accessType,
@@ -28,7 +33,17 @@ public class Method {
     }
      public  void addSteps( Step step){
         steps.add(step);
+        step.setJavaLine(LineCounter.getLine());
      }
+
+     public void setJavaLine(int javaLine){
+        this.javaLine = javaLine;
+     }
+
+     public void setAbstractMethod(){
+        abstractMethod = true;
+     }
+
     public String write() throws Exception {
         String res = "function "+name+"(";
         if(parameters != null && parameters.length != 0) {
@@ -59,10 +74,23 @@ public class Method {
             }
             res = res.substring(0,res.length()-2)+")";
         }
+        if(abstractMethod){
+            res += ";";
+            int solLine = TheFile.solidityCount;
+            TheFile.lineMap.addLine(new Line(javaLine,"Method",solLine,solLine));
+            TheFile.solidityCount++;
+            return res;
+        }
         res += "{\n";
+
+        int solLine = TheFile.solidityCount;
+        TheFile.lineMap.addLine(new Line(javaLine,"Method",solLine,solLine));
+        TheFile.solidityCount++;
+
         for(Step step : steps)
             res += step.write()+"\n";
         res += "}";
+        TheFile.solidityCount++;
 
         return res;
     }

@@ -11,7 +11,7 @@ public class EventInteger extends VariableInteger implements EventVariable{
 
     }
     //2// named
-    public EventInteger(boolean signed ,int length_powerOfTwo ,String name, boolean indexed) throws Exception {
+    public EventInteger(String name,boolean signed ,int length_powerOfTwo , boolean indexed) throws Exception {
         super(signed, length_powerOfTwo);
         this.name= name;
         this.indexed= indexed;
@@ -21,7 +21,7 @@ public class EventInteger extends VariableInteger implements EventVariable{
     @Override
     public String write(){
         String res = super.write();
-        res += indexed? "indexed ":" ";
+        res += indexed? " indexed ":" ";
         return res+name;
     }
 }

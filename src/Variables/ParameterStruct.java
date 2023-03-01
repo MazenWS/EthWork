@@ -5,7 +5,7 @@ import Steps.Step;
 public class ParameterStruct extends NamedStruct implements ParameterVariable {
 
     DataLocation dataLocation;
-    public ParameterStruct(String theStruct,String name, DataLocation  dataLocation) throws Exception {
+    public ParameterStruct(String theStruct,String name, DataLocation  dataLocation)  {
         super(theStruct, name);
         this.dataLocation =dataLocation;
     }
